@@ -1,0 +1,156 @@
+//
+//  ${className}.m
+//  ${projectName}
+//
+//  Created by Mobivery
+//  Copyright (c) 2012 Mobivery. All rights reserved.
+//
+
+#import "${className}.h"
+#foreach ($extraImport in $extraImports)
+#import "${extraImport}.h"
+#end
+#foreach ($field in $objectFields)
+#import "${field.typeIOSDAO}.h"
+#end
+#foreach ($field in $objectArrayFields)
+#import "${field.typeIOSDAO}.h"
+#end    
+#import "${mainClassName}.h"
+
+@implementation ${className}
+
+
+// Get the shared instance and create it if necessary.
++ (${className} *)sharedInstance {
+    
+    static dispatch_once_t onceQueue;
+    static ${className} *instance = nil;
+    
+    dispatch_once(&onceQueue, ^{ instance = [[self alloc] init]; });
+    return instance;
+}
+
+-(NSDictionary *) writeToDictionary:(${mainClassName} *)instance
+{
+NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];	
+		
+	#foreach ($field in $baseFields)
+	[dict setValue:instance.${field.name} forKey:@"${field.name}"];
+	#end
+		
+	#foreach ($field in $baseArrayFields)
+	[dict setValue:instance.${field.name} forKey:@"${field.name}"];
+	#end
+	
+	#foreach ($field in $objectFields)
+	NSDictionary *dict${field.name}=[[${field.typeIOSDAO} sharedInstance] writeToDictionary:instance.${field.name}];
+	[dict setValue:dict${field.name} forKey:@"${field.name}"];
+	#end  
+
+	#foreach ($field in $objectArrayFields)
+	NSMutableArray *array${field.name}=[[NSMutableArray alloc]init];
+	for(${field.typeSingular} *typeItem in instance.${field.name})
+	{
+		NSDictionary *dict${field.name}=[[${field.typeIOSDAO} sharedInstance] writeToDictionary:typeItem];
+		[array${field.name} addObject:dict${field.name}];
+	}
+	[dict setValue:array${field.name} forKey:@"${field.name}"];
+	
+	#end  
+	return dict;
+}
+
+-(${mainClassName} *) readFromDictionary:(NSDictionary *)dict
+{
+	${mainClassName} *instance=[[${mainClassName} alloc]init];
+#if($objectFields.size()>0)
+	// Inicializaciones de objetos
+#end
+/*
+#foreach ($field in $objectFields)	
+    instance.${field.name}=[[${field.typeIOSDAO} alloc]init];
+#end
+*/
+
+#if($objectArrayFields.size()>0)
+	// Inicializaci—n de array de objetos
+#end
+#foreach ($field in $objectArrayFields)
+	instance.${field.name}=[[NSMutableArray alloc]init];
+#end
+
+#if($baseFields.size()>0)
+	// Lectura de parametros base
+#end	
+#foreach ($field in $baseFields)
+    instance.${field.name}=[dict objectForKey:@"${field.name}"];
+#end
+
+#if($baseArrayFields.size()>0)
+	// Lectura de array de parametros base
+#end
+#foreach ($field in $baseArrayFields)
+	NSArray *${field.name}Array=[dict objectForKey:@"${field.name}"];
+	NSMutableArray *${field.name}MutableArray=[[NSMutableArray alloc]init];
+	for(${field.baseTypeSingular} *item in ${field.name}Array)
+	{
+		[${field.name}MutableArray addObject:item];
+	}
+	instance.${field.name}=${field.name}MutableArray;
+#end
+  
+#if($objectFields)
+	// Parseo de objetos
+#end
+#foreach ($field in $objectFields)
+	if ([dict objectForKey:@"${field.name}"]) {
+        instance.${field.name}=[[${field.typeIOSDAO} sharedInstance] readFromDictionary:[dict objectForKey:@"${field.name}"]];
+    }
+#end  
+
+#if($objectArrayFields &&  $objectArrayFields.size()>0)
+	// Parseo de array objetos
+#end
+#foreach ($field in $objectArrayFields)
+	NSDictionary *${field.name}Item = nil;
+	if(![[dict objectForKey:@"${field.name}"] isKindOfClass:[NSNull class]])
+	{
+		${field.name}Item=[dict objectForKey:@"${field.name}"];
+	}
+	
+	if([${field.name}Item isKindOfClass:[NSArray class]])
+	{
+		NSArray *${field.name}Array=[dict objectForKey:@"${field.name}"];
+		NSMutableArray *${field.name}MutableArray=[[NSMutableArray alloc]init];
+		for(NSDictionary *data in ${field.name}Array)
+		{
+			${field.typeSingular} *item=[[${field.typeIOSDAO} sharedInstance] readFromDictionary:data];
+			[${field.name}MutableArray addObject:item];
+		}
+		instance.${field.name}=${field.name}MutableArray;
+	}
+	else if (${field.name}Item)
+	{
+		NSMutableArray *${field.name}MutableArray=[[NSMutableArray alloc]init];
+		${field.typeSingular} *item=[[${field.typeIOSDAO} sharedInstance] readFromDictionary:${field.name}Item];
+		[${field.name}MutableArray addObject:item];
+		instance.${field.name}=${field.name}MutableArray;
+	}
+#end
+	return instance;
+}
+
+
+// Establece valores a partir de un NSArray
+-(NSArray *) readFromDictionaryArray:(NSArray *)dictArray
+{
+	NSMutableArray *mutableArray=[[NSMutableArray alloc]init];
+	for(NSDictionary *dict in dictArray)
+	{
+		[mutableArray addObject:[self readFromDictionary:dict]];
+	}
+	return mutableArray;
+}
+@end
+ 

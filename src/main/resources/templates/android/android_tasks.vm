@@ -1,0 +1,165 @@
+## 
+## ASYNCTASK - TAREA AS�NCRONA ANDROID 
+## 
+/**
+  ${serviceName}Service
+  ${projectName}
+
+  Created by Generator on 19/01/12.
+  Copyright (c) 2012 Mobivery. All rights reserved.
+*/
+package ${packagename}.tasks.${serviceNameLower};
+
+import ${packagename}.R;
+import ${packagename}.model.dto.*; 
+import ${packagename}.logic.*;
+import android.os.AsyncTask;
+import android.app.Activity;
+import android.widget.Toast;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+ /**
+ * Task de ${method}
+ * @author DRM
+ *
+ */
+public class ${methodUcase}Task extends AsyncTask<${requestDTO}, Integer, ${responseDTO}> implements ${serviceExceptionListener} {
+
+	// Instancia local de la activity que cre� la tarea
+	private Activity activity;
+	private int loadingView;
+	private int progressText;
+	private View innerView;
+	private LinearLayout loadingLayout;
+	private TextView txtView;
+	private int loadingText;
+	
+	public ${methodUcase}Task(Activity activity,int loadingView,int progressText, int loadingText)
+	{
+		this.activity=activity;
+		this.loadingView=loadingView;
+		this.progressText=progressText;
+		this.loadingText=loadingText;
+	}
+	public void execute(${requestDTO} request)
+	{
+		if(loadingView!=-1)
+		{
+			activity.runOnUiThread(new Thread(new Runnable(){public void run(){initSpinner();}}));
+		}
+		super.execute(request);
+	}
+	private void initSpinner()
+	{
+		ViewGroup group=(ViewGroup)activity.getWindow().getDecorView().getRootView();
+		loadingLayout=new LinearLayout(activity);
+		innerView=activity.getLayoutInflater().inflate(loadingView, loadingLayout);
+		LayoutParams viewParams=new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT);
+		innerView.setLayoutParams(viewParams);
+		TextView loadingTextView = (TextView)innerView.findViewById(progressText);
+		if(loadingTextView != null){
+			loadingTextView.setText(this.loadingText);
+		}
+		innerView.bringToFront();
+		LayoutParams params=new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		loadingLayout.setLayoutParams(params);
+		group.addView(loadingLayout);
+		loadingLayout.bringToFront();
+		
+	}
+	private void endSpinner()
+	{
+		if(loadingLayout!=null)
+		{
+			ViewGroup group=(ViewGroup)activity.getWindow().getDecorView().getRootView();
+			if(group!=null)
+			{
+			group.removeView(loadingLayout);
+			}
+		}		
+	}
+	public void updateProgress(final String progress)
+	{
+	activity.runOnUiThread(new Runnable(){public void run(){
+		if(txtView==null)
+		{
+			txtView=(TextView)innerView.findViewById(progressText);
+		}
+		if(txtView!=null)
+		{
+			txtView.setText(progress);
+		}}});
+	}
+	
+	public ${methodUcase}Task(Activity activity)
+	{
+		this(activity,-1,-1,-1);
+	}
+	@Override
+	public final ${responseDTO} doInBackground(${requestDTO}... params) {
+		// Obtenemos el dto de petici�n
+		${requestDTO} request=params[0];
+		${responseDTO} response=null;
+		try
+		{
+#if($preMethod)
+		${preMethod}(request);
+#end			
+			// Llamamos al servicio
+			response=execOnBackground(request);
+#if($onTask)
+			if (activity==null) {
+				throw new ${serviceException}(new Exception("Activity to go back to already removed from memory"));
+			} else {
+				activity.runOnUiThread(new Runnable(){public void run(){${onTask}(${methodUcase}Task.this,${methodUcase}Task.this.activity);}});
+			}
+#end
+		}
+		catch(final ${serviceException} ex)
+		{
+			// Log.d(getClass().getName(), ex.getMessage());
+			if(!isCancelled())
+			{
+			// Si se produce una excepci�n , llamamos a onServiceError en otro hilo.
+			if (activity!=null) {
+				activity.runOnUiThread(new Runnable(){public void run(){${methodUcase}Task.this.onServiceError(ex);}});
+			}
+			return null;
+			}
+		}
+		if(loadingView!=-1)
+		{
+			if(activity!=null)
+			{
+			activity.runOnUiThread(new Runnable(){public void run(){endSpinner();}});
+			}
+		}
+		return response;
+	}
+	public void onServiceError(${serviceException} ex)
+	{
+		if(!isCancelled() && activity!=null && ex!=null)
+		{
+			// Toast.makeText(activity, ex.getMessage(),Toast.LENGTH_LONG).show();
+			ex.printStackTrace();
+		}
+		if(loadingView!=-1)
+		{
+			if(activity!=null)
+			{
+				activity.runOnUiThread(new Runnable(){public void run(){endSpinner();}});
+			}
+		}
+	}
+	public ${responseDTO} execOnBackground(${requestDTO} request) throws ${serviceException}
+	{
+		return ${serviceName}Logic.getInstance().${method}(request);
+	}
+}
+ 

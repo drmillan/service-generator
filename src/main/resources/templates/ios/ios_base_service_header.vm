@@ -1,0 +1,47 @@
+//
+//  Base${serviceName}Logic
+//  ${projectName}
+//
+//  Created by Mobivery
+//  Copyright (c) 2012 Mobivery. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#foreach ($extraImport in $extraImports)
+#import "${extraImport}.h"
+#end
+#import "MVYDefines.h"
+
+// Definimos macro para log
+#ifndef _ModelGenLog
+
+#ifdef SERVICE_DEBUG
+ \#define _ModelGenLog(...) NSLog(__VA_ARGS__)
+\#else
+ \#define _ModelGenLog(...) do { } while (0)
+#endif
+
+#endif // _ModelGenLog
+
+@interface Base${serviceName}Logic : NSObject
+
+@property (nonatomic, strong) NSMutableData *receivedData;
+@property (nonatomic, strong) NSError *error;
+@property (nonatomic) BOOL downloadComplete;
+
+#foreach ($message in $messages) 
+	
+	/**
+	 * MŽtodo ${message.method}JSON: ${message.description}
+	 * @param ${message.request.javaInstanceName} Petici—n al servicio
+	 * @returns ${message.response.type} Respuesta del servidor
+	 */
+	-(${message.response.type} *) ${message.method}:(${message.request.type} *)${message.request.javaInstanceName} onError:(NSError *__autoreleasing *)inError;
+	/**
+	 * MŽtodo ${message.method}: ${message.description}
+	 * @param ${message.request.javaInstanceName} Petici—n al servicio
+	 * @returns NSDictionary Diccionario respuesta del servidor
+	 */
+	-(NSDictionary *) ${message.method}JSON:(${message.request.type} *)${message.request.javaInstanceName} onError:(NSError *__autoreleasing *)inError;
+#end
+@end

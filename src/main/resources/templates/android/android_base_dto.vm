@@ -1,0 +1,43 @@
+## 
+## DTO - DTO ANDROID 
+## 
+/**
+  ${className}
+  ${projectName}
+
+  Created by Generator on 19/01/12.
+  Copyright (c) 2012 Mobivery. All rights reserved.
+*/
+package ${packagename}.model.dto;
+
+#foreach($import in $extraImports) 
+$import
+#end
+import android.os.Parcelable;
+import android.os.Parcel;
+import ${packagename}.model.dto.base.${projectName}DTOBundle;
+
+/**
+ * DTO que define la clase ${className}
+ */
+public final class ${className} extends ${projectName}DTOBundle.Base${className}
+{
+	public ${className}() {
+		super();
+	}
+
+	public ${className}(Parcel in) {
+		super(in);
+	}
+	
+	public static final Parcelable.Creator<${className}> CREATOR =
+		new Parcelable.Creator<${className}>() {
+			public ${className} createFromParcel(Parcel in) {
+				return new ${className}(in);
+			}
+			public ${className}[] newArray(int size) {
+				return new ${className}[size];
+			}
+		};
+}
+ 

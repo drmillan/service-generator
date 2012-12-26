@@ -1,0 +1,105 @@
+<protocol 
+    javaServiceException="com.gasall.exception.ServiceException"
+    javaServiceExceptionListener="com.gasall.exception.ServiceExceptionListener"
+    onSend="com.gasall.GasAllApplication.onSend" onReceive="com.gasall.GasAllApplication.onReceive" onError="com.gasall.GasAllApplication.onError" onTask="com.gasall.GasAllApplication.onTaskFinished">
+	<!-- MENSAJES DE LA APP -->
+	<messages>
+		<!-- Servicios de Gasolineras -->
+		<message name="gasStationsInRegionWS" service="GasStations" method="gasStationsInRegionWS" description="Devuelve las gasolineras que hay en la region que se pasa como parametro" type="Post">
+			<urlPattern>
+				<!-- <url address="http://apps.mimundoiphone.com/gasall/prod/gasStationsInRegion?latitude=${latitude}&amp;longitude=${longitude}&amp;latitudeDelta=${latitudeDelta}&amp;longitudeDelta=${longitudeDelta}" /> -->
+				<url address="https://dl.dropbox.com/u/578930/apps/mobivery/gasall3/server/gasStationsInRegionWS.json"/>
+			</urlPattern>
+			<request type="GasStationsInRegionWSRequestDTO">				
+				<field name="latitude" type="double" description="Latitud de la region" />
+				<field name="longitude" type="double" description="Longitud de la region" />
+				<field name="latitudeDelta" type="double" description="Span de la latitud de la region" />
+				<field name="longitudeDelta" type="double" description="Span de la longitud de la region" />
+			</request>
+			<response type="GasStationsInRegionWSResponseDTO">
+				<field name="gasStations" type="GasStationDTO*" description="Gasolineras que se encuentran en la region"/>
+			</response>
+		</message>
+		<!-- Servicios de Direcciones -->
+		<message name="addressesContainingTextWS" service="Addresses" method="addressesContainingTextWS" description="Devuelve un array de AddressDTO con las direcciones que coincidan con el texto que se pasa como parametro" type="Post">
+			<urlPattern>				
+				<url address="https://maps.googleapis.com/maps/api/geocode/json?address=${address}&amp;region=${region}&amp;sensor=true"/>
+			</urlPattern>
+			<request type="AddressesContainingTextWSRequestDTO">				
+				<field name="address" type="string" description="Texto para buscar coincidencias de direcciones existentes" />
+				<field name="region" type="string" description="Codigo de region donde se encuentra el usuario para facilitar la busqueda. Ej: es" />
+			</request>
+			<response type="AddressesContainingTextWSResponseDTO">
+				<field name="status" type="string" description="Estado de la peticion: https://developers.google.com/maps/documentation/directions/?hl=es#StatusCodes"/>
+				<field name="results" type="AddressDTO*" description="Direcciones obtenidas"/>
+			</response>
+		</message>
+		<message name="pointsOfRouteBetweenOriginAndDestinationWS" service="Addresses" method="pointsOfRouteBetweenOriginAndDestinationWS" description="Metodo que obtiene las coordenadas para dibujar una ruta entre el origen y destino que se pasa como parametro" type="Post">
+			<urlPattern>				
+				<url address="https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&amp;destination=${destination}&amp;alternatives=${alternatives}&amp;units=${units}&amp;region=${region}&amp;sensor=true"/>
+			</urlPattern>
+			<request type="PointsOfRouteBetweenOriginAndDestinationWSRequestDTO">				
+				<field name="origin" type="string" description="String con el nombre del origen o sus coordenadas latitud y longitud separadas por coma sin espacios" />
+				<field name="destination" type="string" description="String con el nombre del destino o sus coordenadas latitud y longitud separadas por coma sin espacios" />				
+				<field name="alternatives" type="string" description="True si queremos que devuelva posibles rutas alternativas y false en caso contrario" />				
+				<field name="units" type="string" description="Tipos de unidades para las distancias: metric o imperial" />
+				<field name="region" type="string" description="Codigo de region donde se encuentra el usuario para facilitar la busqueda. Ej: es" />
+			</request>
+			<response type="PointsOfRouteBetweenOriginAndDestinationWSResponseDTO">
+				<field name="status" type="string" description="Estado de la peticion: https://developers.google.com/maps/documentation/directions/?hl=es#StatusCodes"/>
+				<field name="routes" type="RoutesDTO*" description="Rutas obtenidas"/>
+			</response>
+		</message>
+	</messages>
+	<!-- TIPOS DE LA APP -->
+	<types>	
+		<type name="GasStationDTO">
+	        <field name="name" type="string" description="Nombre de la gasolinera"/>
+	        <field name="schedule" type="string" description="Horario de apertura"/>
+	        <field name="address" type="string" description="Direccion"/>
+			<field name="prices" type="PriceDTO*" description="Precios de las distintas gasolinas que ofrece"/>			
+			<field name="type" type="string" description="Tipo o red de la gasolinera: Repsol, Shell, Carrefour, etc"/>
+			<field name="latitude" type="double" description="Latitud de la posicion de la gosolinera"/>
+			<field name="longitude" type="double" description="Longitud de la posicion de la gosolinera"/>
+			<field name="distance" type="double" description="Distancia desde la posicion del usuario a la gasolinera"/>
+	    </type>
+		<type name="PriceDTO">
+	        <field name="gasolineID" type="string" description="ID de la gasolina a la que pertenece este precio"/>
+	        <field name="price" type="string" description="precio de la gasolina que contiene el id gasolineID"/>
+	    </type>
+		<type name="AddressDTO">
+	        <field name="formatted_address" type="string" description="Descripcion larga de la direccion"/>
+	        <field name="geometry" type="GeometryDTO" description="Datos geometricos de la direccion"/>
+	    </type>
+		<type name="GeometryDTO">
+	        <field name="location" type="LocationCoordinateDTO" description="Latitud y longitud de una ubicacion"/>
+			<field name="bounds" type="BoundsDTO" description="Limites a mostrar en el mapa para visualizar la localizacion"/>
+	    </type>
+		<type name="BoundsDTO">
+	        <field name="northeast" type="LocationCoordinateDTO" description="Latitud y longitud noreste de los limites para la localizacion"/> -->
+			<field name="southwest" type="LocationCoordinateDTO" description="Latitud y longitud suroeste de los limites para la localizacion"/>
+	    </type>
+		<type name="LocationCoordinateDTO">
+	        <field name="lat" type="double" description="Latitud"/>
+		    <field name="lng" type="double" description="Longitud"/>
+	    </type>
+		<type name="RoutesDTO">
+	        <field name="bounds" type="BoundsDTO" description="Limites a mostrar en el mapa para visualizar la ruta"/>
+		    <field name="legs" type="LegsDTO*" description="Trayectos de la ruta"/>
+			<field name="overview_polyline" type="OverviewPolylineDTO" description="Polilinea para trazar la linea de la ruta sobre el mapa"/>
+	    </type>
+		<type name="LegsDTO">
+	        <field name="distance" type="DistanceDTO" description="Distancia de la ruta"/>
+		    <field name="duration" type="DurationDTO" description="Duracion en tiempo de la ruta"/>
+	    </type>
+		<type name="DistanceDTO">
+	        <field name="text" type="string" description="Distancia de la ruta en las unidades que se han solicitado: km o mi"/>
+	    </type>
+		<type name="DurationDTO">
+	        <field name="text" type="string" description="Duracion en tiempo de la ruta"/>
+	    </type>
+		<type name="OverviewPolylineDTO">
+	        <field name="points" type="string" description="String que los valores que forman la polilinea"/>
+	    </type>
+	</types>
+</protocol>

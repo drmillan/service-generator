@@ -1,0 +1,21 @@
+//
+//  ${className}.m
+//  ${projectName}
+//
+//  Created by Mobivery
+//  Copyright (c) 2012 Mobivery. All rights reserved.
+//
+
+#import "${className}.h"
+#foreach ($extraImport in $extraImports)
+#import "${extraImport}.h"
+#end
+
+@implementation ${className}
+
+#foreach ($field in $fields) 
+@synthesize ${field.name} = _${field.name};
+#end
+
+@end
+ 

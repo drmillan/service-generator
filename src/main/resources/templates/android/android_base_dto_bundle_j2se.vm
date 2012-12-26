@@ -1,0 +1,41 @@
+package ${packagename}.model.dto.base;
+import java.util.List;
+import java.util.ArrayList;
+import ${packagename}.model.dto.*;
+public class ${projectName}DTOBundle
+{
+#foreach($dto in $dtos)
+	/**
+	 * DTO que define la clase ${dto.name}
+	 */
+	public static class Base${dto.name}
+	{
+		#foreach ($field in $dto.fields) 
+		// ${field.comment}
+		private ${field.typeJava} ${field.javaName}; 
+		#end	
+		
+		// Setters y Getters
+		
+		#foreach ($field in $dto.fields) 
+		/**
+		 * Setter de la propiedad ${field.javaName} , ${field.comment}
+		 * @param ${field.javaName} valor a establecer en el set
+		 */
+		public void set${field.nameUcase}(${field.typeJava} ${field.javaName})
+		{
+			this.${field.javaName}=${field.javaName};
+		}
+		/**
+		 * Getter de la propiedad ${field.javaName} , ${field.comment}
+		 * @returns Valor de la propiedad ${field.javaName}
+		 */
+		public ${field.typeJava} get${field.nameUcase}()
+		{
+			return ${field.javaName};
+		}
+		#end	
+			
+	}
+#end
+}

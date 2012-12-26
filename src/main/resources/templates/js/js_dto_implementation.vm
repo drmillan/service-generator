@@ -1,0 +1,25 @@
+//
+//  ${className}.js
+//  ${projectName}
+//
+//  Created by Mobivery
+//  Copyright (c) 2012 Mobivery. All rights reserved.
+//
+
+#foreach ($extraImport in $extraImports)
+include ("${extraImport}.js");
+#end
+
+function ${className}() {
+
+#foreach ($field in $fields) 
+	this.set${field.name} = function(value) {
+		this.${field.name} = value;
+	};
+	
+	this.get${field.name} = function() {
+		return this.${field.name};
+	}
+	
+#end
+}

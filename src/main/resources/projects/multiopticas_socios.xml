@@ -1,0 +1,185 @@
+<!-- ################################################################ XML 
+	DE DEFINICIÓN DE SERVICIOS MULTIOPTICAS_SOCIOS ################################################################ -->
+
+<protocol>
+	<messages>
+		<!-- ###################################### LOGIN ###################################### -->
+		<message name="Login" service="MO" method="login" description=""
+			type="Post">
+			<urlPattern>
+				<url address="http://${SERVER}/login" />
+			</urlPattern>
+			<request>
+				<field name="activationCode" type="String" description="Codigo de activacion" />
+			</request>
+			<response>
+				<field name="status" type="String" description="OK, NO_OK" />
+				<field name="statusMessage" type="String" description="Descripción del error en caso de error" />
+				<field name="appId" type="String" description="Id de aplicación" />
+				<field name="memberId" type="String" description="Id de socio" />
+			</response>
+		</message>
+		<!-- ###################################### REMOVE ORDER ###################################### -->
+		<message name="RemoveOrder" service="MO" method="removeOrder"
+			description="" type="Delete">
+			<urlPattern>
+				<url address="http://${SERVER}/order/delete" />
+			</urlPattern>
+			<request>
+				<field name="appId" type="String" description="Id de aplicación" />
+				<field name="memberId" type="String" description="Id de socio" />
+				<field name="orderId" type="int" description="Id del pedido" />
+			</request>
+			<response>
+				<field name="status" type="String" description="OK, NO_OK" />
+				<field name="statusMessage" type="String" description="Descripción del error en caso de error" />
+			</response>
+		</message>
+		<!-- ###################################### ORDER HISTORY ############################## -->
+		<message name="OrderHistory" service="MO" method="orderHistory"
+			description="" type="Get">
+			<urlPattern>
+				<url address="http://${SERVER}/order/history" />
+			</urlPattern>
+			<request>
+				<field name="appId" type="String" description="Id de aplicación" />
+				<field name="memberId" type="String" description="Id de miembro" />
+				<field name="date" type="String" description="Fecha de filtro (dd/MM/yyyy)" />
+				<field name="name" type="String" description="Nombre de filtrado" />
+				<field name="email" type="String" description="Email de filtrado" />
+				<field name="phoneNumber" type="String" description="Número de teléfono de filtrado" />
+			</request>
+			<response>
+				<field name="status" type="String" description="OK, NO_OK" />
+				<field name="statusMessage" type="String" description="Descripción del error en caso de error" />
+				<field name="orders" type="OrderDTO*" description="Pedidos" />
+			</response>
+		</message>
+		<!-- ###################################### PRODUCT ############################## -->
+		<message name="UpdateDB" service="MO" method="updateDB"
+			description="" type="Get">
+			<urlPattern>
+				<url address="http://${SERVER}/db/update" />
+			</urlPattern>
+			<request>
+				<field name="appId" type="String" description="Id de aplicación" />
+				<field name="memberId" type="String" description="Id de miembro" />
+			</request>
+			<response>
+				<field name="status" type="String" description="OK/NO_OK" />
+				<field name="statusMessage" type="String" description="Mensaje a mostrar al usuario en caso de error" />
+				<field name="promos" type="PromoDTO*" description="Listado de campañas" />
+				<field name="lensTypes" type="LensTypeDTO*" description="Listado de tipos de lentes" />
+				<field name="lensTreatments" type="LensTreatmentDTO*" description="Listado de tratamientos" />
+				<field name="crossSells" type="CrossSellDTO*" description="Listado de ventas cruzadas" />
+				<field name="warranties" type="WarrantyDTO*" description="Lista de garantías" />
+			</response>
+		</message>
+	</messages>
+	<types>
+		<type name="PromoDTO">
+			<field name="promoId" type="int" description="Id de campaña" />
+			<field name="imageURL" type="String" description="URL completa de la imagen de campaña" />
+			<field name="name" type="String" description="Título de la campaña" />
+			<field name="description" type="String" description="Descripción de la campaña" />
+			<field name="frame" type="FrameDTO*" description="Lista de monturas" />
+		</type>
+		<type name="FrameDTO">
+			<field name="frameId" type="int" description="id de la montura" />
+			<field name="reference" type="int" description="Referencia" />
+			<field name="price" type="double" description="Precio de la montura" />
+			<field name="order" type="int" description="Orden en el listado" />
+			<field name="sun" type="boolean" description="Indicativo si SOL" />
+			<field name="prescription" type="boolean" description="Indicativo si graduadas" />
+			<field name="gender" type="String" description="Descripción de sexo" />
+			<field name="age" type="String" description="Descripción de edad" />
+			<field name="material" type="String" description="Material" />
+			<field name="size" type="String" description="Calibre" />
+			<field name="collection" type="String" description="Colección" />
+			<field name="variants" type="VariantDTO*" description="Variantes" />
+		</type>
+		<type name="VariantDTO">
+			<field name="variantId" type="int" description="Id de la variante" />
+			<field name="frameId" type="int" description="Id de la montura" />
+			<field name="color" type="String" description="Nombre del color" />
+			<field name="webColor" type="String" description="Nombre del color (Web)" />
+			<field name="mainVariant" type="boolean" description="Indicativo si la variante es la principal para esta montura" />
+			<field name="images" type="VariantImageDTO*" description="Imágenes de la variante" />
+		</type>
+		<type name="VariantImageDTO">
+			<field name="variantId" type="int" description="id de la variante" />
+			<field name="frameId" type="int" description="id de la montura" />
+			<field name="imageId" type="int" description="id de la imagen" />
+			<field name="imageURL" type="String" description="URL absoluta de la imagen" />
+			<field name="isPrincipal" type="boolean" description="Indicativo de si la imagen es la principal para esta variante" />
+		</type>
+		<type name="LensTypeDTO">
+			<field name="lensTypeId" type="int" description="id del tipo de lente" />
+			<field name="name" type="String" description="Nombre del tipo de lente (monofocal , progresivo)" />
+			<field name="description" type="String" description="Descripción del tipo de lente" />
+			<field name="price" type="double" description="precio del tipo de lente" />
+			<field name="imageURL" type="String" description="URL absoluta de la imagen" />
+		</type>
+		<type name="LensTreatmentDTO">
+			<field name="treatmentId" type="int" description="id del tratamiento" />
+			<field name="treatmentType" type="String" description="Tipo de tratamiento (1,2,SOL)" />
+			<field name="name" type="String" description="Nombre del tratamiento" />
+			<field name="description" type="String" description="Descripción del tratamiento" />
+			<field name="imageURL" type="String" description="URL absoluta de la imagen" />
+		</type>
+		<type name="CrossSellDTO">
+			<field name="crossSellId" type="int" description="Id de venta cruzada" />
+			<field name="crossSellType" type="String" description="Tipo de venta cruzada (SOL,MO,SOL_MODA,COMBILENTILLAS)" />
+			<field name="name" type="String" description="Nombre de la venta cruzada" />
+			<field name="description" type="String" description="Descripción de la venta cruzada" />
+			<field name="imageURL" type="String" description="URL absoluta de la imagen" />
+			<field name="price" type="String" description="Coste adicional de la venta cruzada" />
+			<field name="crossSellMOs" type="CrossSellMODTO" description="Array de ventas cruzadas MO" />
+			<field name="crossSellContactLenses" type="CrossSellContactLensDTO" description="Array de tipos de lentillas" />
+		</type>
+		<type name="CrossSellMODTO">
+			<field name="crossSellId" type="int" description="Id de venta cruzada" />
+			<field name="crossSellMOId" type="int" description="Id de venta cruzada MO" />
+			<field name="crossSellMOType" type="String" description="Tipo de venta cruzada MO (ECO_PLUS, PLUS_ESPECIAL,BASICA)" />
+			<field name="price" type="double" description="Coste adicional" />
+			<field name="imageURL" type="String" description="URL absoluta de la imagen" />
+		</type>
+		<type name="CrossSellContactLensDTO">
+			<field name="crossSellId" type="int" description="Id de venta cruzada" />
+			<field name="crossSellContactLensId" type="int" description="id de venta cruzada de lentillas" />
+			<field name="crossSellContactLensType" type="String" description="Tipo de lentilla (SEMESTRAL, DIARIA)" />
+			<field name="price" type="double" description="Coste adicional" />
+			<field name="imageURL" type="String" description="URL absoluta de la imagen" />
+		</type>
+		<type name="WarrantyDTO">
+			<field name="warrantyId" type="int" description="id de tipo de garantía" />
+			<field name="name" type="String" description="Nombre de la garantía" />
+			<field name="description" type="String" description="Descripción de la garantía" />
+			<field name="imageURL" type="String" description="URL absoluta de la imagen" />
+			<field name="price" type="double" description="Coste adicional" />
+		</type>
+		<type name="OrderDTO">
+			<field name="name" type="String" description="Nombre del cliente" />
+			<field name="date" type="long" description="Fecha del pedido (milisegundos desde 01/01/1970)" />
+			<field name="phoneNumber" type="String" description="Teléfono del cliente" />
+			<field name="email" type="String" description="Email del cliente" />
+			<field name="idPromo" type="int" description="Campaña seleccionada" />
+			<field name="frameId" type="int" description="Montura seleccionada" />
+			<field name="frameName" type="String" description="Nombre de la montura" />
+			<field name="frameVariationId" type="int" description="Variante de la montura seleccionada" />
+			<field name="lensId" type="int" description="Tipo de lente" />
+			<field name="treatment1Id" type="int" description="Tratamiento 1" />
+			<field name="treatment2Id" type="int" description="Tratamiento 2" />
+			<field name="treatmentSunId" type="int" description="Tratamiento SOL" />
+			<field name="crossSellId" type="int" description="Venta cruzada" />
+			<field name="crossSellMOId" type="int" description="Id combina2" />
+			<field name="crossSellContactLensesId" type="int" description="Id lentillas" />
+			<field name="secondFrame" type="String" description="Nombre segunda montura" />
+			<field name="secondTreatment1Id" type="int" description="Segundo tratamiento 1" />
+			<field name="secondTreatment2Id" type="int" description="Segundo tratamiento 2" />
+			<field name="secondTreatmentSunId" type="int" description="Segundo tratamiento sol" />
+			<field name="warrantyId1" type="int" description="Id de garantía primer producto" />
+			<field name="warrantyId2" type="int" description="Id de garantía segundo producto" />
+		</type>
+	</types>
+</protocol>

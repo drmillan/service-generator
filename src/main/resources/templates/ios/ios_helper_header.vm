@@ -1,0 +1,19 @@
+//
+//  ${className}.h
+//  ${projectName}
+//
+//  Created by Mobivery
+//  Copyright (c) 2012 Mobivery. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface ${projectName}Helper : NSObject 
+
+// Get the shared instance and create it if necessary.
++ (${projectName}Helper *)sharedInstance;
+- (NSString *) preInjectURLParameters:(NSString *)url withObject:(NSObject *)obj;
+- (NSString *) postInjectURLParameters:(NSString *)url withObject:(NSObject *)obj;
+- (NSString *) preprocessResponse:(NSString *)responseString;
+- (UIView *) loadingViewForTasks;
+@end

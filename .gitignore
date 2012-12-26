@@ -1,5 +1,7 @@
 *.class
-
+.metadata/
+.bin/
+.target/
 # Package Files #
 *.jar
 *.war

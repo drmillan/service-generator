@@ -1,0 +1,75 @@
+## 
+## SERVICIO - SERVICIO ANDROID 
+## 
+
+/**
+  ${serviceName}Service
+  ${projectName}
+
+  Created by Generator on 19/01/12.
+  Copyright (c) 2012 Mobivery. All rights reserved.
+*/
+package ${packagename}.logic;
+
+import ${packagename}.model.dao.*;
+import ${packagename}.model.dto.*; 
+import ${packagename}.logic.*;
+import ${packagename}.logic.base.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URLEncoder;
+
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+#if(${hasDelete})
+import org.apache.http.client.methods.HttpDelete;
+#end
+#if(${hasGet})
+import org.apache.http.client.methods.HttpGet;
+#end
+#if(${hasPost})
+import org.apache.http.client.methods.HttpPost;
+#end
+#if(${hasPut})
+import org.apache.http.client.methods.HttpPut;
+#end
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
+/**
+ * Servicio que realiza las llamadas a DAO,
+ * Este servicio corresponde con la l—gica ${serviceName}
+ */
+public class ${serviceName}Logic extends Base${serviceName}Logic
+{
+/**
+	 * Evitamos que se reinicialice mediante un constructor privado
+	 */
+    private ${serviceName}Logic() { }
+
+    /**
+    * Solo se va a ejecutar la primera vez, y nos va a instanciar el objeto
+    * para los posteriores usos
+    */
+    private static class ${serviceName}Holder { 
+          public static final ${serviceName}Logic instance = new ${serviceName}Logic();
+    }
+
+    /**
+     * Obtener la instancia unica del objeto
+     * @return 
+     */
+    public static ${serviceName}Logic getInstance() {
+            return ${serviceName}Holder.instance;
+    }
+
+}
+ 
