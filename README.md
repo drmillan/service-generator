@@ -2,14 +2,14 @@
 ## Configuración de Eclipse
 
 Si Eclipse no tiene instalado el módulo de Eclipse Marketplace (la opción aparece bajo el menu Help), instalarlo
-	mediante  Help -> Install new software, buscar marketplace e instalar
-	
-	Desde Eclipse Marketplace, buscar Maven , e instalar el plugin m2e [Maven para eclipse]
+mediante  **Help** -> **Install new software**, buscar **marketplace** e instalar
+    
+Desde **Eclipse Marketplace**, buscar **Maven** , e instalar el **plugin m2e** [Maven para eclipse]
 
 ## Plantilla de definición de servicios
 
 Los servicios de una aplicación se definen en un fichero localizado
-en la ruta src/main/resources/projects con formato XML
+en la ruta `src/main/resources/projects` con formato XML
 	
 El fichero de definición define los tipos y servicios asociados a la
 aplicación siguiendo el siguiente formato:
@@ -46,126 +46,125 @@ aplicación siguiendo el siguiente formato:
 		</protocol>
 
 
-		Atributos de las etiquetas del fichero de definición de servicios:
-
-		---------------------------------------------------------------------
-
-		TAG:
-			protocol
-
-		ATRIBUTOS:
-			javaServiceException [Opcional]  Clase java (generación Android, Server) que encapsula la excepción de servicio
-	    	javaServiceExceptionListener [Opcional] Interfaz java (generación Android, Server) que es llamada con la excepción
-	    	onSend [Opcional] Callback java notificado en caso de envío de mensaje 
-	    	onReceive [Opcional] Callback java notificado en caso de recepción de mensaje 
-	    	onError [Opcional] Callback java notificado en caso de error
-		---------------------------------------------------------------------
+Atributos de las etiquetas del fichero de definición de servicios:
 
 
-		TAG: 
-			message
+### TAG: protocol
 
-		ATRIBUTOS:
-			name: Nombre único del servicio 
-			service: Grupo de servicios al que pertenece 
-				(varios mensajes con mismo service generarán la lógica en 
-				el mismo fichero)
-			method: Nombre del método para acceder al servicio
-			description [Opcional]: Descripción del mensaje, comentario en documentación
-			type: Tipo del mensaje
-				valores: Put, Get, Post, Delete
+#### ATRIBUTOS:
+		
+##### javaServiceException [Opcional]  
+Clase java (generación Android, Server) que encapsula la excepción de servicio
 
-		---------------------------------------------------------------------		
+##### javaServiceExceptionListener [Opcional] 
+Interfaz java (generación Android, Server) que es llamada con la excepción
+##### onSend [Opcional] 
+Callback java notificado en caso de envío de mensaje 
+##### onReceive [Opcional] 
+Callback java notificado en caso de recepción de mensaje 
 
-		TAG:
-			url
+##### onError [Opcional] 
+Callback java notificado en caso de error
 
-		ATRIBUTOS:
-			address: La dirección con la que se accede al servicio.
-				La url de acceso al servicio puede contener parámetros, que 
-				estarán definidos con el formato ${nombreParametro}, estos 
-				parámetros se sustituirán por el valor del mismo en las 
-				propiedades de sistema (System.getProperty) que se pueden
-				establecer en la invocación del servicio ( -DnombrePropiedad=valorPropiedad),
-				y si no están en ése nivel, se consultan entre las propiedades 
-				del objeto utilizado en la petición (fields pertenecientes al 
-				request)
 
-		---------------------------------------------------------------------
+### TAG: message
 
-		TAG:
-			request
-		ATRIBUTOS:
-			name:
-				Nombre del DTO en el código generado
-		---------------------------------------------------------------------
+#### ATRIBUTOS:
+##### name: 
+Nombre único del servicio 
+##### service: 
+Grupo de servicios al que pertenece (varios mensajes con mismo service generarán la lógica en el mismo fichero)
+##### method: 
+Nombre del método para acceder al servicio
+##### description [Opcional]: 
+Descripción del mensaje, comentario en documentación
+##### type: 
+Tipo del mensaje valores: Put, Get, Post, Delete
 
-		TAG:
-			response
-		ATRIBUTOS:
-			name:
-				Nombre del DTO en el código generado
-		---------------------------------------------------------------------
 
-		TAG:
-			field
-		ATRIBUTOS:
-			name: Nombre del campo (Nombre de la propiedad en el DTO generado)
-			type: 
-				Tipo del campo, los tipos pueden ser :
-				- básicos:
-					int,String,long,float,double
-				- compuestos
-					[Nombres de tipos (véase tipos más adelante)]
-				- Arrays
-					Se utiliza el nombre del tipo (base o compuesto) seguido de *
-			description:
-				 [Opcional] Comentario que tendrá el campo en código fuente
-		---------------------------------------------------------------------
+### TAG: url
 
-		TAG:
-			type
-		ATRIBUTOS:
-			name: Nombre del tipo (Es el nombre que tendrá el DTO generado)
+#### ATRIBUTOS:
+
+##### address: La dirección con la que se accede al servicio.
+La url de acceso al servicio puede contener parámetros, que estarán definidos con el formato `${nombreParametro}`, estos parámetros se sustituirán por el valor del mismo en las propiedades de sistema (`System.getProperty`) que se pueden establecer en la invocación del servicio ( `-DnombrePropiedad=valorPropiedad`)<br>
+
+Si no se encuentran los parámetrosen ése nivel, se consultan entre las propiedades del objeto utilizado en la petición (fields pertenecientes al request)
+		
+### TAG: request
+
+#### ATRIBUTOS:
+##### name:
+Nombre del DTO en el código generado
+                
+### TAG: response
+
+#### ATRIBUTOS:
+##### name:
+Nombre del DTO en el código generado
+
+### TAG: field
+
+#### ATRIBUTOS:
+##### name: 
+Nombre del campo (Nombre de la propiedad en el DTO generado)
+##### type: 
+Tipo del campo, los tipos pueden ser :<br>
+- básicos:<br>
+int,String,long,float,double<br>
+- compuestos<br>
+[Nombres de tipos (véase tipos más adelante)]<br/>
+- Arrays<br/>
+Se utiliza el nombre del tipo (base o compuesto) seguido de `*`<br/>
+##### description:[Opcional] 
+Comentario que tendrá el campo en código fuente
+
+
+### TAG: type
+
+#### ATRIBUTOS:
+##### name: 
+Nombre del tipo (Es el nombre que tendrá el DTO generado)
 
 ## Generación
 
-Proyecto : ModelGenerator
-	Clase Main: com.mobivery.modelgenerator.GenerateDTO
+#### Proyecto : `service_generator`<br/>
+
+Clase Main: `com.mobivery.modelgenerator.GenerateDTO`<br/>
+
+#### Parámetros de la app:
+
+fichero XML de definición de servicios: 
+`/projects/simyo.xml`
 	
-	Parámetros de la app:
-		fichero XML de definición de servicios: 
-			/projects/simyo.xml
-	
-	Parámetros de la máquina virtual
-		
-		Parámetros:
-			
-			common.folder [Obligatorio si generación Java]
-					Carpeta de generación de modelo de datos (DAOs y DTOs)
-					java. El fuente generado es platform independent, pudiendo
-					ser utilizado desde j2se
+#### Parámetros de la máquina virtual
+
+`common.folder` [Obligatorio si generación Java]
+
+Carpeta de generación de modelo de datos (DAOs y DTOs) java. El fuente generado es platform independent, pudiendo ser utilizado desde j2se
 							
 			
-			android.folder [Obligatorio si generación Java]
-					Carpeta de generación de código específico java para 
-					Android, Tasks y Servicios
+`android.folder` [Obligatorio si generación Java]
+
+Carpeta de generación de código específico java para Android, Tasks y Servicios
 							
-			is.folder [Obligatorio si generación iOS]
-					Carpeta de generación de código específico ObjectiveC
+`ios.folder` [Obligatorio si generación iOS]
+Carpeta de generación de código específico ObjectiveC
 		
-			project.name [Obligatorio]
-					Nombre del proyecto
+`project.name` [Obligatorio]
+Nombre del proyecto
 				
-			package.name [Obligatorio]
-					Nombre de paquete del proyecto
+`package.name` [Obligatorio]
+Nombre de paquete del proyecto
 					
-			log.level [Opcional, valor por defecto=ERROR]
-					DEBUG: Establece nivel de log mínimo a DEBUG
-					INFO: Establece nivel de log mínimo a INFO
-					ERROR: Establece nivel de log mínimo a ERROR
+`log.level` [Opcional, valor por defecto=ERROR]
+
+**DEBUG**: Establece nivel de log mínimo a DEBUG
+
+**INFO**: Establece nivel de log mínimo a INFO
+
+**ERROR**: Establece nivel de log mínimo a ERROR
 					
-			Ejemplo de ejecución:					
 			
 ### Generación Android
 
