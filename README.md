@@ -164,7 +164,14 @@ Nombre de paquete del proyecto
 **INFO**: Establece nivel de log mínimo a INFO
 
 **ERROR**: Establece nivel de log mínimo a ERROR
-					
+
+`ios.version` [Opcional, valor por defecto=1.0]	
+
+Versión de la plantilla a utilizar para iOS
+
+`android.version` [Opcional, valor por defecto=1.0]
+
+Versión de la plantilla a utilizar para Android
 			
 ### Generación Android
 
@@ -175,7 +182,7 @@ Nombre de paquete del proyecto
 	-Dproject.name=Simyo 
 	-Dpackage.name=com.simyo
 	-Dlog.level=DEBUG
-	-Dversion=1.0
+	-Dandroid.version=1.0
 
 ### Generación IOS
 
@@ -183,4 +190,4 @@ Nombre de paquete del proyecto
 	-Dproject.name=Simyo 
 	-Dpackage.name=com.simyo
 	-Dlog.level=DEBUG
-	-Dversion=1.0
+	-Dios.version=1.0
