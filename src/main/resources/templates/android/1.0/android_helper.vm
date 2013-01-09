@@ -7,6 +7,7 @@
 
   Created by Generator on 19/01/12.
   Copyright (c) 2012 Mobivery. All rights reserved.
+  Version: ${version}
 */
 package ${packagename}.logic;
 

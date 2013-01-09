@@ -93,3 +93,4 @@ Caused by: java.lang.NullPointerException
 	at org.apache.velocity.Template.initDocument(Template.java:227)
 	at org.apache.velocity.Template.process(Template.java:135)
 	... 7 more
+2013-01-09 18:43:51,270 - ResourceManager : unable to find resource 'templates/android/latestandroid_base_dto_bundle.vm' in any resource loader.

@@ -5,6 +5,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import ${packagename}.model.dto.*;
 
+/**
+ * Version:${version}
+ */
 public class ${projectName}DTOBundle
 {
 #foreach($dto in $dtos)

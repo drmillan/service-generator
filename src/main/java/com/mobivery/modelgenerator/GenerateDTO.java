@@ -78,9 +78,8 @@ public final class GenerateDTO {
 			LOG.info("[config loading]:Reading project definition:"+args[0]);
 			XMLModelGeneratorDocumentHandler handler=new XMLModelGeneratorDocumentHandler();	
 			SAXParserFactory.newInstance().newSAXParser().parse(is, handler);
-			
-			
-			
+						
+			// Comprobamos los generadores que hay que ejecutar
 			for(Map.Entry<String, BaseGenerator> generatorEntry:generators.entrySet())
 			{				
 				if(System.getProperties().containsKey(generatorEntry.getKey()))

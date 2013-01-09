@@ -16,6 +16,7 @@ import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 import com.mobivery.modelgenerator.BaseGenerator;
+import com.mobivery.modelgenerator.Constants;
 import com.mobivery.modelgenerator.Message;
 import com.mobivery.modelgenerator.Type;
 import com.mobivery.modelgenerator.XMLModelGeneratorDocumentHandler;
@@ -38,9 +39,10 @@ public final class IOSGenerator extends BaseGenerator{
 	}
 	public void generateServices(List<Message> messages,String onSend,String onReceive,String onError) throws IOException
 	{
+		String version=System.getProperty(Constants.GENERATOR_ANDROID_VERSION,"1.0");
 		// JAVA
 				// Creaci—n del Servicio
-				
+						
 				String iosFolder=System.getProperty("ios.folder");
 				
 				VelocityEngine ve = new VelocityEngine();
@@ -56,6 +58,7 @@ public final class IOSGenerator extends BaseGenerator{
 				velocityContext.put("onSend",onSend);
 				velocityContext.put("onReceive",onReceive);
 				velocityContext.put("onError",onError);
+				velocityContext.put("version", version);
 
 				Map<String,List<Message>> services=new TreeMap<String, List<Message>>();
 				Map<String,List<String>> extraImports=new TreeMap<String,List<String>>();
@@ -104,28 +107,30 @@ public final class IOSGenerator extends BaseGenerator{
 					velocityContext.put("hasMultipart", hasMultipart);
 					velocityContext.put("messages",services.get(serviceName));
 					velocityContext.put("serviceName", serviceName); 
+					velocityContext.put("version", version);
 					generate(new File(iosFolder 
 							+ "/Logic/Base/Base" + serviceName + "Logic.h"),
-							ve.getTemplate("templates/ios/ios_base_service_header.vm"), velocityContext);
+							ve.getTemplate("templates/ios/"+version+"/ios_base_service_header.vm"), velocityContext);
 					generate(new File(iosFolder 
 							+ "/Logic/Base/Base" + serviceName + "Logic.m"),
-							ve.getTemplate("templates/ios/ios_base_service_implementation.vm"), velocityContext);
+							ve.getTemplate("templates/ios/"+version+"/ios_base_service_implementation.vm"), velocityContext);
 					File derivedH=new File(iosFolder 
 							+ "/Logic/" + serviceName + "Logic.h");
 					if(!derivedH.exists())
 					{
 						generate(new File(iosFolder 
 								+ "/Logic/" + serviceName + "Logic.h"),
-								ve.getTemplate("templates/ios/ios_service_header.vm"), velocityContext);
+								ve.getTemplate("templates/ios/"+version+"/ios_service_header.vm"), velocityContext);
 						generate(new File(iosFolder 
 								+ "/Logic/" + serviceName + "Logic.m"),
-								ve.getTemplate("templates/ios/ios_service_implementation.vm"), velocityContext);
+								ve.getTemplate("templates/ios/"+version+"/ios_service_implementation.vm"), velocityContext);
 							
 					}
 					}
 	}
 	public void generateDAOs(String iosFolder,List<Type> types) throws IOException
 	{
+		String version=System.getProperty(Constants.GENERATOR_ANDROID_VERSION,"1.0");
 			
 		VelocityEngine ve = new VelocityEngine();
 		ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
@@ -156,20 +161,23 @@ public final class IOSGenerator extends BaseGenerator{
 			velocityContext.put("baseArrayFields", type.getBaseArrayFields());
 			velocityContext.put("username",System.getProperty("user.name"));
 			velocityContext.put("projectName","Modelo");
+			velocityContext.put("version", version);
 			
 			// IOS
 			// Creaci—n del .h
-			generate(new File(iosFolder+"/Model/DAO/" + daoTypeName + ".h"),ve.getTemplate("templates/ios/ios_dao_header.vm"),velocityContext);
+			generate(new File(iosFolder+"/Model/DAO/" + daoTypeName + ".h"),ve.getTemplate("templates/ios/"+version+"/ios_dao_header.vm"),velocityContext);
 
 			// IOS
 			// Creaci—n del .m
-			generate(new File(iosFolder+"/Model/DAO/" + daoTypeName + ".m"),ve.getTemplate("templates/ios/ios_dao_implementation.vm"),velocityContext);
+			generate(new File(iosFolder+"/Model/DAO/" + daoTypeName + ".m"),ve.getTemplate("templates/ios/"+version+"/ios_dao_implementation.vm"),velocityContext);
+			
+			
 		}
 	}
 	
 	public void generateDTOs(String iosFolder,List<Type> types) throws IOException
 	{
-			
+		String version=System.getProperty(Constants.GENERATOR_ANDROID_VERSION);	
 		VelocityEngine ve = new VelocityEngine();
 		ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
 		ve.setProperty("classpath.resource.loader.class",
@@ -190,17 +198,19 @@ public final class IOSGenerator extends BaseGenerator{
 			velocityContext.put("baseArrayFields", type.getBaseArrayFields());
 			velocityContext.put("username",System.getProperty("user.name"));
 			velocityContext.put("projectName","Modelo");
+			velocityContext.put("version", version);
 			
 			// IOS
 			// Creaci—n del .h
-			generate(new File(iosFolder+"/Model/DTO/" + typeName + ".h"),ve.getTemplate("templates/ios/ios_dto_header.vm"),velocityContext);
+			generate(new File(iosFolder+"/Model/DTO/" + typeName + ".h"),ve.getTemplate("templates/ios/"+version+"/ios_dto_header.vm"),velocityContext);
 
 			// IOS
 			// Creaci—n del .m
-			generate(new File(iosFolder+"/Model/DTO/" + typeName + ".m"),ve.getTemplate("templates/ios/ios_dto_implementation.vm"),velocityContext);
+			generate(new File(iosFolder+"/Model/DTO/" + typeName + ".m"),ve.getTemplate("templates/ios/"+version+"/ios_dto_implementation.vm"),velocityContext);
 		}
 	}
 	public void generateTasks(List<Message> messages, String onTask) throws ResourceNotFoundException, ParseErrorException, IOException {
+		String version=System.getProperty(Constants.GENERATOR_ANDROID_VERSION,"1.0");
 		String iosFolder=System.getProperty("ios.folder");
 
 		VelocityEngine ve = new VelocityEngine();
@@ -211,6 +221,7 @@ public final class IOSGenerator extends BaseGenerator{
 		VelocityContext velocityContext;
 		velocityContext = new VelocityContext();
 		velocityContext.put("projectName", System.getProperties().get("project.name"));
+		velocityContext.put("version", version);
 		String packageName = System.getProperty("package.name", "com.test.model");
 		velocityContext.put("packagename", packageName);
 
@@ -237,16 +248,17 @@ public final class IOSGenerator extends BaseGenerator{
 			
 			// IOS
 			// Creaci—n del .h
-			generate(new File(iosFolder+"/Logic/Tasks/" + nameString + "Task.h"),ve.getTemplate("templates/ios/ios_task_header.vm"),velocityContext);
+			generate(new File(iosFolder+"/Logic/Tasks/" + nameString + "Task.h"),ve.getTemplate("templates/ios/"+version+"/ios_task_header.vm"),velocityContext);
 
 			// IOS
 			// Creaci—n del .m
-			generate(new File(iosFolder+"/Logic/Tasks/" + nameString + "Task.m"),ve.getTemplate("templates/ios/ios_task_implementation.vm"),velocityContext);
+			generate(new File(iosFolder+"/Logic/Tasks/" + nameString + "Task.m"),ve.getTemplate("templates/ios/"+version+"/ios_task_implementation.vm"),velocityContext);
 
 		}
 	}
 	public void generateHelper() throws IOException
 	{
+		String version=System.getProperty(Constants.GENERATOR_ANDROID_VERSION,"1.0");
 		// TODO Auto-generated method stub
 				String iosFolder=System.getProperty("ios.folder");
 				
@@ -259,15 +271,16 @@ public final class IOSGenerator extends BaseGenerator{
 				VelocityContext velocityContext;
 				velocityContext = new VelocityContext();
 				velocityContext.put("projectName",System.getProperties().get("project.name"));
+				velocityContext.put("version", version);
 				File header=new File(iosFolder 
 						+ "/Logic/" + System.getProperties().get("project.name") + "Helper.h");
 				if(!header.exists())
 				{
 				generate(header,
-						ve.getTemplate("templates/ios/ios_helper_header.vm"), velocityContext);
+						ve.getTemplate("templates/ios/"+version+"/ios_helper_header.vm"), velocityContext);
 				generate(new File(iosFolder 
 						+ "/Logic/" + System.getProperties().get("project.name") + "Helper.m"),
-						ve.getTemplate("templates/ios/ios_helper_implementation.vm"), velocityContext);
+						ve.getTemplate("templates/ios/"+version+"/ios_helper_implementation.vm"), velocityContext);
 				}
 	}
 	@Override

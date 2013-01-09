@@ -1,7 +1,7 @@
 //
 //  ${className}.m
 //  ${projectName}
-//
+//  Version: ${version}
 //  Created by Mobivery
 //  Copyright (c) 2012 Mobivery. All rights reserved.
 //
@@ -247,7 +247,7 @@
 		${message.response.name} *result;
     
     	NSError *error;
-	    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
+	    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
 				
 #if(${message.type}=='Post')
 		NSMutableArray * content = [NSMutableArray array];

@@ -2,6 +2,9 @@ package ${packagename}.model.dto.base;
 import java.util.List;
 import java.util.ArrayList;
 import ${packagename}.model.dto.*;
+/**
+ * Version: ${version}
+ */
 public class ${projectName}DTOBundle
 {
 #foreach($dto in $dtos)

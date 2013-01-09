@@ -434,6 +434,8 @@
 	        <field name="id" type="int" description=""/>
 	        <field name="client" type="ClientDTO" description=""/>
 	        <field name="lines" type="LineDTO*" description=""/>
+	        <field name="order_id" type="int" description=""/>
+			<field name="status" type="String" description="CONFIRMADO,RECHAZADO"/>  	        
 	        <field name="payment_id" type="int" description=""/>
 	        <field name="accept_link" type="string" description=""/>
 	        <field name="reject_link" type="string" description=""/>        
@@ -451,7 +453,11 @@
 			<field name="shipment" type="ShipmentDTO" description=""/>
 			<field name="print" type="boolean" description=""/>
 			<field name="lines" type="LineDTO*" description=""/>
-			<field name="payment" type="PaymentDTO" description=""/>        	        
+			<field name="payment" type="PaymentDTO" description=""/>   
+			<field name="order_id" type="int" description=""/>
+			<field name="status" type="String" description="CONFIRMADO,RECHAZADO"/>  
+			<field name="accept_link" type="string" description=""/>
+	        <field name="reject_link" type="string" description=""/>        
 	    </type>
 	    <type name="ClientRequestDTO">
 	        <field name="clientId" type="int" description=""/>

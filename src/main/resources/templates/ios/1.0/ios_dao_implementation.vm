@@ -1,7 +1,7 @@
 //
 //  ${className}.m
 //  ${projectName}
-//
+//  Version: ${version}
 //  Created by Mobivery
 //  Copyright (c) 2012 Mobivery. All rights reserved.
 //
@@ -36,11 +36,19 @@
 NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];	
 		
 	#foreach ($field in $baseFields)
-	[dict setValue:instance.${field.name} forKey:@"${field.name}"];
+		#if(${field.type} == "Boolean")
+			[dict setValue:instance.${field.name}.boolValue ? @"true": @"false" forKey:@"${field.name}"];
+		#else
+			[dict setValue:instance.${field.name} forKey:@"${field.name}"];
+		#end
 	#end
 		
 	#foreach ($field in $baseArrayFields)
-	[dict setValue:instance.${field.name} forKey:@"${field.name}"];
+	#if(${field.type} == "Boolean")
+			[dict setValue:instance.${field.name}.boolValue ? @"true": @"false" forKey:@"${field.name}"];
+		#else
+			[dict setValue:instance.${field.name} forKey:@"${field.name}"];
+		#end
 	#end
 	
 	#foreach ($field in $objectFields)

@@ -15,6 +15,7 @@ import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.apache.velocity.texen.util.FileUtil;
 
 import com.mobivery.modelgenerator.BaseGenerator;
+import com.mobivery.modelgenerator.Constants;
 import com.mobivery.modelgenerator.Message;
 import com.mobivery.modelgenerator.Type;
 import com.mobivery.modelgenerator.XMLModelGeneratorDocumentHandler;
@@ -24,6 +25,7 @@ public final class AndroidJSONGenerator extends BaseGenerator {
 	private XMLModelGeneratorDocumentHandler handler;
 
 	public void generateTypesBundle(List<Type> types) throws IOException{
+		String version=System.getProperty(Constants.GENERATOR_ANDROID_VERSION,"1.0");
 		String androidFolder = System.getProperty("android.folder", JAVA_FOLDER);
 		String commonFolder = System.getProperty("common.folder", JAVA_FOLDER);
 		String packageName = System.getProperty("package.name", "com.test.model");
@@ -51,16 +53,19 @@ public final class AndroidJSONGenerator extends BaseGenerator {
 		velocityContext.put("serviceException", handler.getJavaServiceException());
 		velocityContext.put("serviceExceptionListener", handler.getJavaServiceExceptionListener());
 		velocityContext.put("packagename", packageName);
-		velocityContext.put("dtos", typeMap.values());
+		velocityContext.put("version", version);
+		velocityContext.put("dtos", typeMap.values());		
 		
 		new File(commonFolder + packageName.replace(".", "/") + "/model/dto/base/").mkdirs();
-		generate(new File(commonFolder + packageName.replace(".", "/") + "/model/dto/base/" + System.getProperties().get("project.name") + "DTOBundle.java"), ve.getTemplate("templates/android/android_base_dto_bundle.vm"), velocityContext);
+		generate(new File(commonFolder + packageName.replace(".", "/") + "/model/dto/base/" + System.getProperties().get("project.name") + "DTOBundle.java"), ve.getTemplate("templates/android/"+version+"/android_base_dto_bundle.vm"), velocityContext);
 	}
 	
 	
 	
 	public void generateTypes(List<Type> types) throws IOException {
 
+		String version=System.getProperty(Constants.GENERATOR_ANDROID_VERSION,"1.0");
+		
 		generateTypesBundle(types);
 		
 		String androidFolder = System.getProperty("android.folder", JAVA_FOLDER);
@@ -98,6 +103,7 @@ public final class AndroidJSONGenerator extends BaseGenerator {
 				velocityContext.put("serviceException", handler.getJavaServiceException());
 				velocityContext.put("serviceExceptionListener", handler.getJavaServiceExceptionListener());
 				velocityContext.put("packagename", packageName);
+				velocityContext.put("version", version);
 
 				// JAVA
 				// Creaci—n del DTO
@@ -105,7 +111,7 @@ public final class AndroidJSONGenerator extends BaseGenerator {
 				File dtoFile=new File(commonFolder + packageName.replace(".", "/") + "/model/dto/" + typeName + ".java");
 				if(!dtoFile.exists())
 				{
-					generate(dtoFile, ve.getTemplate("templates/android/android_base_dto.vm"), velocityContext);
+					generate(dtoFile, ve.getTemplate("templates/android/"+version+"/android_base_dto.vm"), velocityContext);
 				}
 				// JAVA
 				// Creaci—n del DAO
@@ -113,7 +119,7 @@ public final class AndroidJSONGenerator extends BaseGenerator {
 				velocityContext.put("extraImports", type.getJavaDAOExtraImports(packageName));
 				
 				File daoFile=new File(commonFolder + packageName.replace(".", "/") + "/model/dao/" + daoTypeName + ".java");
-				generate(daoFile, ve.getTemplate("templates/android/android_dao.vm"), velocityContext);
+				generate(daoFile, ve.getTemplate("templates/android/"+version+"/android_dao.vm"), velocityContext);
 
 			}
 		}
@@ -122,7 +128,7 @@ public final class AndroidJSONGenerator extends BaseGenerator {
 	public void generateTasks(List<Message> messages, String onTask) throws IOException {
 		// JAVA
 		// Creaci—n de Tareas
-
+		String version=System.getProperty(Constants.GENERATOR_ANDROID_VERSION,"1.0");
 		String androidFolder = System.getProperty("android.folder", JAVA_FOLDER);
 		String commonFolder = System.getProperty("common.folder", JAVA_FOLDER);
 		if (commonFolder == null) {
@@ -159,14 +165,16 @@ public final class AndroidJSONGenerator extends BaseGenerator {
 			velocityContext.put("onTask", onTask);
 			velocityContext.put("serviceException", handler.getJavaServiceException());
 			velocityContext.put("serviceExceptionListener", handler.getJavaServiceExceptionListener());
+			velocityContext.put("version", version);
 
 			File generationFile=new File(androidFolder + packageName.replace(".", "/") + "/tasks/" + message.getService().toLowerCase() + "/" + message.getMethod().substring(0, 1).toUpperCase()
 					+ message.getMethod().substring(1) + "Task.java");
-			generate(generationFile, ve.getTemplate("templates/android/android_tasks.vm"), velocityContext);
+			generate(generationFile, ve.getTemplate("templates/android/"+version+"/android_tasks.vm"), velocityContext);
 		}
 	}
 
 	public void generateServices(List<Message> messages, String onSend, String onReceive, String onError) throws IOException {
+		String version=System.getProperty(Constants.GENERATOR_ANDROID_VERSION,"1.0");
 		// JAVA
 		// Creaci—n del Servicio
 
@@ -190,6 +198,7 @@ public final class AndroidJSONGenerator extends BaseGenerator {
 		velocityContext.put("onSend", onSend);
 		velocityContext.put("onReceive", onReceive);
 		velocityContext.put("onError", onError);
+		velocityContext.put("version", version);
 
 		Map<String, List<Message>> services = new TreeMap<String, List<Message>>();
 		for (Message message : messages) {
@@ -216,17 +225,18 @@ public final class AndroidJSONGenerator extends BaseGenerator {
 			velocityContext.put("hasDelete", hasDelete);
 			velocityContext.put("hasMultipart", hasMultipart);
 			velocityContext.put("messages", services.get(serviceName));
+			velocityContext.put("version", version);
 			
 			velocityContext.put("serviceName", serviceName);
 			velocityContext.put("serviceException", handler.getJavaServiceException());
 			velocityContext.put("serviceExceptionListener", handler.getJavaServiceExceptionListener());
-			generate(new File(commonFolder + packageName.replace(".", "/") + "/logic/base/Base" + serviceName + "Logic.java"), ve.getTemplate("templates/android/android_base_service.vm"), velocityContext);
+			generate(new File(commonFolder + packageName.replace(".", "/") + "/logic/base/Base" + serviceName + "Logic.java"), ve.getTemplate("templates/android/"+version+"/android_base_service.vm"), velocityContext);
 			// Comprobar si existe o no el servicio derivado
 			new File(androidFolder + packageName.replace(".", "/") + "/logic/").mkdirs();
 			File f = new File(androidFolder + packageName.replace(".", "/") + "/logic/" + serviceName + "Logic.java");			
 			// Comprobar si existe o no el servicio derivado
 			if (!f.exists()) {
-				generate(f, ve.getTemplate("templates/android/android_service.vm"), velocityContext);
+				generate(f, ve.getTemplate("templates/android/"+version+"/android_service.vm"), velocityContext);
 			}
 		}
 		
@@ -245,6 +255,7 @@ public final class AndroidJSONGenerator extends BaseGenerator {
 	}
 
 	public void generateHelper() throws IOException {
+		String version=System.getProperty(Constants.GENERATOR_ANDROID_VERSION,"1.0");
 		// JAVA
 		// Creaci—n del Servicio
 
@@ -262,6 +273,7 @@ public final class AndroidJSONGenerator extends BaseGenerator {
 		VelocityContext velocityContext;
 		velocityContext = new VelocityContext();
 		velocityContext.put("projectName", System.getProperties().get("project.name"));
+		velocityContext.put("version", version);
 		String packageName = System.getProperty("package.name", "com.test.model");
 		velocityContext.put("packagename", packageName);
 
@@ -269,7 +281,7 @@ public final class AndroidJSONGenerator extends BaseGenerator {
 			File f = new File(commonFolder + packageName.replace(".", "/") + "/logic/"+System.getProperties().get("project.name")+"Helper.java");
 			// Comprobar si existe o no el servicio derivado
 			if (!f.exists()) {
-				generate(f, ve.getTemplate("templates/android/android_helper.vm"), velocityContext);
+				generate(f, ve.getTemplate("templates/android/"+version+"/android_helper.vm"), velocityContext);
 			}
 	}
 }
