@@ -8,11 +8,11 @@ Si Eclipse no tiene instalado el módulo de Eclipse Marketplace (la opción apar
 
 ## Plantilla de definición de servicios
 
-- Los servicios de una aplicación se definen en un fichero localizado
-	en la ruta src/main/resources/projects con formato XML
+Los servicios de una aplicación se definen en un fichero localizado
+en la ruta src/main/resources/projects con formato XML
 	
-	- El fichero de definición define los tipos y servicios asociados a la
-	aplicación siguiendo el siguiente formato:
+El fichero de definición define los tipos y servicios asociados a la
+aplicación siguiendo el siguiente formato:
 
 	<protocol [OPCIONES_PROTOCOL]>
 			<messages>
