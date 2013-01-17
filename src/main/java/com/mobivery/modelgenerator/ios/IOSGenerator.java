@@ -39,7 +39,7 @@ public final class IOSGenerator extends BaseGenerator{
 	}
 	public void generateServices(List<Message> messages,String onSend,String onReceive,String onError) throws IOException
 	{
-		String version=System.getProperty(Constants.GENERATOR_ANDROID_VERSION,"1.0");
+		String version=System.getProperty(Constants.GENERATOR_IOS_VERSION,"1.0");
 		// JAVA
 				// Creaci—n del Servicio
 						
@@ -130,7 +130,7 @@ public final class IOSGenerator extends BaseGenerator{
 	}
 	public void generateDAOs(String iosFolder,List<Type> types) throws IOException
 	{
-		String version=System.getProperty(Constants.GENERATOR_ANDROID_VERSION,"1.0");
+		String version=System.getProperty(Constants.GENERATOR_IOS_VERSION,"1.0");
 			
 		VelocityEngine ve = new VelocityEngine();
 		ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
@@ -177,7 +177,7 @@ public final class IOSGenerator extends BaseGenerator{
 	
 	public void generateDTOs(String iosFolder,List<Type> types) throws IOException
 	{
-		String version=System.getProperty(Constants.GENERATOR_ANDROID_VERSION);	
+		String version=System.getProperty(Constants.GENERATOR_IOS_VERSION,"1.0");	
 		VelocityEngine ve = new VelocityEngine();
 		ve.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
 		ve.setProperty("classpath.resource.loader.class",
@@ -210,7 +210,7 @@ public final class IOSGenerator extends BaseGenerator{
 		}
 	}
 	public void generateTasks(List<Message> messages, String onTask) throws ResourceNotFoundException, ParseErrorException, IOException {
-		String version=System.getProperty(Constants.GENERATOR_ANDROID_VERSION,"1.0");
+		String version=System.getProperty(Constants.GENERATOR_IOS_VERSION,"1.0");
 		String iosFolder=System.getProperty("ios.folder");
 
 		VelocityEngine ve = new VelocityEngine();
@@ -258,7 +258,7 @@ public final class IOSGenerator extends BaseGenerator{
 	}
 	public void generateHelper() throws IOException
 	{
-		String version=System.getProperty(Constants.GENERATOR_ANDROID_VERSION,"1.0");
+		String version=System.getProperty(Constants.GENERATOR_IOS_VERSION,"1.0");
 		// TODO Auto-generated method stub
 				String iosFolder=System.getProperty("ios.folder");
 				

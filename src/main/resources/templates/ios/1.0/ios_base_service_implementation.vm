@@ -2,6 +2,7 @@
 //  ${className}.m
 //  ${projectName}
 //  Version: ${version}
+//
 //  Created by Mobivery
 //  Copyright (c) 2012 Mobivery. All rights reserved.
 //
@@ -33,7 +34,12 @@
 		url=[[${projectName}Helper sharedInstance] preInjectURLParameters:url withObject:${message.request.javaInstanceName}];
 		#foreach($field in $message.request.fields)
 		
-		NSString *string${field.nameUcase}=[NSString stringWithFormat:@"%@",${message.request.javaInstanceName}.${field.name}];       
+			#if(${field.type} == "Boolean")
+				NSString *string${field.nameUcase}=[NSString stringWithFormat:@"%@",${message.request.javaInstanceName}.${field.name}.boolValue ? @"true": @"false"];  
+			#else
+				NSString *string${field.nameUcase}=[NSString stringWithFormat:@"%@",${message.request.javaInstanceName}.${field.name}];  
+			#end
+		
 		#end
 		
 		#foreach($field in $message.inURLbutNotField)
@@ -56,7 +62,8 @@
 		double time=[[NSDate date] timeIntervalSince1970];
         [dict setValue:[NSNumber numberWithDouble:time] forKey:@"requestTime"];
     
-	    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
+    	NSString *escapedUrl = [[${projectName}Helper sharedInstance] escapeUrl:url];
+	    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:escapedUrl] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
 		
 		NSError *error;	
 #if(${message.type}=='Post')
@@ -217,10 +224,13 @@
 	{
 		NSString *url=@"${message.url}";
 		
-		url=[[${projectName}Helper sharedInstance] preInjectURLParameters:url  withObject:${message.request.javaInstanceName}];
+		url=[[${projectName}Helper sharedInstance] preInjectURLParameters:url withObject:${message.request.javaInstanceName}];
 		#foreach($field in $message.request.fields)
-		
-		NSString *string${field.nameUcase}=[NSString stringWithFormat:@"%@",${message.request.javaInstanceName}.${field.name}];       
+			#if(${field.type} == "Boolean")
+				NSString *string${field.nameUcase}=[NSString stringWithFormat:@"%@",${message.request.javaInstanceName}.${field.name}.boolValue ? @"true": @"false"];  
+			#else
+				NSString *string${field.nameUcase}=[NSString stringWithFormat:@"%@",${message.request.javaInstanceName}.${field.name}];  
+			#end
 		#end
 		
 		#foreach($field in $message.inURLbutNotField)
@@ -247,7 +257,8 @@
 		${message.response.name} *result;
     
     	NSError *error;
-	    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
+    	NSString *escapedUrl = [[${projectName}Helper sharedInstance] escapeUrl:url];
+	    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:escapedUrl] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
 				
 #if(${message.type}=='Post')
 		NSMutableArray * content = [NSMutableArray array];

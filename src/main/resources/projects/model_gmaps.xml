@@ -1,7 +1,6 @@
 <protocol
-    javaServiceException="com.example.testproject.ServiceException"
-    javaServiceExceptionListener="com.example.testproject.ServiceExceptionListener"    
-    >
+    javaServiceException="${packageName}.logic.ServiceException"
+    javaServiceExceptionListener="${packageName}.logic.ServiceExceptionListener">
 	<message name="getRoutes" service="GoogleMaps" method="getRoutes" description="Obtiene la ruta de un punto a otro" type="Get">
 		<urlPattern>
 			<url address="http://maps.googleapis.com/maps/api/directions/json?origin=${fromLatitude},${fromLongitude}&amp;alternatives=${alternatives}&amp;units=${units}&amp;destination=${toLatitude},${toLongitude}&amp;sensor=${sensor}&amp;mode=${mode}" />
@@ -38,7 +37,43 @@
 			<field name="results" type="PlacesResultDTO*" description="Resultados"/>
 		</response>
 	</message>
-	<types>
+	<message name="getPlacesByString" service="GoogleMaps" method="getPlacesByString" description="Obtiene una lista de lugares de google places" type="Get">
+		<urlPattern>
+			<url address="https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}&amp;key=${key}&amp;sensor=false" />
+		</urlPattern>
+		<request name="PlacesByStringRequestDTO">
+			<field name="query" type="string" description="Texto con el que se realiza la búsqueda"/>
+			<field name="key" type="string" description="API key"/>
+		</request>
+		<response name="PlacesByStringResponseDTO">
+			<field name="status" type="string" description="Estado de la respuesta"/>
+			<field name="results" type="PlacesResultDTO*" description="Resultados"/>
+		</response>
+	</message>
+	<message name="getGeocodingByAddress" service="GoogleMaps" method="getGeocodingByAddress" description="Llamada a geocoding" type="Get">
+	    <urlPattern>
+			<url address="https://maps.googleapis.com/maps/api/geocode/json?address=${address}&amp;sensor=false" />
+		</urlPattern>
+		<request name="GeocodingByAddressRequestDTO">
+			<field name="address" type="string" description="Dirección"/>
+		</request>
+		<response name="GeocodingResponseDTO">
+			<field name="status" type="string" description="Estado de la respuesta"/>
+			<field name="results" type="GeocodingResultDTO*" description="Resultados"/>
+		</response>
+	</message>
+		<types>
+		    <type name="GeocodingResultDTO">
+		        <field name="address_components" type="AddressComponentDTO*"/>
+		        <field name="formatted_address" type="string" description="Dirección Formateada"/>
+		        <field name="geometry" type="GeometryDTO" description="Geometria"/>
+		        <field name="types" type="string*" description="Tipo de lugares"/>
+		    </type>
+		    <type name="AddressComponentDTO">
+		        <field name="long_name" type="string"/>
+              	 <field name="short_name" type="string"/>
+              	 <field name="types" type="string*"/>		        
+		    </type>
 		<type name="PlacesResultDTO">
 		    <field name="name" type="string" description="Nombre"/>
 			<field name="vicinity" type="string" description="Direccion"/>
@@ -46,6 +81,7 @@
 			<field name="geometry" type="GeometryDTO" description="Geometria"/>
 			<field name="icon" type="string" description="Icono"/>
 			<field name="reference" type="string" description="Referencia"/>
+			<field name="formatted_address" type="string" description="Dirección Formateada"/>
 			<field name="id" type="string" description="Identificador"/>
 		</type>
 		<type name="GeometryDTO">

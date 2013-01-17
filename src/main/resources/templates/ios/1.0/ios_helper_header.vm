@@ -2,6 +2,7 @@
 //  ${className}.h
 //  ${projectName}
 //  Version: ${version}
+//
 //  Created by Mobivery
 //  Copyright (c) 2012 Mobivery. All rights reserved.
 //
@@ -14,6 +15,7 @@
 + (${projectName}Helper *)sharedInstance;
 - (NSString *) preInjectURLParameters:(NSString *)url withObject:(NSObject *)obj;
 - (NSString *) postInjectURLParameters:(NSString *)url withObject:(NSObject *)obj;
+- (NSString *) escapeUrl:(NSString *)url;
 - (NSString *) preprocessResponse:(NSString *)responseString;
 - (UIView *) loadingViewForTasks;
 @end

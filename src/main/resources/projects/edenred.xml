@@ -1,6 +1,6 @@
 <protocol 
-    javaServiceException="es.edenred.logic.ServiceException"
-    javaServiceExceptionListener="es.edenred.logic.ServiceExceptionListener"
+    javaServiceException="${packageName}.logic.ServiceException"
+    javaServiceExceptionListener="${packageName}.logic.ServiceExceptionListener"
     
     onSend="es.edenred.EdenredApplication.onSend" onReceive="es.edenred.EdenredApplication.onReceive" onError="es.edenred.EdenredApplication.onError" onTask="es.edenred.EdenredApplication.onTaskFinished">
 	<messages>
@@ -9,7 +9,7 @@
 		<!-- ###################################### LOGIN ###################################### -->
 		<message name="Login" service="User" method="login" description="" type="Get">
 		    <urlPattern>
-				<url address="https://preprod-webservices.edenred.es/WSApp/AppService.asmx/Login?user=${user}&amp;password=${password}&amp;positions=${positions}&amp;datePositions=${datePositions}" />				
+				<url address="${loginRoot}/Login?user=${user}&amp;password=${password}&amp;positions=${positions}&amp;datePositions=${datePositions}" />				
 			</urlPattern>			
 			<request name="LoginRequestDTO">
 			    <field name="user" type="String" description="usuario de login"/>
@@ -26,7 +26,7 @@
 		<!-- ###################################### SALDO ###################################### -->
 		<message name="Amount" service="User" method="amount" description="" type="Get">
 		    <urlPattern>
-				<url address="https://preprod-webservices.edenred.es/WSApp/AppService.asmx/ConsultaSaldo?user=${user}&amp;password=${password}&amp;idTicket=${idTicket}" />				
+				<url address="${loginRoot}/ConsultaSaldo?user=${user}&amp;password=${password}&amp;idTicket=${idTicket}" />				
 			</urlPattern>			
 			<request name="AmountRequestDTO">
 			    <field name="user" type="String" description="usuario de login"/>
@@ -41,7 +41,7 @@
 		<!-- ###################################### TRANSACCIONES ###################################### -->
 		<message name="TransactionsLog" service="User" method="transactionsLog" description="" type="Get">
 		    <urlPattern>
-				<url address="https://preprod-webservices.edenred.es/WSApp/AppService.asmx/HistoricoTransacciones?user=${user}&amp;password=${password}&amp;idTicket=${idTicket}" />				
+				<url address="${loginRoot}/HistoricoTransacciones?user=${user}&amp;password=${password}&amp;idTicket=${idTicket}" />				
 			</urlPattern>			
 			<request name="TransactionLogRequestDTO">
 			    <field name="user" type="String" description="usuario de login"/>
@@ -56,7 +56,7 @@
 		<!-- ###################################### RECORDAR PIN ###################################### -->
 		<message name="RecoverPin" service="User" method="recoverPin" description="" type="Get">
 		    <urlPattern>
-				<url address="https://preprod-webservices.edenred.es/WSApp/AppService.asmx/RecordarPIN?user=${user}&amp;password=${password}&amp;idTicket=${idTicket}" />				
+				<url address="${loginRoot}/RecordarPIN?user=${user}&amp;password=${password}&amp;idTicket=${idTicket}" />				
 			</urlPattern>			
 			<request name="RecoverPinRequestDTO">
 			    <field name="user" type="String" description="usuario de login"/>
@@ -71,7 +71,7 @@
 		<!-- ###################################### ANULAR TARJETA ###################################### -->
 		<message name="CancelCard" service="User" method="cancelCard" description="" type="Get">
 		    <urlPattern>
-				<url address="https://preprod-webservices.edenred.es/WSApp/AppService.asmx/AnularTarjeta?user=${user}&amp;password=${password}&amp;idTicket=${idTicket}&amp;reason=${reason}" />				
+				<url address="${loginRoot}/AnularTarjeta?user=${user}&amp;password=${password}&amp;idTicket=${idTicket}&amp;reason=${reason}" />				
 			</urlPattern>			
 			<request name="CancelCardRequestDTO">
 			    <field name="user" type="String" description="usuario de login"/>

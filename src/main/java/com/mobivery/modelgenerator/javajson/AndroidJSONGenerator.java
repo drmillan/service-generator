@@ -50,8 +50,8 @@ public final class AndroidJSONGenerator extends BaseGenerator {
 		ve.init();
 		VelocityContext velocityContext=new VelocityContext();
 		velocityContext.put("projectName", System.getProperties().get("project.name"));		
-		velocityContext.put("serviceException", handler.getJavaServiceException());
-		velocityContext.put("serviceExceptionListener", handler.getJavaServiceExceptionListener());
+		velocityContext.put("serviceException", handler.getJavaServiceException().replace("${packageName}",packageName));
+		velocityContext.put("serviceExceptionListener", handler.getJavaServiceExceptionListener().replace("${packageName}",packageName));
 		velocityContext.put("packagename", packageName);
 		velocityContext.put("version", version);
 		velocityContext.put("dtos", typeMap.values());		
@@ -100,8 +100,8 @@ public final class AndroidJSONGenerator extends BaseGenerator {
 				velocityContext.put("objectArrayFields", type.getObjectArrayFields());
 				velocityContext.put("baseFields", type.getBaseFields());
 				velocityContext.put("baseArrayFields", type.getBaseArrayFields());
-				velocityContext.put("serviceException", handler.getJavaServiceException());
-				velocityContext.put("serviceExceptionListener", handler.getJavaServiceExceptionListener());
+				velocityContext.put("serviceException", handler.getJavaServiceException().replace("${packageName}",packageName));
+				velocityContext.put("serviceExceptionListener", handler.getJavaServiceExceptionListener().replace("${packageName}",packageName));
 				velocityContext.put("packagename", packageName);
 				velocityContext.put("version", version);
 
@@ -163,8 +163,8 @@ public final class AndroidJSONGenerator extends BaseGenerator {
 			velocityContext.put("serviceName", message.getService());
 			velocityContext.put("method", message.getMethod());
 			velocityContext.put("onTask", onTask);
-			velocityContext.put("serviceException", handler.getJavaServiceException());
-			velocityContext.put("serviceExceptionListener", handler.getJavaServiceExceptionListener());
+			velocityContext.put("serviceException", handler.getJavaServiceException().replace("${packageName}",packageName));
+			velocityContext.put("serviceExceptionListener", handler.getJavaServiceExceptionListener().replace("${packageName}",packageName));
 			velocityContext.put("version", version);
 
 			File generationFile=new File(androidFolder + packageName.replace(".", "/") + "/tasks/" + message.getService().toLowerCase() + "/" + message.getMethod().substring(0, 1).toUpperCase()
@@ -228,8 +228,8 @@ public final class AndroidJSONGenerator extends BaseGenerator {
 			velocityContext.put("version", version);
 			
 			velocityContext.put("serviceName", serviceName);
-			velocityContext.put("serviceException", handler.getJavaServiceException());
-			velocityContext.put("serviceExceptionListener", handler.getJavaServiceExceptionListener());
+			velocityContext.put("serviceException", handler.getJavaServiceException().replace("${packageName}",packageName));
+			velocityContext.put("serviceExceptionListener", handler.getJavaServiceExceptionListener().replace("${packageName}",packageName));
 			generate(new File(commonFolder + packageName.replace(".", "/") + "/logic/base/Base" + serviceName + "Logic.java"), ve.getTemplate("templates/android/"+version+"/android_base_service.vm"), velocityContext);
 			// Comprobar si existe o no el servicio derivado
 			new File(androidFolder + packageName.replace(".", "/") + "/logic/").mkdirs();

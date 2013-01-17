@@ -2,6 +2,7 @@
 //  {projectName}Helper.m
 //  ${projectName}
 //  Version: ${version}
+//
 //  Created by Mobivery
 //  Copyright (c) 2012 Mobivery. All rights reserved.
 //
@@ -28,6 +29,10 @@
 
 - (NSString *) postInjectURLParameters:(NSString *)url withObject:(NSObject *)object {
 	return url;
+}
+
+- (NSString *) escapeUrl:(NSString *)url {
+	return [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 }
 
 - (NSString *) preprocessResponse:(NSString *)responseString {
