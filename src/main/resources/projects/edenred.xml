@@ -66,6 +66,7 @@
 			<response name="RecoverPinResponseDTO">
 			    <field name="error" type="ErrorResponseDTO" description=""/>
 			    <field name="code" type="String" description="Codigo pin"/>
+			    <field name="phone" type="String" description="Teléfono para recuperar clave"/>
 			</response>
 		</message>			
 		<!-- ###################################### ANULAR TARJETA ###################################### -->
@@ -111,7 +112,7 @@
 		<!-- ###################################### LISTADO DE AFILIADOS ###################################### -->
 		<message name="AffiliateSearch" service="Affiliates" method="affiliateSearch" description="Devuelve una lista de afiliados por proximidad geografica" type="Get">
 		    <urlPattern>
-				<url address="${searchRoot}/api/v1/affiliate_search?producto=${producto}&amp;formato=${formato}&amp;affiliate=${affiliate}&amp;center_lat=${center_lat}&amp;center_lng=${center_lng}&amp;limit_lat=${limit_lat}&amp;limit_lng=${limit_lng}&amp;gustino=${gustino}&amp;promotions=${promotions}&amp;page=${page}" />				
+				<url address="${searchRoot}/api/v1/affiliate_search?producto=${producto}&amp;formato=${formato}&amp;affiliate=${affiliate}&amp;center_lat=${center_lat}&amp;center_lng=${center_lng}&amp;limit_lat=${limit_lat}&amp;limit_lng=${limit_lng}&amp;gustino=${gustino}&amp;promotions=${promotions}&amp;page=${page}&amp;tipo=${tipo}" />				
 			</urlPattern>			
 			<request name="AffiliateSearchRequestDTO">
 			    <field name="producto" type="String" description="Tipo de afiliado a buscar [ticket-restaurant | ticket-guarderia | ticket-compliments]"/>
@@ -124,6 +125,7 @@
 				<field name="gustino" type="Boolean" description="Si esta a true sólo busca afliados con Gustino. Cualquier otro valor se ignora"/>
 				<field name="promotions" type="Boolean" description="Si esta a true sólo busca afliados con promociones. Cualquier otro valor se ignora"/>
 				<field name="page" type="int" description="Pagina a devolver de la lista de resultados" />
+				<field name="tipo" type="string" description="Tipo del servicio del afiliado. Si no se indica, busca todos"/>
 			</request>
 			<response name="AffiliateSearchResponseDTO">
 			    <field name="page" type="int" description="Numero de pagina actual"/>
@@ -134,7 +136,7 @@
 		<!-- ###################################### LISTADO DE AFILIADOS POR CALLE ###################################### -->
 		<message name="AdvancedAffiliateSearch" service="Affiliates" method="advancedAffiliateSearch" description="Devuelve una lista de afiliados por proximidad geografica" type="Get">
 		    <urlPattern>
-				<url address="${searchRoot}/api/v1/affiliate_search/advanced?producto=${producto}&amp;formato=${formato}&amp;affiliate=${affiliate}&amp;province=${province}&amp;city=${city}&amp;address_type=${address_type}&amp;address_name=${address_name}&amp;address_number=${address_number}&amp;address_cp=${address_cp}&amp;gustino=${gustino}&amp;promotions=${promotions}&amp;page=${page}" />				
+				<url address="${searchRoot}/api/v1/affiliate_search/advanced?producto=${producto}&amp;formato=${formato}&amp;affiliate=${affiliate}&amp;province=${province}&amp;city=${city}&amp;address_type=${address_type}&amp;address_name=${address_name}&amp;address_number=${address_number}&amp;address_cp=${address_cp}&amp;gustino=${gustino}&amp;promotions=${promotions}&amp;page=${page}&amp;tipo=${tipo}" />				
 			</urlPattern>			
 			<request name="AdvancedAffiliateSearchRequestDTO">
 			    <field name="producto" type="String" description="Tipo de afiliado a buscar [ticket-restaurant | ticket-guarderia | ticket-compliments]"/>
@@ -149,6 +151,7 @@
 			    <field name="gustino" type="Boolean" description="Si esta a true sólo busca afliados con Gustino. Cualquier otro valor se ignora"/>
 				<field name="promotions" type="Boolean" description="Si esta a true sólo busca afliados con promociones. Cualquier otro valor se ignora"/>
 				<field name="page" type="int" description="Pagina a devolver de la lista de resultados" />
+				<field name="tipo" type="string" description="Tipo del servicio del afiliado. Si no se indica, busca todos"/>
 			</request>
 			<response name="AdvancedAffiliateSearchResponseDTO">
 			    <field name="page" type="int" description="Numero de pagina actual"/>
