@@ -126,7 +126,14 @@ public class Base${serviceName}Logic
 		String url="${message.url}";
 		url=${projectName}Helper.getInstance().preInjectURLParameters(url,${message.request.javaInstanceName});
 #foreach($field in $message.request.fields)
-		url=url.replace("${${field.name}}",URLEncoder.encode(String.valueOf(${message.request.javaInstanceName}.get${field.nameUcase}()),"UTF-8"));	
+		if(${message.request.javaInstanceName}.get${field.nameUcase}()==null)
+		{
+			url=url.replace("${${field.name}}","");
+		}
+		else
+		{
+			url=url.replace("${${field.name}}",URLEncoder.encode(String.valueOf(${message.request.javaInstanceName}.get${field.nameUcase}()),"UTF-8"));
+		}	
 #end		
 		
 		url=fixSystemProperties(url);

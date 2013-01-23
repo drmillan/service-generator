@@ -117,14 +117,14 @@
 			<request name="AffiliateSearchRequestDTO">
 			    <field name="producto" type="String" description="Tipo de afiliado a buscar [ticket-restaurant | ticket-guarderia | ticket-compliments]"/>
 			    <field name="formato" type="String" description="Formato del ticket. Para ticket guarderia [papel | online], para ticket restaurante [papel | tarjeta]"/>
-			    <field name="affiliate" type="String" description="Nombre del afiliado en el formulario" />
+			    <field name="affiliate" type="String" description="Nombre del afiliado en el formulario"/>
 				<field name="center_lat" type="Double" description="Latitud del centro de la busqueda" />
 				<field name="center_lng" type="Double" description="Longitud del centro de la busqueda" />
 				<field name="limit_lat" type="Double" description="Latitud del limite de la busqueda" />
 				<field name="limit_lng" type="Double" description="Longitud del limite de la busqueda" />
 				<field name="gustino" type="Boolean" description="Si esta a true sólo busca afliados con Gustino. Cualquier otro valor se ignora"/>
 				<field name="promotions" type="Boolean" description="Si esta a true sólo busca afliados con promociones. Cualquier otro valor se ignora"/>
-				<field name="page" type="int" description="Pagina a devolver de la lista de resultados" />
+				<field name="page" type="int" description="Pagina a devolver de la lista de resultados"/>
 				<field name="tipo" type="string" description="Tipo del servicio del afiliado. Si no se indica, busca todos"/>
 			</request>
 			<response name="AffiliateSearchResponseDTO">
