@@ -22,8 +22,8 @@
 #foreach ($message in $messages) 
 	
 	/**
-	 * MŽtodo ${message.method}JSON: ${message.description}
-	 * @param ${message.request.javaInstanceName} Petici—n al servicio
+	 * Mï¿½todo ${message.method}JSON: ${message.description}
+	 * @param ${message.request.javaInstanceName} Peticiï¿½n al servicio
 	 * @returns NSDictionary Respuesta del servidor
 	 */
 	
@@ -37,7 +37,11 @@
 			#if(${field.type} == "Boolean")
 				NSString *string${field.nameUcase}=[NSString stringWithFormat:@"%@",${message.request.javaInstanceName}.${field.name}.boolValue ? @"true": @"false"];  
 			#else
-				NSString *string${field.nameUcase}=[NSString stringWithFormat:@"%@",${message.request.javaInstanceName}.${field.name}];  
+				NSString *string${field.nameUcase}=@"";
+				if(${message.request.javaInstanceName}.${field.name})
+				{
+				string${field.nameUcase}=[[NSString stringWithFormat:@"%@",${message.request.javaInstanceName}.${field.name}] stringByAddingPercentEscapesUsingEncoding:kCFStringEncodingUTF8];
+				}							 
 			#end
 		
 		#end
@@ -47,8 +51,8 @@
 				url=[url stringByReplacingOccurrencesOfString:@"${${field}}" withString:${field}];
 			#endif
 		#end
-		#foreach($field in $message.request.fields)
-        url=[url stringByReplacingOccurrencesOfString:@"${${field.name}}" withString:string${field.nameUcase}];
+		#foreach($field in $message.request.fields)			
+        	url=[url stringByReplacingOccurrencesOfString:@"${${field.name}}" withString:string${field.nameUcase}];
   		#end
   		
   		url=[[${projectName}Helper sharedInstance] postInjectURLParameters:url withObject:${message.request.javaInstanceName}];
@@ -216,8 +220,8 @@
 	
 	
 	/**
-	 * MŽtodo ${message.method}: ${message.description}
-	 * @param ${message.request.javaInstanceName} Petici—n al servicio
+	 * Mï¿½todo ${message.method}: ${message.description}
+	 * @param ${message.request.javaInstanceName} Peticiï¿½n al servicio
 	 * @returns ${message.response.type} Respuesta del servidor
 	 */
 	-(${message.response.type} *) ${message.method}:(${message.request.type} *)${message.request.javaInstanceName} onError:(NSError *__autoreleasing *)inError
@@ -226,11 +230,17 @@
 		
 		url=[[${projectName}Helper sharedInstance] preInjectURLParameters:url withObject:${message.request.javaInstanceName}];
 		#foreach($field in $message.request.fields)
+		
 			#if(${field.type} == "Boolean")
 				NSString *string${field.nameUcase}=[NSString stringWithFormat:@"%@",${message.request.javaInstanceName}.${field.name}.boolValue ? @"true": @"false"];  
 			#else
-				NSString *string${field.nameUcase}=[NSString stringWithFormat:@"%@",${message.request.javaInstanceName}.${field.name}];  
+				NSString *string${field.nameUcase}=@"";
+				if(${message.request.javaInstanceName}.${field.name})
+				{
+				string${field.nameUcase}=[[NSString stringWithFormat:@"%@",${message.request.javaInstanceName}.${field.name}] stringByAddingPercentEscapesUsingEncoding:kCFStringEncodingUTF8];
+				}							 
 			#end
+		
 		#end
 		
 		#foreach($field in $message.inURLbutNotField)
@@ -414,7 +424,7 @@
 
 #end
 
-#pragma mark Ð Metodos heredados de NSURLConnectionDelegate
+#pragma mark ï¿½ Metodos heredados de NSURLConnectionDelegate
 
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
     
@@ -456,6 +466,7 @@
     self.downloadComplete = YES;
     
 }
+
 
 @end
 

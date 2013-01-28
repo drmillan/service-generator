@@ -86,6 +86,7 @@
 		</type>
 		<type name="GeometryDTO">
 			<field name="location" type="CoordDTO" description="Localizacion"/>
+			<field name="bounds" type="BoundDTO" description="Bounds"/>
 		</type>
 		<type name="RouteDTO">
 			<field name="bounds" type="BoundDTO" description="Marco del mapa"/>

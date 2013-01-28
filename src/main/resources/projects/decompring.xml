@@ -46,7 +46,7 @@
 		<message name="Register" service="Authentication" method="register" description="Registro de usuario" type="Put">
 			<urlPattern>
 				<url
-					address="${serviceURL}?arqParams=${arqParams}&amp;IdUnicoTelefono=${idUnicoTelefono}&amp;email=${serviceEmail}&amp;pass=${servicePassword}&amp;msgApp=registrousuario&amp;paramMsg=newEmailUser=${newEmailUser}|fiendEmail=${friendEmail}|newPassword=${newPassword}|nombreUser=${nombreUser}|apellidos=${apellidos}|sexo=${sexo}|fechaNac=${fechaNac}|codPostal=${codPostal}|codPromoOrigen=${codPromoOrigen}" />
+					address="${serviceURL}?arqParams=${arqParams}&amp;IdUnicoTelefono=${idUnicoTelefono}&amp;email=${serviceEmail}&amp;pass=${servicePassword}&amp;msgApp=registrousuario2&amp;paramMsg=newEmailUser=${newEmailUser}|fiendEmail=${friendEmail}|newPassword=${newPassword}|nombreUser=${nombreUser}|apellidos=${apellidos}|sexo=${sexo}|fechaNac=${fechaNac}|codPostal=${codPostal}|codPromoOrigen=${codPromoOrigen}" />
 			</urlPattern>
 			<request name="RegisterRequestDTO">
 				<field name="serviceEmail" type="string" description="Email para invocar el servicio" />
@@ -89,7 +89,7 @@
 		<!-- ###################################### NEAR ###################################### -->
 		<message name="Near" service="Store" method="nearHere" description="Aqui cerca" type="Get">
 			<urlPattern>
-				<url address="${serviceURL}?arqParams=${arqParams}&amp;IdUnicoTelefono=${idUnicoTelefono}&amp;email=${serviceEmail}&amp;pass=${servicePassword}&amp;msgApp=aquicerca&amp;paramMsg=latitud=${latitud}|longitud=${longitud}|numPagina=${numPagina}|idTipologiaComercio=${idTipologiaComercio}" />
+				<url address="${serviceURL}?arqParams=${arqParams}&amp;IdUnicoTelefono=${idUnicoTelefono}&amp;email=${serviceEmail}&amp;pass=${servicePassword}&amp;msgApp=aquicerca2&amp;paramMsg=latitud=${latitud}|longitud=${longitud}|numPagina=${numPagina}|idTipologiaComercio=${idTipologiaComercio}" />
 			</urlPattern>
 			<request name="NearRequestDTO">
 				<field name="serviceEmail" type="string" description="Email para invocar el servicio" />
