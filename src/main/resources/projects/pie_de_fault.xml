@@ -1,0 +1,107 @@
+<protocol>
+	<messages>
+	    <!-- Para tests: serviceRoot: http://piedefault1.apiary.io -->
+	    
+	    <!-- HOME -->
+		<message name="Home" service="Home" method="homeInfo" description="" type="Get">
+		    <urlPattern>
+				<url address="${serviceRoot}/home" />				
+			</urlPattern>			
+			<response name="HomeResponseDTO">
+			    <field name="home" type="VenueDTO*" description="Listado de hasta 8 locales recomendados en formato lite"/>
+			    <field name="status" type="String" description="valores posibles = ok, ko"/>
+			</response>
+		</message>
+		
+		<!-- AREAS -->
+		<message name="Areas" service="Area" method="allAreas" description="" type="Get">
+		    <urlPattern>
+				<url address="${serviceRoot}/areas" />				
+			</urlPattern>			
+			<response name="AreasResponseDTO">
+			    <field name="area_list" type="AreaDTO*" description="Listado de areas en formato lite"/>
+			    <field name="status" type="String" description="valores posibles = ok, ko"/>
+			</response>
+		</message>	
+
+		<message name="AreaDetails" service="Area" method="areaDetails" description="" type="Get">
+		    <urlPattern>
+				<url address="${serviceRoot}/area/${area_id}" />				
+			</urlPattern>			
+			<request name="AreaDetailsRequestDTO">
+			    <field name="area_id" type="int" description="Identificador unico del area"/>
+			</request>
+			<response name="AreaDetailsResponseDTO">
+			    <field name="area_details" type="AreaDetailsDTO" description="Wrapper para toda la informacion de areas"/>
+			    <field name="status" type="String" description="valores posibles = ok, ko"/>
+			</response>
+		</message>			
+				
+		<!-- VENUES -->
+		<message name="VenueDetails" service="Venue" method="venueDetails" description="" type="Get">
+		    <urlPattern>
+				<url address="${serviceRoot}/venue/${venue_id}" />				
+			</urlPattern>			
+			<request name="VenueDetailsRequestDTO">
+			    <field name="venue_id" type="int" description="Identificador unico del local"/>
+			</request>
+			<response name="VenueDetailsResponseDTO">
+			    <field name="venue_details" type="VenueDetailsDTO" description="Wrapper para toda la informacion de locales"/>
+			    <field name="status" type="String" description="valores posibles = ok, ko"/>
+			</response>
+		</message>		
+
+	</messages>
+	
+	<types>
+	    <type name="VenueDTO">
+	        <field name="venue_id" type="int" description="Identificador del local" />
+	        <field name="venue_name" type="String" description="Nombre del local" />
+	        <field name="area_id" type="int" description="Identificador del area a la que pertenece el local" />
+	        <field name="area_name" type="String" description="Nombre del area" />
+	        <field name="image_url" type="String" description="Url con una imagen para ilustrar el local" />
+	    </type>
+		<type name="VenueDetailsDTO">
+	        <field name="venue_main_info" type="VenueDTO" description="Informacion principal de un local" />
+	        <field name="venue_premium" type="Boolean" description="Nos indica si un local es premium o no" />
+	        <field name="venue_address" type="VenueAddressDTO" description="Informacion para localizar un local" />
+	        <field name="venue_stars" type="int" description="Estrellas del local" />
+	        <field name="venue_important_distance" type="int" description="Distancia al area" />
+	        <field name="venue_phones" type="String*" description="Listado de telefonos del local" />
+			<field name="venue_twitter" type="String" description="Usuario de twitter" />	        
+			<field name="venue_facebook" type="String" description="Usuario de facebook" />	        
+			<field name="venue_url" type="String" description="Pagina web de local" />	        
+			<field name="venue_booking" type="String" description="Pagina de reservas" />	        
+			<field name="venue_description" type="String" description="Descripcion del local" />	        
+			<field name="venue_services" type="String" description="Servicios que ofrece el local" />	        
+	    </type>
+		<type name="VenueInAreaDTO">
+	        <field name="venue_main_info" type="VenueDTO" description="Informacion principal de un local" />
+	        <field name="venue_address" type="VenueAddressDTO" description="Informacion para localizar un local" />
+	        <field name="venue_stars" type="int" description="Estrellas del local" />
+	        <field name="venue_important_distance" type="int" description="Distancia al area" />
+	    </type>
+	    <type name="VenueAddressDTO">
+	        <field name="venue_full_address" type="String" description="Calle completa para el local si la hubiere" />
+	        <field name="venue_location" type="LocationDTO" description="Geolocalizacion del local" />
+	    </type>
+	    <type name=""
+	    <type name="AreaDTO">
+	        <field name="area_id" type="int" description="Identificador del area" />
+	        <field name="area_name" type="String" description="Nombre del area" />
+	        <field name="area_location" type="LocationDTO" description="Posicion geografica del area" />
+	    </type>
+ 	    <type name="AreaDetailsDTO">
+	        <field name="area_id" type="int" description="Identificador del area" />
+	        <field name="area_name" type="String" description="Nombre del area" />
+	        <field name="area_location" type="LocationDTO" description="Posicion geografica del area" />
+	        <field name="recommended" type="VenueInAreaDTO*" descripcion="Lugares recomendados en el area" />
+	        <field name="distinguished" type="VenueInAreaDTO*" descripcion="Lugares resaltados en el area" />
+	        <field name="others" type="VenueInAreaDTO*" descripcion="Lugares (otros) en el area" />	        	        
+	    </type>
+	    <type name="LocationDTO">
+	        <field name="latitude" type="Double" description="Latitud" />
+	        <field name="longitude" type="Double" description="Longitud" />
+	    </type>
+	</types>
+</protocol>
