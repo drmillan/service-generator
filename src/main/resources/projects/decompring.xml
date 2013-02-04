@@ -46,7 +46,7 @@
 		<message name="Register" service="Authentication" method="register" description="Registro de usuario" type="Put">
 			<urlPattern>
 				<url
-					address="${serviceURL}?arqParams=${arqParams}&amp;IdUnicoTelefono=${idUnicoTelefono}&amp;email=${serviceEmail}&amp;pass=${servicePassword}&amp;msgApp=registrousuario2&amp;paramMsg=newEmailUser=${newEmailUser}|fiendEmail=${friendEmail}|newPassword=${newPassword}|nombreUser=${nombreUser}|apellidos=${apellidos}|sexo=${sexo}|fechaNac=${fechaNac}|codPostal=${codPostal}|codPromoOrigen=${codPromoOrigen}" />
+					address="${serviceURL}?arqParams=${arqParams}&amp;IdUnicoTelefono=${idUnicoTelefono}&amp;email=${serviceEmail}&amp;pass=${servicePassword}&amp;msgApp=registrousuario2&amp;paramMsg=newEmailUser=${newEmailUser}|fiendEmail=${friendEmail}|newPassword=${newPassword}|recibirCorreo=${recibirCorreo}|nombreUser=${nombreUser}|apellidos=${apellidos}|sexo=${sexo}|fechaNac=${fechaNac}|codPostal=${codPostal}|codPromoOrigen=${codPromoOrigen}" />
 			</urlPattern>
 			<request name="RegisterRequestDTO">
 				<field name="serviceEmail" type="string" description="Email para invocar el servicio" />
@@ -61,6 +61,7 @@
 				<field name="fechaNac" type="string" description="Fecha nacimiento dd/mm/yyyy" />
 				<field name="codPostal" type="string" description="Código Postal" />
 				<field name="codPromoOrigen" type="string" description="Código Promocional" />
+				<field name="recibirCorreo" type="boolean" description="Recibir Correo" />
 			</request>
 			<response name="RegisterResponseDTO">
 				<field name="idError" type="int" description="Id del error" />
@@ -107,6 +108,7 @@
 				<field name="NTCD" type="int" description="" />
 				<field name="hormiga" type="AntDTO" description="Hormiga" />
 				<field name="banner" type="BannerDTO" description="Banner" />
+				<field name="maxComerciosVisibles" type="int" description="Numero maximo de comercios visibles"/>
 				<field name="comercios" type="StoreDTO*" description="Lista de comecios" />
 			</response>
 		</message>
@@ -130,7 +132,7 @@
 		<!-- ###################################### CONSULTA COMERCIO ###################################### -->
 		<message name="StoreDetail" service="Store" method="getStoreDetail" description="Detalle de comercio" type="Get">
 			<urlPattern>
-				<url address="${serviceURL}?arqParams=${arqParams}&amp;IdUnicoTelefono=${idUnicoTelefono}&amp;email=${serviceEmail}&amp;pass=${servicePassword}&amp;msgApp=consultacomercio2&amp;paramMsg=idComercio=${idComercio}|tipoSolicitud=${tipoSolicitud}" />
+				<url address="${serviceURL}?arqParams=${arqParams}&amp;IdUnicoTelefono=${idUnicoTelefono}&amp;email=${serviceEmail}&amp;pass=${servicePassword}&amp;msgApp=consultacomercio3&amp;paramMsg=idComercio=${idComercio}|tipoSolicitud=${tipoSolicitud}" />
 			</urlPattern>
 			<request name="StoreDetailRequestDTO">
 				<field name="serviceEmail" type="string" description="Email para invocar el servicio" />
@@ -922,6 +924,8 @@
 		<type name="HardwareDTO">
 			<field name="id" type="string" description="Bluetooth o Qx (Q1, Q2)" />
 			<field name="mensaje" type="string" description="Si es Q, es el mensaje a mostrar al usuario" />
+			<field name="bt1" type="String" description="Dirección Bluetooth de dispositivos NO - LE (Android)"/>
+			<field name="bt2" type="String" description="Dirección Bluetooth de dispositivos SI - LE (iOS)"/>
 		</type>
 		
 	</types>

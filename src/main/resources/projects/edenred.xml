@@ -265,7 +265,7 @@
 	        <field name="ADDRESS_NAME" type="String" description=""/>
 	        <field name="ZIP" type="String" description=""/>
 	        <field name="GUSTINO" type="String" description=""/>
-	    </type>	    	    
+	    </type>
 	    <type name="PromotionDTO">
 			<field name="PROMO_ID" type="String" description=""/>
 			<field name="PROMO_NAME" type="String" description=""/>

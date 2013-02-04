@@ -40,7 +40,12 @@
 				NSString *string${field.nameUcase}=@"";
 				if(${message.request.javaInstanceName}.${field.name})
 				{
-				string${field.nameUcase}=[[NSString stringWithFormat:@"%@",${message.request.javaInstanceName}.${field.name}] stringByAddingPercentEscapesUsingEncoding:kCFStringEncodingUTF8];
+				string${field.nameUcase}=[[NSString stringWithFormat:@"%@",${message.request.javaInstanceName}.${field.name}] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+				if(!string${field.nameUcase})
+				{
+					string${field.nameUcase}=[NSString stringWithFormat:@"%@",${message.request.javaInstanceName}.${field.name}];
+				}
+				
 				}							 
 			#end
 		
@@ -237,7 +242,11 @@
 				NSString *string${field.nameUcase}=@"";
 				if(${message.request.javaInstanceName}.${field.name})
 				{
-				string${field.nameUcase}=[[NSString stringWithFormat:@"%@",${message.request.javaInstanceName}.${field.name}] stringByAddingPercentEscapesUsingEncoding:kCFStringEncodingUTF8];
+				string${field.nameUcase}=[[NSString stringWithFormat:@"%@",${message.request.javaInstanceName}.${field.name}] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+				if(!string${field.nameUcase})
+				{
+					string${field.nameUcase}=[NSString stringWithFormat:@"%@",${message.request.javaInstanceName}.${field.name}];
+				}
 				}							 
 			#end
 		
