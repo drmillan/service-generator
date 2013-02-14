@@ -74,7 +74,7 @@
     	NSString *escapedUrl = [[${projectName}Helper sharedInstance] escapeUrl:url];
 	    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:escapedUrl] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
 		
-		NSError *error;	
+		NSError *error = nil;	
 #if(${message.type}=='Post')
 		
 		NSMutableArray * content = [NSMutableArray array];
@@ -275,7 +275,7 @@
 		
 		${message.response.name} *result;
     
-    	NSError *error;
+    	NSError *error = nil;
     	NSString *escapedUrl = [[${projectName}Helper sharedInstance] escapeUrl:url];
 	    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:escapedUrl] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
 				
