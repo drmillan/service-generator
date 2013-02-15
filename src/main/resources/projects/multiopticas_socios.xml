@@ -278,7 +278,6 @@
 		</type>
 		<type name="CrossSellDTO">
 			<field name="crossSellId" type="int" description="Id de venta cruzada" />
-			<field name="crossSellType" type="String" description="Tipo de venta cruzada (SOL,MO,SOL_MODA,COMBILENTILLAS)" />
 			<field name="name" type="String" description="Nombre de la venta cruzada" />
 			<field name="crossSellDescription" type="String" description="Descripción de la venta cruzada" />
 			<field name="imageURL" type="String" description="URL absoluta de la imagen" />
@@ -296,7 +295,6 @@
 		<type name="CrossSellDetailDTO">
 			<field name="crossSellDetailId" type="int" description="Id del detalle de venta cruzada" />
 			<field name="name" type="String" description="Nombre de la venta cruzada" />
-			<field name="crossSellDetailType" type="String" description="Tipo de detalle de venta cruzada" />
 			<field name="crossSellDetailDescription" type="String" description="Descripción del detalle de la venta cruzada" />
 			<field name="price" type="double" description="Coste adicional" />
 			<field name="priceType" type="String" description="Tipo de precio a aplicar: Porcentaje o Absoluto" />
