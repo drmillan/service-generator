@@ -176,7 +176,7 @@
 			<field name="order" type="int" description="Orden en el que aparecera en los filtros" />
 		</type>
 		<type name="FrameTypeDTO">
-			<field name="frameId" type="int" description="Id del tipo de montura" />
+			<field name="frameTypeId" type="int" description="Id del tipo de montura" />
 			<field name="name" type="String" description="Nombre del tipo de montura (Sol, Graduada)" />
 			<field name="order" type="int" description="Orden en el que aparecera en los filtros" />
 		</type>
@@ -227,8 +227,7 @@
 		<type name="FrameDTO">
 			<field name="frameId" type="int" description="id de la montura" />
 			<field name="reference" type="int" description="Referencia" />
-			<field name="frameDescription" type="String" description="Descripcion de la montura" />			
-			<field name="price" type="double" description="Precio de la montura" />
+			<field name="frameDescription" type="String" description="Descripcion de la montura" />
 			<field name="order" type="int" description="Orden en el listado" />			
 			<field name="frameTypeId" type="int" description="Id del tipo de montura (Sol, Graduada,...)" />
 			<field name="genderId" type="int" description="Id del sexo de la montura" />
@@ -310,6 +309,7 @@
 			<field name="price" type="double" description="Coste adicional" />
 		</type>
 		<type name="OrderDTO">
+			<field name="orderId" type="int" description="id del pedido" />
 			<field name="name" type="String" description="Nombre del cliente" />
 			<field name="email" type="String" description="Email del cliente" />
 			<field name="phoneNumber" type="String" description="Teléfono del cliente" />
