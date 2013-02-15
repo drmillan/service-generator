@@ -206,7 +206,7 @@
 			<field name="name" type="String" description="Nombre de la tarifa" />
 			<field name="price" type="double" description="Precio de la montura" />
 		</type>
-		<type name="FrameFilterDTO">
+		<type name="FramesFilterDTO">
 			<field name="frameFilterId" type="int" description="Id de filtro" />
 			<field name="defaultFilter" type="boolean" description="Indica si es el filtro por defecto" />
 			<field name="ageEnabled" type="boolean" description="Indica si es posible cambiar el filtro de la edad" />			
