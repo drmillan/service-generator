@@ -317,23 +317,23 @@
 			<field name="phoneNumber" type="String" description="Teléfono del cliente" />
 			<field name="comments" type="String" description="Comentarios" />
 			<field name="date" type="long" description="Fecha del pedido (milisegundos desde 01/01/1970)" />
-			<field name="promo" type="PromoDTO*" description="Campaña seleccionada" />
-			<field name="frame" type="FrameDTO*" description="Montura seleccionada" />
-			<field name="variant" type="VariantDTO*" description="Variante de la montura seleccionada" />
-			<field name="lensType" type="LensTypeDTO*" description="Tipo de lente" />
-			<field name="lensEquipment" type="LensEquipmentDTO*" description="Tipo de lente" />
-			<field name="treatmentOne" type="TreatmentDTO*" description="Tratamiento 1" />
-			<field name="treatmentTwo" type="TreatmentDTO*" description="Tratamiento 2" />
-			<field name="treatmentSun" type="TreatmentDTO*" description="Tratamiento Sol" />
-			<field name="crossSell" type="CrossSellDTO*" description="Venta cruzada" />
-			<field name="crossSellDetail" type="CrossSellDetailDTO*" description="Detalle de venta cruzada" />
-			<field name="warranty" type="WarrantyDTO*" description="Garantia" />
-			<field name="secondFrame" type="FrameDTO*" description="Segunda montura" />
-			<field name="secondVariant" type="VariantDTO*" description="Variante de la segunda montura" />
-			<field name="secondTreatmentOne" type="TreatmentDTO*" description="Segundo tratamiento 1" />
-			<field name="secondTreatmentTwo" type="TreatmentDTO*" description="Segundo tratamiento 2" />
-			<field name="secondTreatmentSun" type="TreatmentDTO*" description="Segundo tratamiento Sol" />
-			<field name="secondWarranty" type="WarrantyDTO*" description="Segunda garantia" />
+			<field name="promo" type="PromoDTO" description="Campaña seleccionada" />
+			<field name="frame" type="FrameDTO" description="Montura seleccionada" />
+			<field name="variant" type="VariantDTO" description="Variante de la montura seleccionada" />
+			<field name="lensType" type="LensTypeDTO" description="Tipo de lente" />
+			<field name="lensEquipment" type="LensEquipmentDTO" description="Tipo de lente" />
+			<field name="treatmentOne" type="TreatmentDTO" description="Tratamiento 1" />
+			<field name="treatmentTwo" type="TreatmentDTO" description="Tratamiento 2" />
+			<field name="treatmentSun" type="TreatmentDTO" description="Tratamiento Sol" />
+			<field name="crossSell" type="CrossSellDTO" description="Venta cruzada" />
+			<field name="crossSellDetail" type="CrossSellDetailDTO" description="Detalle de venta cruzada" />
+			<field name="warranty" type="WarrantyDTO" description="Garantia" />
+			<field name="secondFrame" type="FrameDTO" description="Segunda montura" />
+			<field name="secondVariant" type="VariantDTO" description="Variante de la segunda montura" />
+			<field name="secondTreatmentOne" type="TreatmentDTO" description="Segundo tratamiento 1" />
+			<field name="secondTreatmentTwo" type="TreatmentDTO" description="Segundo tratamiento 2" />
+			<field name="secondTreatmentSun" type="TreatmentDTO" description="Segundo tratamiento Sol" />
+			<field name="secondWarranty" type="WarrantyDTO" description="Segunda garantia" />
 			<field name="totalPrice" type="double" description="Precio total" />
 		</type>
 	</types>
