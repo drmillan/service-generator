@@ -268,7 +268,7 @@
 			<field name="lastUpdate" type="double" description="Fecha de la última actualización de la imagen" />
 		</type>
 		<type name="TreatmentDTO">
-			<field name="treatmentId_MO" type="int" description="id del tratamiento" />
+			<field name="treatmentId" type="int" description="id del tratamiento" />
 			<field name="treatmentType" type="String" description="Tipo de tratamiento (1,2,SOL)" />
 			<field name="name" type="String" description="Nombre del tratamiento" />
 			<field name="description" type="String" description="Descripción del tratamiento" />			
