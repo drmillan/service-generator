@@ -156,6 +156,78 @@
 				<field name="orderId_MO" type="int" description="Identificador del pedido guardado" />
 			</response>
 		</message>
+		<!-- ###################################### SAVE ORDER ###################################### -->
+		<message name="SendOrder" service="MO" method="sendOrder"
+			description="" type="Post">
+			<urlPattern>
+				<url address="http://${SERVER}/order/send" />
+			</urlPattern>
+			<request>
+				<field name="appId" type="String" description="Id de aplicación" />
+				<field name="memberId" type="String" description="Id de socio" />
+				<field name="orderId_MO" type="int" description="Id del pedido" />
+				<field name="name" type="String" description="Nombre del cliente" />
+				<field name="email" type="String" description="Email del cliente" />
+				<field name="phoneNumber" type="String" description="Telefono del cliente" />
+				<field name="comments" type="String" description="Observaciones" />
+				<field name="date" type="long" description="Fecha" />
+				<field name="promoId_MO" type="int" description="Id de la promocion" />
+				<field name="promoName" type="String" description="Nombre de la promocion" />
+				<field name="frameId_MO" type="int" description="Id de la montura" />
+				<field name="frameName" type="String" description="Nombre de la montura" />
+				<field name="framePrice" type="double" description="Precio de la montura" />
+				<field name="variantId_MO" type="int" description="Id de la variante" />
+				<field name="variantName" type="String" description="Nombre de la variante" />
+				<field name="variantPrice" type="double" description="Precio de la variante" />
+				<field name="lensTypeId_MO" type="int" description="Id del tipo de lente" />
+				<field name="lensTypeName" type="String" description="Nombre del tipo de lente" />
+				<field name="lensTypePrice" type="double" description="Precio del tipo de lente" />
+				<field name="lensEquipmentId_MO" type="int" description="Id del equipamiento de la lente" />
+				<field name="lensEquipmentName" type="String" description="Nombre del equipamiento de la lente" />
+				<field name="lensEquipmentPrice" type="double" description="Precio del equipamiento de la lente" />
+				<field name="treatmentOneId_MO" type="int" description="Id del tratamiento" />
+				<field name="treatmentOneName" type="String" description="Nombre del tratamiento" />
+				<field name="treatmentOnePrice" type="double" description="Precio del tratamiento" />
+				<field name="treatmentTwoId_MO" type="int" description="Id del tratamiento" />
+				<field name="treatmentTwoName" type="String" description="Nombre del tratamiento" />
+				<field name="treatmentTwoPrice" type="double" description="Precio del tratamiento" />
+				<field name="treatmentSunId_MO" type="int" description="Id del tratamiento" />
+				<field name="treatmentSunName" type="String" description="Nombre del tratamiento" />
+				<field name="treatmentSunPrice" type="double" description="Precio del tratamiento" />
+				<field name="crossSellId_MO" type="int" description="Id de la venta cruzada" />
+				<field name="crossSellName" type="String" description="Nombre de la venta cruzada" />
+				<field name="crossSellPrice" type="double" description="Precio de la venta cruzada" />
+				<field name="crossSellDetailId_MO" type="int" description="Id del detalle de la venta cruzada" />
+				<field name="crossSellDetailName" type="String" description="Nombre del detalle de la venta cruzada" />
+				<field name="crossSellDetailPrice" type="double" description="Precio del detalle de la venta cruzada" />
+				<field name="warrantyId_MO" type="int" description="Id de la garantia" />
+				<field name="warrantyName" type="String" description="Nombre de la garantia" />
+				<field name="warrantyPrice" type="double" description="Precio de la garantia" />
+				<field name="secondFrameId_MO" type="int" description="Id de la montura" />
+				<field name="secondFrameName" type="String" description="Nombre de la montura" />
+				<field name="secondFramePrice" type="double" description="Precio de la montura" />
+				<field name="secondVariantId_MO" type="int" description="Id de la variante" />
+				<field name="secondVariantName" type="String" description="Nombre de la variante" />
+				<field name="secondVariantPrice" type="double" description="Precio de la variante" />
+				<field name="secondTreatmentOneId_MO" type="int" description="Id del tratamiento" />
+				<field name="secondTreatmentOneName" type="String" description="Nombre del tratamiento" />
+				<field name="secondTreatmentOnePrice" type="double" description="Precio del tratamiento" />
+				<field name="secondTreatmentTwoId_MO" type="int" description="Id del tratamiento" />
+				<field name="secondTreatmentTwoName" type="String" description="Nombre del tratamiento" />
+				<field name="secondTreatmentTwoPrice" type="double" description="Precio del tratamiento" />
+				<field name="secondTreatmentSunId_MO" type="int" description="Id del tratamiento" />
+				<field name="secondTreatmentSunName" type="String" description="Nombre del tratamiento" />
+				<field name="secondTreatmentSunPrice" type="double" description="Precio del tratamiento" />
+				<field name="secondWarrantyId_MO" type="int" description="Id de la garantia" />
+				<field name="secondWarrantyName" type="String" description="Nombre de la garantia" />
+				<field name="secondWarrantyPrice" type="double" description="Precio de la garantia" />
+				<field name="totalPrice" type="double" description="Precio total" />
+			</request>
+			<response>
+				<field name="status" type="String" description="OK, NO_OK" />
+				<field name="statusMessage" type="String" description="Descripción del error en caso de error" />
+			</response>
+		</message>
 	</messages>
 	<types>
 		<type name="PromoDTO">
