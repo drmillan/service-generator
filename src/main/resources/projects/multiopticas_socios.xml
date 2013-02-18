@@ -353,7 +353,7 @@
 			<field name="crossSellDescription" type="String" description="Descripción de la venta cruzada" />
 			<field name="imageURL" type="String" description="URL absoluta de la imagen" />
 			<field name="lastUpdate" type="Date" description="Fecha de la última actualización de la imagen" />
-			<field name="price" type="String" description="Coste adicional de la venta cruzada" />
+			<field name="price" type="double" description="Coste adicional de la venta cruzada" />
 			<field name="priceType" type="String" description="Indica si el precio es absoluto o porcentaje" />
 			<field name="frameFilterId" type="int" description="Id del filtro a aplicar para la segunda montura" />
 			<field name="inheritance" type="Boolean" description="Indica si la venta cruzada permite heredar los tratamientos a la segunda gafa" />
