@@ -342,7 +342,7 @@
 			<field name="treatmentId" type="int" description="id del tratamiento" />
 			<field name="treatmentType" type="String" description="Tipo de tratamiento (1,2,SOL)" />
 			<field name="name" type="String" description="Nombre del tratamiento" />
-			<field name="description" type="String" description="Descripción del tratamiento" />			
+			<field name="treatmentDescription" type="String" description="Descripción del tratamiento" />			
 			<field name="price" type="double" description="precio del tratamiento" />
 			<field name="imageURL" type="String" description="URL absoluta de la imagen" />
 			<field name="lastUpdate" type="Date" description="Fecha de la última actualización de la imagen" />
