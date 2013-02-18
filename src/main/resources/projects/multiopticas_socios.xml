@@ -77,7 +77,7 @@
 				<field name="materials" type="MaterialDTO*" description="Listado de materiales" />
 				<field name="frameSizes" type="FrameSizeDTO*" description="Listado de calibres" />
 				<field name="frameRates" type="FrameRateDTO*" description="Listado de tarifas" />
-				<field name="frameFilters" type="FrameFilterDTO*" description="Listado de filtros para las monturas" />
+				<field name="framesFilters" type="FramesFilterDTO*" description="Listado de filtros para las monturas" />
 				<field name="frames" type="FrameDTO*" description="Listado de monturas" />
 				<field name="lensTypes" type="LensTypeDTO*" description="Listado de tipos de lentes" />
 				<field name="warranties" type="WarrantyDTO*" description="Lista de garantías" />
@@ -153,7 +153,7 @@
 			<response>
 				<field name="status" type="String" description="OK, NO_OK" />
 				<field name="statusMessage" type="String" description="Descripción del error en caso de error" />
-				<field name="orderId_MO" type="String" description="Identificador del pedido guardado" />
+				<field name="orderId_MO" type="int" description="Identificador del pedido guardado" />
 			</response>
 		</message>
 		<!-- ###################################### SAVE ORDER ###################################### -->
@@ -248,7 +248,7 @@
 			<field name="order" type="int" description="Orden en el que aparecera en los filtros" />
 		</type>
 		<type name="FrameTypeDTO">
-			<field name="frameId" type="int" description="Id del tipo de montura" />
+			<field name="frameTypeId" type="int" description="Id del tipo de montura" />
 			<field name="name" type="String" description="Nombre del tipo de montura (Sol, Graduada)" />
 			<field name="order" type="int" description="Orden en el que aparecera en los filtros" />
 		</type>
@@ -278,7 +278,7 @@
 			<field name="name" type="String" description="Nombre de la tarifa" />
 			<field name="price" type="double" description="Precio de la montura" />
 		</type>
-		<type name="FrameFilterDTO">
+		<type name="FramesFilterDTO">
 			<field name="frameFilterId" type="int" description="Id de filtro" />
 			<field name="defaultFilter" type="boolean" description="Indica si es el filtro por defecto" />
 			<field name="ageEnabled" type="boolean" description="Indica si es posible cambiar el filtro de la edad" />			
@@ -299,8 +299,7 @@
 		<type name="FrameDTO">
 			<field name="frameId" type="int" description="id de la montura" />
 			<field name="reference" type="int" description="Referencia" />
-			<field name="frameDescription" type="String" description="Descripcion de la montura" />			
-			<field name="price" type="double" description="Precio de la montura" />
+			<field name="frameDescription" type="String" description="Descripcion de la montura" />
 			<field name="order" type="int" description="Orden en el listado" />			
 			<field name="frameTypeId" type="int" description="Id del tipo de montura (Sol, Graduada,...)" />
 			<field name="genderId" type="int" description="Id del sexo de la montura" />
@@ -350,7 +349,6 @@
 		</type>
 		<type name="CrossSellDTO">
 			<field name="crossSellId" type="int" description="Id de venta cruzada" />
-			<field name="crossSellType" type="String" description="Tipo de venta cruzada (SOL,MO,SOL_MODA,COMBILENTILLAS)" />
 			<field name="name" type="String" description="Nombre de la venta cruzada" />
 			<field name="crossSellDescription" type="String" description="Descripción de la venta cruzada" />
 			<field name="imageURL" type="String" description="URL absoluta de la imagen" />
@@ -368,7 +366,6 @@
 		<type name="CrossSellDetailDTO">
 			<field name="crossSellDetailId" type="int" description="Id del detalle de venta cruzada" />
 			<field name="name" type="String" description="Nombre de la venta cruzada" />
-			<field name="crossSellDetailType" type="String" description="Tipo de detalle de venta cruzada" />
 			<field name="crossSellDetailDescription" type="String" description="Descripción del detalle de la venta cruzada" />
 			<field name="price" type="double" description="Coste adicional" />
 			<field name="priceType" type="String" description="Tipo de precio a aplicar: Porcentaje o Absoluto" />
@@ -384,7 +381,7 @@
 			<field name="price" type="double" description="Coste adicional" />
 		</type>
 		<type name="OrderDTO">
-			<field name="orderId" type="int" description="Identificador del pedido" />
+			<field name="orderId" type="int" description="id del pedido" />
 			<field name="name" type="String" description="Nombre del cliente" />
 			<field name="email" type="String" description="Email del cliente" />
 			<field name="phoneNumber" type="String" description="Teléfono del cliente" />
