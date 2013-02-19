@@ -1,0 +1,55 @@
+//
+//  {{message.methodUpperCase}}Task.m
+//  {{projectName}}
+//  Version: {{version}}
+//
+//  Created by Mobivery
+//  Copyright (c) 2012 Mobivery. All rights reserved.
+//
+
+#import "{{message.methodUpperCase}}Task.h"
+#import "{{projectName}}Helper.h"
+#import "{{message.service}}Logic.h"
+
+@implementation {{message.methodUpperCase}}Task
+
++ (void) {{message.name}}TaskForRequest:({{message.request.name}} *)request completed:(void(^)({{message.response.name}} *response))completedBlock error:(void(^)(NSError *error))errorBlock {
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+		
+	UIView *loadingView;
+	if ([[{{projectName}}Helper sharedInstance] respondsToSelector:@selector(loadingViewForTasks)]) {
+		loadingView = [[{{projectName}}Helper sharedInstance] loadingViewForTasks];
+	}
+				
+	if (loadingView) {
+		UIWindow* window = [UIApplication sharedApplication].keyWindow;
+		[window addSubview:loadingView];
+	}
+
+	dispatch_async(dispatch_get_global_queue(0,0), ^{
+
+		NSError *error;	
+		
+		{{message.response.name}} *response = [[{{message.service}}Logic sharedInstance] {{message.method}}:request onError:&error];
+	
+        dispatch_async(dispatch_get_main_queue(), ^{
+			[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        
+			if (loadingView) {
+				[loadingView removeFromSuperview];
+			}
+        
+			if (!error && completedBlock) {
+				completedBlock(response);
+			}
+			
+			if (error && errorBlock) {
+				errorBlock(error);
+			}
+        });
+    });
+} 
+
+
+@end

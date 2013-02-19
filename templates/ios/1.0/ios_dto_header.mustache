@@ -1,0 +1,31 @@
+//
+//  {{{dto.name}}}.h
+//  {{{projectName}}}
+//  Version: {{{version}}}
+//
+//  Created by Mobivery
+//  Copyright (c) 2012 Mobivery. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+{{#dto.objectFields}}
+#import "{{{iosBaseTypeSingular}}}.h"
+{{/dto.objectFields}}
+{{#dto.objectArrayFields}}
+#import "{{{iosBaseTypeSingular}}}.h"
+{{/dto.objectArrayFields}}
+
+
+@interface {{{dto.name}}} : NSObject {
+  
+{{#dto.fields}}
+    {{{typeIOS}}} *_{{{name}}};				///< {{{comment}}}
+{{/dto.fields}}
+
+}
+
+{{#dto.fields}}
+@property (nonatomic, strong) {{{typeIOS}}} *{{{name}}};
+{{/dto.fields}}
+
+@end

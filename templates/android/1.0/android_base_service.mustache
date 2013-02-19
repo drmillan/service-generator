@@ -1,0 +1,277 @@
+/**
+  {{{serviceName}}}Service
+  {{{projectName}}}
+
+Created by Service-Generator.
+  Copyright (c) 2012 Mobivery. All rights reserved.
+  Version: {{{version}}}
+*/
+package {{{packagename}}}.logic.base;
+
+
+import {{{packagename}}}.model.dao.*;
+import {{{packagename}}}.model.dto.*; 
+import {{{packagename}}}.logic.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URLEncoder;
+import java.util.Date;
+
+import com.mobivery.utils.HttpClientHelper;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.CookieStore;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.protocol.ClientContext;
+{{#service.hasDelete}}
+import org.apache.http.client.methods.HttpDelete;
+{{/service.hasDelete}}
+{{#service.hasGet}}
+import org.apache.http.client.methods.HttpGet;
+{{/service.hasGet}}
+{{#service.hasPost}}
+import org.apache.http.client.methods.HttpPost;
+{{/service.hasPost}}
+{{#service.hasPut}}
+import org.apache.http.client.methods.HttpPut;
+{{/service.hasPut}}
+{{#service.hasMultipart}}
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.entity.mime.content.FileBody;
+
+import java.io.File;
+import java.io.FileInputStream;
+import org.apache.commons.io.IOUtils;
+{{/service.hasMultipart}}
+import org.apache.http.entity.StringEntity;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HttpContext;
+import java.util.List;
+import java.util.ArrayList;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
+/**
+ * Servicio que realiza las llamadas a DAO,
+ * Este servicio corresponde con la logica {{{serviceName}}}
+ */
+public class Base{{{serviceName}}}Logic
+{
+
+{{#messages}}
+	private {{{response.name}}} {{{method}}}LastResponse;
+	private Date {{{method}}}LastResponseTime;	
+{{/messages}}
+
+{{#messages}}
+	/**
+	 * Metodo {{{method}}}: {{{description}}}
+	{{#request.fields}}
+	 * @param {{{name}}} {{{comment}}}
+	{{/request.fields}}
+	 * @returns {{{response.name}}} Respuesta del servidor
+	 * @throws com.mobivery.logic.ServiceException Error de comunicacion / datos 
+	 */
+	 
+	public {{{response.name}}} {{{method}}}({{{javaRequestParams}}}) throws com.mobivery.logic.ServiceException
+	{		
+		{{{request.name}}} {{{request.javaInstanceName}}}=new {{{request.name}}}();
+		{{#request.fields}}
+		{{{request.javaInstanceName}}}.set{{{nameUcase}}}({{{javaName}}});	
+		{{/request.fields}}
+		{{{response.name}}} returnValue={{{method}}}({{{request.javaInstanceName}}});
+		{{{method}}}LastResponse = returnValue;
+		{{{method}}}LastResponseTime = new Date();
+		return returnValue;
+	}
+	
+	/**
+	 * Metodo {{{method}}}: {{{description}}}
+	 * @param {{{request.javaInstanceName}}} Peticion al servicio
+	 * @returns {{{response.name}}} Respuesta del servidor
+	 * @throws com.mobivery.logic.ServiceException Error de comunicacion / datos 
+	 */
+	public {{{response.name}}} {{{method}}}({{{request.name}}} {{{request.javaInstanceName}}}) throws com.mobivery.logic.ServiceException
+	{
+		try
+		{
+		CookieStore cookieStore = new BasicCookieStore();	
+		HttpContext localContext = new BasicHttpContext();
+		localContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
+	
+		{{#onSend}}
+			{{{onSend}}}({{{request.javaInstanceName}}});
+		{{/onSend}}
+		{{{response.name}}} {{{response.javaInstanceName}}};
+		// Obtenemos la URL del mensaje : {{{url}}}
+		String url="{{{url}}}";
+		url={{{projectName}}}Helper.getInstance().preInjectURLParameters(url,{{{request.javaInstanceName}}});
+		{{#request.fields}}
+		if({{{request.javaInstanceName}}}.get{{{nameUcase}}}()==null)
+		{
+			url=url.replace("${"+"{{{name}}}"+"}","");
+		}
+		else
+		{
+			url=url.replace("${"+"{{{name}}}"+"}",URLEncoder.encode(String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}()),"UTF-8"));
+		}	
+		{{/request.fields}}
+		
+		url=fixSystemProperties(url);
+
+		url=url.replace("|",URLEncoder.encode("|","UTF-8"));
+		url={{{projectName}}}Helper.getInstance().postInjectURLParameters(url,{{{request.javaInstanceName}}});
+		System.out.println(Base{{{serviceName}}}Logic.class.getName()+" SENT:"+url);
+		String result;
+		{{#request.multipart}}
+		DefaultHttpClient httpClient = HttpClientHelper.getInstance().getNewHttpClient();
+		HttpPost postRequest = new HttpPost(url);			
+		MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+		{{#request.fields}}
+		{{#isFile}}
+		reqEntity.addPart("{{{name}}}", new FileBody(new File(String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}())),"{{{mimeType}}}"));
+		{{/isFile}}
+		{{^isFile}}
+	 	reqEntity.addPart("{{{name}}}", 
+			new StringBody(String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}())));
+		{{/isFile}}
+		{{/request.fields}}
+			
+		postRequest.setEntity(reqEntity);
+		{{{projectName}}}Helper.getInstance().preExecute(httpClient,postRequest,cookieStore,localContext);
+		HttpResponse response = httpClient.execute(postRequest,localContext);
+		{{{projectName}}}Helper.getInstance().postExecute(httpClient,postRequest,response,cookieStore);
+		BufferedReader reader = new BufferedReader(
+			new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+		String sResponse;
+		StringBuilder s = new StringBuilder();
+
+		while ((sResponse = reader.readLine()) != null) {
+			s = s.append(sResponse);
+		}
+		result=s.toString();
+		{{/request.multipart}}
+		{{^request.multipart}}
+		DefaultHttpClient client = HttpClientHelper.getInstance().getNewHttpClient();
+		Http{{{simpleType}}} request=new Http{{{simpleType}}}(url);
+
+		{{#isWrite}}
+		List <NameValuePair> parameters = new ArrayList <NameValuePair>(); 
+		{{#request.fields}}
+	 	parameters.add(new BasicNameValuePair("{{{name}}}", 		String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}())));       
+		{{/request.fields}}
+		{{^isDelete}}
+		request.setEntity(new UrlEncodedFormEntity(parameters, HTTP.UTF_8));
+		{{/isDelete}}
+		{{/isWrite}}
+		{{#isWriteJSON}}
+		JSONObject jsonObject ={{{request.daoClassName}}}.getInstance().serialize({{{request.javaInstanceName}}});
+		StringEntity requestEntity = new StringEntity(jsonObject.toString(), HTTP.UTF_8);
+		System.out.println(Base{{{serviceName}}}Logic.class.getName()+" SENT (application/json):"+jsonObject.toString());
+		requestEntity.setContentType("application/json");
+		request.setEntity(requestEntity);
+		{{/isWriteJSON}}
+		{{#isGet}}
+		JSONObject jsonObject ={{{request.daoClassName}}}.getInstance().serialize({{{request.javaInstanceName}}});
+		request.addHeader("data",jsonObject.toString());	
+		System.out.println(Base{{{serviceName}}}Logic.class.getName()+" SENT (application/json):"+jsonObject.toString());			
+		{{/isGet}}
+        {{{projectName}}}Helper.getInstance().preExecute(client,request,cookieStore,localContext);
+		HttpResponse response = client.execute(request,localContext);
+		{{{projectName}}}Helper.getInstance().postExecute(client,request,response,cookieStore);
+		HttpEntity entity = response.getEntity();
+		result=convertStreamToString(entity.getContent());
+		result={{{projectName}}}Helper.getInstance().preprocessResponse(result);
+		
+		System.out.println(Base{{{serviceName}}}Logic.class.getName()+" RECEIVED:"+result);
+		{{/request.multipart}}		
+		
+		{{{response.javaInstanceName}}}={{{response.daoClassName}}}.getInstance().create(
+			new JSONObject(result));
+		{{#onReceive}}
+			{{{onReceive}}}({{{request.javaInstanceName}}},{{{response.javaInstanceName}}});
+		{{/onReceive}}
+		
+		{{{method}}}LastResponse = {{{response.javaInstanceName}}};
+		{{{method}}}LastResponseTime = new Date();
+		
+		return {{{response.javaInstanceName}}};
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			throw new com.mobivery.logic.ServiceException(ex);
+		}
+	}
+{{/messages}}	
+	
+	/**
+	 * Lee el contenido de un stream como una cadena
+	 * @param is InputStream del que leer
+	 * @return Cadena leida
+	 * @throws IOException
+	 */
+	private String convertStreamToString(InputStream is) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+		StringBuilder sb = new StringBuilder();
+
+		String line = null;
+			while ((line = reader.readLine()) != null) {
+				sb.append(line + "\n");
+			}
+		return sb.toString();
+	}
+	
+	/**
+	 * A�ade las propiedades de sistema en los par�metros que aun no tienen valor establecido
+	 * @param URL original
+	 * @returns URL modificada anyadiendo las propiedades de sistema
+	 */
+	private  String fixSystemProperties(String url)
+	{
+		while(url.contains("${"))
+		{
+			int start=url.indexOf("${")+2;
+			int end=url.indexOf("}",start);
+			String key=url.substring(start,end);
+			String value=System.getProperty(key,"");
+			url=url.replace("${"+key+"}",value);
+		}
+		return url;
+	}
+	
+{{#messages}}
+	/**
+	 * Obtiene la ultima respuesta cacheada de {{{methodUpperCase}}}
+	 * @returns valor cacheado
+	 */
+	public {{{response.name}}} get{{{methodUpperCase}}}LastResponse() {
+		return {{{method}}}LastResponse;
+	}
+
+	/**
+	 * Obtiene cuando se obtuvo la ultima respuesta cacheada de {{{methodUpperCase}}}
+	 * @returns ultima actualizacion
+	 */	
+	public Date get{{{methodUpperCase}}}LastResponseTime() {
+		return {{{method}}}LastResponseTime;
+	}	
+	
+{{/messages}}
+}

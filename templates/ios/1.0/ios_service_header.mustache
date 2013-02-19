@@ -1,0 +1,23 @@
+//
+//  {{{serviceName}}}Logic.h
+//  {{{projectName}}}
+//  Version: {{{version}}}
+//
+//  Created by Mobivery
+//  Copyright (c) 2012 Mobivery. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "MVYDefines.h"
+#import "Base{{serviceName}}Logic.h"
+{{#imports}}
+#import "{{request.name}}.h"
+#import "{{response.name}}.h"
+{{/imports}}
+
+@interface {{{serviceName}}}Logic : Base{{{serviceName}}}Logic
+  // Get the shared instance and create it if necessary.
++ ({{{serviceName}}}Logic *)sharedInstance;
+
+
+@end

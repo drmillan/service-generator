@@ -1,0 +1,139 @@
+package {{{packagename}}}.model.dto.base;
+import java.util.List;
+import java.util.ArrayList;
+import android.os.Parcel;
+import android.os.Parcelable;
+import {{{packagename}}}.model.dto.*;
+
+/**
+ Created by Service-Generator.
+  Copyright (c) 2012 Mobivery. All rights reserved.
+  Version: {{{version}}}
+ */
+public class {{{projectName}}}DTOBundle
+{
+{{#dtos}}
+	/**
+	 * DTO que define la clase {{{name}}}
+	 */
+	public static class Base{{{name}}} implements Parcelable
+	{
+		public Base{{{name}}}(Parcel in) {
+			readFromParcel(in);
+		}
+	
+		public Base{{{name}}}() {
+		}
+	
+		{{#fields}}
+		//{{{comment}}}
+		private {{{typeJava}}} {{{javaName}}}; 
+		{{/fields}}
+		
+		// Setters y Getters
+		
+		{{#fields}}
+		/**
+		 * Setter de la propiedad {{{javaName}}} , {{{comments}}}
+		 * @param {{{javaName}}} valor a establecer en el set
+		 */
+		public void set{{{nameUcase}}}({{{typeJava}}} {{{javaName}}})
+		{
+			this.{{{javaName}}}={{{javaName}}};
+		}
+		/**
+		 * Getter de la propiedad {{{javaName}}} , {{{comments}}}
+		 * @returns Valor de la propiedad {{{javaName}}}
+		 */
+		public {{{typeJava}}} get{{{nameUcase}}}()
+		{
+			return {{{javaName}}};
+		}
+		{{/fields}}
+		
+		@Override
+		public int describeContents() {
+			return 0;
+		}
+
+		@Override
+		public void writeToParcel(Parcel dest, int flags) {
+		{{#baseFields}}
+			{{#isString}}
+			dest.writeString({{{javaName}}});
+			{{/isString}}
+			{{#isLong}}
+			dest.writeLong({{{javaName}}});
+			{{/isLong}}
+			{{#isInteger}}
+			dest.writeInt({{{javaName}}});
+			{{/isInteger}}
+			{{#isDouble}}
+			dest.writeDouble({{{javaName}}});
+			{{/isDouble}}
+			{{#isBoolean}}
+			dest.writeByte((byte)(({{{javaName}}} != null && {{{javaName}}})? 1:0));
+			{{/isBoolean}}
+			{{#isFloat}}
+			dest.writeFloat({{{javaName}}});
+			{{/isFloat}}
+		{{/baseFields}}
+
+{{#baseArrayFields}}
+			dest.writeList({{{javaName}}});
+{{/baseArrayFields}}
+{{#objectFields}}
+			dest.writeParcelable({{{javaName}}}, flags);
+{{/objectFields}}
+{{#objectArrayFields}}
+			dest.writeTypedList({{{javaName}}});
+{{/objectArrayFields}}
+		}
+		
+		public void readFromParcel(Parcel in) {
+{{#baseFields}}	
+	{{#isString}}
+			{{{javaName}}} = in.readString();
+	{{/isString}}
+	{{#isLong}}
+			{{{javaName}}} = in.readLong();
+	{{/isLong}}
+	{{#isInteger}}
+			{{{javaName}}} = in.readInt();
+	{{/isInteger}}
+	{{#isDouble}}
+			{{{javaName}}} = in.readDouble();
+	{{/isDouble}}
+	{{#isBoolean}}
+			{{{javaName}}} = in.readByte() == 1;
+	{{/isBoolean}}
+	{{#isFloat}}
+			{{{javaName}}} = in.readFloat();
+	{{/isFloat}}
+{{/baseFields}}
+{{#baseArrayFields}}
+			{{{javaName}}} = new ArrayList<{{{baseTypeSingular}}}>(); 
+			in.readList({{{javaName}}}, {{{baseTypeSingular}}}.class.getClassLoader());
+{{/baseArrayFields}}
+{{#objectFields}}
+			{{{javaName}}} = in.readParcelable({{{baseTypeSingular}}}.class.getClassLoader());
+{{/objectFields}}
+{{#objectArrayFields}}
+			{{{javaName}}} = new ArrayList<{{{baseTypeSingular}}}>();
+			in.readTypedList({{{javaName}}}, {{{baseTypeSingular}}}.CREATOR);
+{{/objectArrayFields}}
+		}
+		
+		public static final Parcelable.Creator<Base{{{name}}}> CREATOR =
+			new Parcelable.Creator<Base{{{name}}}>() {
+				public Base{{{name}}} createFromParcel(Parcel in) {
+					return new Base{{{name}}}(in);
+				}
+				public Base{{{name}}}[] newArray(int size) {
+					return new Base{{{name}}}[size];
+				}
+			};
+			
+	}
+{{/dtos}}
+}
