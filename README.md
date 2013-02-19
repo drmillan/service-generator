@@ -1,15 +1,7 @@
 # ServiceGenerator
-## Configuración de Eclipse
-
-Si Eclipse no tiene instalado el módulo de Eclipse Marketplace (la opción aparece bajo el menu Help), instalarlo
-mediante  **Help** -> **Install new software**, buscar **marketplace** e instalar
-    
-Desde **Eclipse Marketplace**, buscar **Maven** , e instalar el **plugin m2e** [Maven para eclipse]
-
 ## Plantilla de definición de servicios
 
-Los servicios de una aplicación se definen en un fichero localizado
-en la ruta `src/main/resources/projects` con formato XML
+Los servicios de una aplicación se definen en un fichero con formato XML
 	
 El fichero de definición define los tipos y servicios asociados a la
 aplicación siguiendo el siguiente formato:
@@ -128,66 +120,4 @@ Nombre del tipo (Es el nombre que tendrá el DTO generado)
 
 ## Generación
 
-#### Proyecto : `service_generator`<br/>
-
-Clase Main: `com.mobivery.modelgenerator.GenerateDTO`<br/>
-
-#### Parámetros de la app:
-
-fichero XML de definición de servicios: 
-`/projects/simyo.xml`
-	
-#### Parámetros de la máquina virtual
-
-`common.folder` [Obligatorio si generación Java]
-
-Carpeta de generación de modelo de datos (DAOs y DTOs) java. El fuente generado es platform independent, pudiendo ser utilizado desde j2se
-							
-			
-`android.folder` [Obligatorio si generación Java]
-
-Carpeta de generación de código específico java para Android, Tasks y Servicios
-							
-`ios.folder` [Obligatorio si generación iOS]
-Carpeta de generación de código específico ObjectiveC
-		
-`project.name` [Obligatorio]
-Nombre del proyecto
-				
-`package.name` [Obligatorio]
-Nombre de paquete del proyecto
-					
-`log.level` [Opcional, valor por defecto=ERROR]
-
-**DEBUG**: Establece nivel de log mínimo a DEBUG
-
-**INFO**: Establece nivel de log mínimo a INFO
-
-**ERROR**: Establece nivel de log mínimo a ERROR
-
-`ios.version` [Opcional, valor por defecto=1.0]	
-
-Versión de la plantilla a utilizar para iOS
-
-`android.version` [Opcional, valor por defecto=1.0]
-
-Versión de la plantilla a utilizar para Android
-			
-### Generación Android
-
-	Parámetros de ejecución Android:
-	
-	-Dcommon.folder=/Users/DRM/Documents/workspace/Simyo-Android/src/ 
-	-Dandroid.folder=/Users/DRM/Documents/workspace/Simyo-Android/src/ 
-	-Dproject.name=Simyo 
-	-Dpackage.name=com.simyo
-	-Dlog.level=DEBUG
-	-Dandroid.version=1.0
-
-### Generación IOS
-
-	-Dios.folder=/Users/DRM/Documents/workspace/Simyo-IOS/Simyo/Classes/gen 
-	-Dproject.name=Simyo 
-	-Dpackage.name=com.simyo
-	-Dlog.level=DEBUG
-	-Dios.version=1.0
+ruby generator.rb -f [Ruta absoluta fichero xml] -pn [Nombre de proyecto] -package [Paquete Java Base] -aOutput [Ruta al proyecto Android] -iOutput [Ruta al proyecto iOS]
