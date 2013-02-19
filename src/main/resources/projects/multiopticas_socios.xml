@@ -313,6 +313,7 @@
 		</type>
 		<type name="VariantDTO">
 			<field name="variantId" type="int" description="Id de la variante" />
+      <field name="name" type="String" description="Nombre de la variante" />
 			<field name="colorId" type="int" description="Id del color" />
 			<field name="order" type="int" description="Orden en el listado" />
 			<field name="mainVariant" type="boolean" description="Indicativo si la variante es la principal para esta montura" />
