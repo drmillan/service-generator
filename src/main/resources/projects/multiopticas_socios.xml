@@ -59,7 +59,7 @@
 		<message name="UpdateDB" service="MO" method="updateDB"
 			description="" type="Get">
 			<urlPattern>
-				<url address="http://${SERVER}/db/update" />
+				<url address="http://${kUpdateURL}" />
 			</urlPattern>
 			<request>
 				<field name="appId" type="String" description="Id de aplicación" />
