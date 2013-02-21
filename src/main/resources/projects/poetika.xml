@@ -194,7 +194,7 @@
 		        <field name="status" type="string"/>
 		    </response>
 		</message>
-		<message name="EditPoem" service="Poem" method="editPoem" type="Put">
+		<message name="EditPoem" service="Poem" method="editPoem" type="PutJSON">
 		    <urlPattern>
 		        <url address="${serverURL}/poems/${poemId}"/>
 		    </urlPattern>
