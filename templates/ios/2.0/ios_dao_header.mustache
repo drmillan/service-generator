@@ -1,0 +1,33 @@
+//
+//  {{{dto.daoClassName}}}.h
+//  {{{projectName}}}
+//  Version: {{{version}}}
+//
+//  Created by Mobivery
+//  Copyright (c) 2012 Mobivery. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+{{#dto.objectFields}}
+#import "{{{iosBaseTypeSingular}}}.h"
+{{/dto.objectFields}}
+{{#dto.objectArrayFields}}
+#import "{{{iosBaseTypeSingular}}}.h"
+{{/dto.objectArrayFields}}
+#import "{{{dto.name}}}.h"
+
+@interface {{{dto.daoClassName}}} : NSObject
+
+// Get the shared instance and create it if necessary.
++ ({{{dto.daoClassName}}} *)sharedInstance;
+
+// Set DTOs values from Dictionary
+-({{{dto.name}}} *) readFromDictionary:(NSDictionary *)dict;
+
+// Creates a DTO array from Dictionary array
+-(NSArray *) readFromDictionaryArray:(NSArray *)dictArray;
+
+// Creates a json dictionary from DTO instance
+-(NSDictionary *) writeToDictionary:({{{dto.name}}} *)instance;
+
+@end

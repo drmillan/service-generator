@@ -11,33 +11,33 @@ require 'active_support/inflector'
 # XML Definition File Reader
 ##################################
 class XmlReader
-  
+
   #####################
   # Read XML definition
   #####################
   def XmlReader.read_xml(xmlFile)
     puts 'Loading xml'
-    
+
     # Start XML loading
     contents=REXML::Document.new(File.new(xmlFile))
     protocol=Protocol.new
-    
+
     # Read Protocol definition
     protocol.onReceive=contents.root.attributes['onReceive']
     protocol.onSend=contents.root.attributes['onSend']
     protocol.onError=contents.root.attributes['onError']
     protocol.onTask=contents.root.attributes['onTask']
-    
+
     # Read Types
     protocol.types=XmlReader.read_types(contents.root)
-    
+
     # Read Messages    
     XmlReader.read_messages(contents.root,protocol)
-    
+
     puts 'Finished loading xml definition'
     return protocol
   end
-  
+
   ##########################################
   # Read Messages from protocol root node
   ##########################################
@@ -48,7 +48,7 @@ class XmlReader
     protocolNode.each_element("//message") do |xmlMessage|
 
       # Create message object
-      protocol.messages[i]=Message.new      
+      protocol.messages[i]=Message.new
 
       # Read url
       protocol.messages[i].url=XmlReader.read_url(xmlMessage)
@@ -62,13 +62,26 @@ class XmlReader
       # Add types to global types
       protocol.types << protocol.messages[i].request
       protocol.types << protocol.messages[i].response
-      
+
       # Read common protocol properties
       protocol.messages[i].name=xmlMessage.attributes['name']
       protocol.messages[i].service=xmlMessage.attributes['service']
       protocol.messages[i].method=xmlMessage.attributes['method']
       protocol.messages[i].description=xmlMessage.attributes['description']
       protocol.messages[i].type=xmlMessage.attributes['type']
+
+      # Fix standard names if no request type name is given
+      if !protocol.messages[i].request.type && !protocol.messages[i].request.name
+        protocol.messages[i].request.type=protocol.messages[i].name+'RequestDTO'
+        protocol.messages[i].request.name=protocol.messages[i].name+'RequestDTO'
+      end
+
+      # Fix standard names if no response type name is given
+      if !protocol.messages[i].response.type && !protocol.messages[i].response.name
+        protocol.messages[i].response.type=protocol.messages[i].name+'ResponseDTO'
+        protocol.messages[i].response.name=protocol.messages[i].name+'ResponseDTO'
+      end
+
 
       if(!protocol.services[protocol.messages[i].service])
         protocol.services[protocol.messages[i].service]=Service.new
@@ -79,7 +92,7 @@ class XmlReader
       i=i+1
     end
   end
-  
+
   ##########################################
   # Read Types from protocol root node
   ##########################################
@@ -92,7 +105,7 @@ class XmlReader
     end
     return types
   end
-  
+
   ##########################################
   # Read Type definition
   ##########################################
@@ -108,7 +121,7 @@ class XmlReader
     end
     return serviceType
   end
-  
+
   ##########################################
   # Read Field
   ##########################################

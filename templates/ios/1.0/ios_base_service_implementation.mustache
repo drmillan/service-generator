@@ -263,7 +263,7 @@
 
 		{{#inURLbutNotField}}
 		    #ifdef {{.}}
-        		url=[url stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}","{{.}}"] withString:{{.}}];
+        		url=[url stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}",{{.}}] withString:{{.}}];
             #endif
 		{{/inURLbutNotField}}
 
