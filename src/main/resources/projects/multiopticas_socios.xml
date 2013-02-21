@@ -322,6 +322,7 @@
 		</type>
 		<type name="LensTypeDTO">
 			<field name="lensTypeId" type="int" description="id del tipo de lente" />
+			<field name="type" type="String" description="Tipo de lente 0 -> monofocal, 1 -> progresivo" />
 			<field name="name" type="String" description="Nombre del tipo de lente (monofocal , progresivo)" />
 			<field name="lensTypeDescription" type="String" description="Descripción del tipo de lente" />
 			<field name="price" type="double" description="Precio del tipo de lente" />
