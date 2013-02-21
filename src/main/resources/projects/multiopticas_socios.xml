@@ -23,7 +23,7 @@
 		<message name="RemoveOrder" service="MO" method="removeOrder"
 			description="" type="Delete">
 			<urlPattern>
-				<url address="http://${SERVER}/order/delete" />
+				<url address="http://${kRemoveOrderURL}" />
 			</urlPattern>
 			<request>
 				<field name="appId" type="String" description="Id de aplicación" />
@@ -39,7 +39,7 @@
 		<message name="OrderHistory" service="MO" method="orderHistory"
 			description="" type="Get">
 			<urlPattern>
-				<url address="http://${SERVER}/order/history" />
+				<url address="http://${kOrderHistoryURL}" />
 			</urlPattern>
 			<request>
 				<field name="appId" type="String" description="Id de aplicación" />
@@ -86,7 +86,7 @@
 		<message name="SaveOrder" service="MO" method="saveOrder"
 			description="" type="Post">
 			<urlPattern>
-				<url address="http://${SERVER}/order/save" />
+				<url address="http://${kSaveOrderURL}" />
 			</urlPattern>
 			<request>
 				<field name="appId" type="String" description="Id de aplicación" />
