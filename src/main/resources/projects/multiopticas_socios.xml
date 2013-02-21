@@ -300,6 +300,7 @@
 			<field name="ageId" type="String" description="Id de la edad de la montura" />
 			<field name="materialId" type="String" description="Id del material de la montura" />
 			<field name="frameSizeId" type="String" description="Id del calibre de la montura" />
+			<field name="frameSizeDesc" type="String" description="Descripcion del calibre" />
 			<field name="price" type="double" description="Precio de la montura" />
 			<field name="collectionId" type="String" description="Id de la coleccion" />
 			<field name="isNew" type="Boolean" description="Indica si la montura pertenece a Novedades" />
