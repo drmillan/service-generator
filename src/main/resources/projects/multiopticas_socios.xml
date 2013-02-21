@@ -103,7 +103,7 @@
 				<field name="frameId_MO" type="int" description="Id de la montura" />
 				<field name="frameName" type="String" description="Nombre de la montura" />
 				<field name="framePrice" type="double" description="Precio de la montura" />
-				<field name="variantId_MO" type="int" description="Id de la variante" />
+				<field name="variantId_MO" type="String" description="Id de la variante" />
 				<field name="variantName" type="String" description="Nombre de la variante" />
 				<field name="variantPrice" type="double" description="Precio de la variante" />
 				<field name="lensTypeId_MO" type="int" description="Id del tipo de lente" />
@@ -133,7 +133,7 @@
 				<field name="secondFrameId_MO" type="int" description="Id de la montura" />
 				<field name="secondFrameName" type="String" description="Nombre de la montura" />
 				<field name="secondFramePrice" type="double" description="Precio de la montura" />
-				<field name="secondVariantId_MO" type="int" description="Id de la variante" />
+				<field name="secondVariantId_MO" type="String" description="Id de la variante" />
 				<field name="secondVariantName" type="String" description="Nombre de la variante" />
 				<field name="secondVariantPrice" type="double" description="Precio de la variante" />
 				<field name="secondTreatmentOneId_MO" type="int" description="Id del tratamiento" />
@@ -176,7 +176,7 @@
 				<field name="frameId_MO" type="int" description="Id de la montura" />
 				<field name="frameName" type="String" description="Nombre de la montura" />
 				<field name="framePrice" type="double" description="Precio de la montura" />
-				<field name="variantId_MO" type="int" description="Id de la variante" />
+				<field name="variantId_MO" type="String" description="Id de la variante" />
 				<field name="variantName" type="String" description="Nombre de la variante" />
 				<field name="variantPrice" type="double" description="Precio de la variante" />
 				<field name="lensTypeId_MO" type="int" description="Id del tipo de lente" />
@@ -206,7 +206,7 @@
 				<field name="secondFrameId_MO" type="int" description="Id de la montura" />
 				<field name="secondFrameName" type="String" description="Nombre de la montura" />
 				<field name="secondFramePrice" type="double" description="Precio de la montura" />
-				<field name="secondVariantId_MO" type="int" description="Id de la variante" />
+				<field name="secondVariantId_MO" type="String" description="Id de la variante" />
 				<field name="secondVariantName" type="String" description="Nombre de la variante" />
 				<field name="secondVariantPrice" type="double" description="Precio de la variante" />
 				<field name="secondTreatmentOneId_MO" type="int" description="Id del tratamiento" />
@@ -238,38 +238,38 @@
 			<field name="lastUpdate" type="double" description="Fecha de la última actualización de la imagen" />
 		</type>
 		<type name="AgeDTO">
-			<field name="ageId" type="int" description="Id de edad" />
+			<field name="ageId" type="String" description="Id de edad" />
 			<field name="name" type="String" description="Nombre de la edad" />
 			<field name="order" type="int" description="Orden en el que aparecera en los filtros" />
 		</type>
 		<type name="GenderDTO">
-			<field name="genderId" type="int" description="Id de sexo" />
+			<field name="genderId" type="String" description="Id de sexo" />
 			<field name="name" type="String" description="Nombre del sexo" />
 			<field name="order" type="int" description="Orden en el que aparecera en los filtros" />
 		</type>
 		<type name="FrameTypeDTO">
-			<field name="frameTypeId" type="int" description="Id del tipo de montura" />
+			<field name="frameTypeId" type="String" description="Id del tipo de montura" />
 			<field name="name" type="String" description="Nombre del tipo de montura (Sol, Graduada)" />
 			<field name="order" type="int" description="Orden en el que aparecera en los filtros" />
 		</type>
 		<type name="ColorDTO">
-			<field name="colorId" type="int" description="Id de color" />
+			<field name="colorId" type="String" description="Id de color" />
 			<field name="name" type="String" description="Nombre del color" />
 			<field name="order" type="int" description="Orden en el que aparecera en los filtros" />
 			<field name="webColor" type="String" description="Nombre del color (Web)" />
 		</type>
 		<type name="CollectionDTO">
-			<field name="collectionId" type="int" description="Id de coleccion" />
+			<field name="collectionId" type="String" description="Id de coleccion" />
 			<field name="name" type="String" description="Nombre de la coleccion" />
 			<field name="order" type="int" description="Orden en el que aparecera en los filtros" />
 		</type>
 		<type name="MaterialDTO">
-			<field name="materialId" type="int" description="Id de material" />
+			<field name="materialId" type="String" description="Id de material" />
 			<field name="name" type="String" description="Nombre del material" />
 			<field name="order" type="int" description="Orden en el que aparecera en los filtros" />
 		</type>
 		<type name="FrameSizeDTO">
-			<field name="frameSizeId" type="int" description="Id del calibre" />
+			<field name="frameSizeId" type="String" description="Id del calibre" />
 			<field name="name" type="String" description="Nombre del calibre" />
 			<field name="order" type="int" description="Orden en el que aparecera en los filtros" />
 		</type>
@@ -301,18 +301,18 @@
 			<field name="reference" type="String" description="Referencia" />
 			<field name="frameDescription" type="String" description="Descripcion de la montura" />
 			<field name="order" type="int" description="Orden en el listado" />			
-			<field name="frameTypeId" type="int" description="Id del tipo de montura (Sol, Graduada,...)" />
-			<field name="genderId" type="int" description="Id del sexo de la montura" />
-			<field name="ageId" type="int" description="Id de la edad de la montura" />
-			<field name="materialId" type="int" description="Id del material de la montura" />
-			<field name="frameSizeId" type="int" description="Id del calibre de la montura" />
+			<field name="frameTypeId" type="String" description="Id del tipo de montura (Sol, Graduada,...)" />
+			<field name="genderId" type="String" description="Id del sexo de la montura" />
+			<field name="ageId" type="String" description="Id de la edad de la montura" />
+			<field name="materialId" type="String" description="Id del material de la montura" />
+			<field name="frameSizeId" type="String" description="Id del calibre de la montura" />
 			<field name="frameRateId" type="int" description="Id de la tarifa" />
-			<field name="collectionId" type="int" description="Id de la coleccion" />
+			<field name="collectionId" type="String" description="Id de la coleccion" />
 			<field name="isNew" type="Boolean" description="Indica si la montura pertenece a Novedades" />
 			<field name="variants" type="VariantDTO*" description="Variantes de la montura" />
 		</type>
 		<type name="VariantDTO">
-			<field name="variantId" type="int" description="Id de la variante" />
+			<field name="variantId" type="String" description="Id de la variante" />
       <field name="name" type="String" description="Nombre de la variante" />
 			<field name="colorId" type="int" description="Id del color" />
 			<field name="order" type="int" description="Orden en el listado" />
