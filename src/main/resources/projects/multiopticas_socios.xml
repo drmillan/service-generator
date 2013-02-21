@@ -76,7 +76,6 @@
 				<field name="collections" type="CollectionDTO*" description="Listado de colecciones" />
 				<field name="materials" type="MaterialDTO*" description="Listado de materiales" />
 				<field name="frameSizes" type="FrameSizeDTO*" description="Listado de calibres" />
-				<field name="frameRates" type="FrameRateDTO*" description="Listado de tarifas" />
 				<field name="framesFilters" type="FramesFilterDTO*" description="Listado de filtros para las monturas" />
 				<field name="frames" type="FrameDTO*" description="Listado de monturas" />
 				<field name="lensTypes" type="LensTypeDTO*" description="Listado de tipos de lentes" />
@@ -273,11 +272,6 @@
 			<field name="name" type="String" description="Nombre del calibre" />
 			<field name="order" type="int" description="Orden en el que aparecera en los filtros" />
 		</type>
-		<type name="FrameRateDTO">
-			<field name="frameRateId" type="int" description="Id de la tarifa" />
-			<field name="name" type="String" description="Nombre de la tarifa" />
-			<field name="price" type="double" description="Precio de la montura" />
-		</type>
 		<type name="FramesFilterDTO">
 			<field name="frameFilterId" type="int" description="Id de filtro" />
 			<field name="defaultFilter" type="boolean" description="Indica si es el filtro por defecto" />
@@ -306,7 +300,7 @@
 			<field name="ageId" type="String" description="Id de la edad de la montura" />
 			<field name="materialId" type="String" description="Id del material de la montura" />
 			<field name="frameSizeId" type="String" description="Id del calibre de la montura" />
-			<field name="frameRateId" type="int" description="Id de la tarifa" />
+			<field name="price" type="double" description="Precio de la montura" />
 			<field name="collectionId" type="String" description="Id de la coleccion" />
 			<field name="isNew" type="Boolean" description="Indica si la montura pertenece a Novedades" />
 			<field name="variants" type="VariantDTO*" description="Variantes de la montura" />
