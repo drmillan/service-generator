@@ -194,7 +194,7 @@
 		        <field name="status" type="string"/>
 		    </response>
 		</message>
-		<message name="EditPoem" service="Poem" method="editPoem" type="Put">
+		<message name="EditPoem" service="Poem" method="editPoem" type="PutJSON">
 		    <urlPattern>
 		        <url address="${serverURL}/poems/${poemId}"/>
 		    </urlPattern>
@@ -291,6 +291,9 @@
 	        <field name="year" type="int"/>
 	        <field name="url" type="string"/>
 	        <field name="type" type="string"/>
+	        <field name="numFavs" type="int" />
+	        <field name="traductor" type="string" />
+	        <field name="editorial" type="string" />  	        	        
 	    </type>
 	    <type type="PeriodDetailsDTO">
 	        <field name="name" type="string"/>
@@ -373,6 +376,11 @@
 	        <field name="time_period" type="string" description="Epoca"/>	        
 	        <field name="weather_id" type="int" description="ID del tiempo"/>
 	        <field name="astronomy_id" type="int" description="ID de la astronomia"/>
+	        <field name="latitude" type="string" description="Latitud"/>
+	        <field name="longitude" type="string" description="Longitud"/>	      
+	        <field name="numFavs" type="int" />
+	        <field name="traductor" type="string" />
+	        <field name="editorial" type="string" />  
 	        <!-- OJO!! con este campo sites, no existe en el modelo de datos de poema por lo que siempre hay que quitarlo en el CMS por codigo -->
 	        <field name="sites" type="string" description="Campo compuesto que contiene los lugares de google places."/>
 		    <field name="passion" type="string"/>

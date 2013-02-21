@@ -7,7 +7,7 @@
 		<message name="Login" service="MO" method="login" description=""
 			type="Post">
 			<urlPattern>
-				<url address="http://${SERVER}/login" />
+				<url address="http://${kLoginURL}" />
 			</urlPattern>
 			<request>
 				<field name="activationCode" type="String" description="Codigo de activacion" />
