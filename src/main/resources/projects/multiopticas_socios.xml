@@ -159,7 +159,7 @@
 		<message name="SendOrder" service="MO" method="sendOrder"
 			description="" type="Post">
 			<urlPattern>
-				<url address="http://${SERVER}/order/send" />
+				<url address="http://${kSendOrderURL}" />
 			</urlPattern>
 			<request>
 				<field name="appId" type="String" description="Id de aplicación" />
@@ -292,7 +292,7 @@
 		</type>
 		<type name="FrameDTO">
 			<field name="frameId" type="int" description="id de la montura" />
-			<field name="reference" type="String" description="Referencia" />
+			<field name="name" type="String" description="Nombre de la montura" />
 			<field name="frameDescription" type="String" description="Descripcion de la montura" />
 			<field name="order" type="int" description="Orden en el listado" />			
 			<field name="frameTypeId" type="String" description="Id del tipo de montura (Sol, Graduada,...)" />
@@ -356,9 +356,11 @@
 			<field name="requiredInheritanceTreatment2" type="Boolean" description="Indica si la herencia del tratamiento 2 es obligatoria" />
 			<field name="requiredInheritanceTreatmentSun" type="Boolean" description="Indica si la herencia del tratamiento Sol es obligatoria" />
 			<field name="hasSecondFrame" type="Boolean" description="Indica si la venta cruzada incluye una segunda montura" />
+			<field name="secondFrameDiscount" type="double" description="Si existe indica que al precio de la segunda gafa se le aplica el descuento" />
+			<field name="discountType" type="String" description="Indica si el descuento es absoluto o porcentaje" />
 			<field name="imageURL" type="String" description="URL absoluta de la imagen" />
 			<field name="lastUpdate" type="double" description="Fecha de la última actualización de la imagen" />
-      <field name="crossSellDetails" type="CrossSellDetailDTO*" description="Listado de detalles de la venta cruzada" />
+      		<field name="crossSellDetails" type="CrossSellDetailDTO*" description="Listado de detalles de la venta cruzada" />
 		</type>
 		<type name="CrossSellDetailDTO">
 			<field name="crossSellDetailId" type="int" description="Id del detalle de venta cruzada" />
