@@ -164,6 +164,7 @@
 			<request>
 				<field name="appId" type="String" description="Id de aplicación" />
 				<field name="memberId" type="String" description="Id de socio" />
+				<field name="memberSignature" type="String" description="Firma del socio" />
 				<field name="orderId_MO" type="int" description="Id del pedido" />
 				<field name="name" type="String" description="Nombre del cliente" />
 				<field name="email" type="String" description="Email del cliente" />
