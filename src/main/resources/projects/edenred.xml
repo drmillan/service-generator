@@ -244,6 +244,7 @@
 	        <field name="cardNumber" type="String" description="4 últimas cifras de la tarjeta. Solo vendrá informado cuando sea Ticket Restaurant Card 4B. en los demás casos vendrá vacío "/>
 	    	<field name="productType" type="ProductTypeResponseDTO" description=""/>
 	    	<field name="idTicket" type="int" description=""/>
+	    	<field name="active" type="Boolean" description="Indica si la tarjeta está activa o no."/>
 	    </type>
 	    
 	    <type name="ProductTypeResponseDTO">
