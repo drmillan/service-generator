@@ -263,6 +263,7 @@
 			<field name="collectionId" type="String" description="Id de coleccion" />
 			<field name="name" type="String" description="Nombre de la coleccion" />
 			<field name="order" type="int" description="Orden en el que aparecera en los filtros" />
+      <field name="frameTypeId" type="String" description="Id del tipo de montura" />
 		</type>
 		<type name="MaterialDTO">
 			<field name="materialId" type="String" description="Id de material" />
