@@ -2,16 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="63637c4b-6140-4bdc-a96e-92aa5088bb91" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/templates/android/1.0/static/src/com/mobivery/logic/ServiceException.java" afterPath="$PROJECT_DIR$/templates/android/1.0/static/com/mobivery/logic/ServiceException.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/templates/android/1.0/static/src/com/mobivery/logic/ServiceExceptionListener.java" afterPath="$PROJECT_DIR$/templates/android/1.0/static/com/mobivery/logic/ServiceExceptionListener.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/templates/android/1.0/static/src/com/mobivery/utils/CustomSSLSocketFactory.java" afterPath="$PROJECT_DIR$/templates/android/1.0/static/com/mobivery/utils/CustomSSLSocketFactory.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/templates/android/1.0/static/src/com/mobivery/utils/HttpClientHelper.java" afterPath="$PROJECT_DIR$/templates/android/1.0/static/com/mobivery/utils/HttpClientHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/androidGenerator.rb" afterPath="$PROJECT_DIR$/androidGenerator.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/iosGenerator.rb" afterPath="$PROJECT_DIR$/iosGenerator.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="service-generator.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361820392861" ignored="false" />
+    <file path="/Dummy.txt" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361865457526" ignored="false" />
     <file path="$USER_HOME$/Documents/workspace/FundacionMapfre/server/trunk/app/controllers/virtual_visits_controller.rb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361438505511" ignored="false" />
     <file path="$USER_HOME$/Documents/workspace/FundacionMapfre/server/trunk/app/controllers/virtual_auditories_controller.rb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361438525166" ignored="false" />
     <file path="$USER_HOME$/Documents/workspace/FundacionMapfre/server/trunk/config/routes.rb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361437552742" ignored="false" />
@@ -35,7 +31,7 @@
     <file path="$USER_HOME$/Documents/workspace/FundacionMapfre/server/trunk/app/models/virtual_visit.rb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361393516095" ignored="false" />
     <file path="$USER_HOME$/Documents/workspace/FundacionMapfre/server/trunk/app/models/mosaic.rb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361371800428" ignored="false" />
     <file path="/mosaic.rb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361371546616" ignored="false" />
-    <file path="$USER_HOME$/Documents/workspace/FundacionMapfre/server/trunk/db/schema.rb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361393169855" ignored="false" />
+    <file path="$USER_HOME$/Documents/workspace/FundacionMapfre/server/trunk/db/schema.rb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361868674991" ignored="false" />
     <file path="/virtual_visit.rb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361393515054" ignored="false" />
     <file path="/virtual_auditory.rb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361393449010" ignored="false" />
     <file path="/a.dummy" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361390686873" ignored="false" />
@@ -60,6 +56,9 @@
     <file path="/xmlReader.rb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361451874047" ignored="false" />
     <file path="/ios_task_header.mustache" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361452766925" ignored="false" />
     <file path="/androidGenerator.rb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361821114470" ignored="false" />
+    <file path="$USER_HOME$/Documents/workspace/FundacionMapfre/server/trunk/app/views/expositions/get_exposition.json.erb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361872204264" ignored="false" />
+    <file path="/get_exposition.json.erb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361872199237" ignored="false" />
+    <file path="/iosGenerator.rb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361881627957" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,15 +75,6 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ios_base_service_implementation.mustache" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/ios/1.0/ios_base_service_implementation.mustache">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="259" column="68" selection-start="9635" selection-end="9635" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="ios_base_service_header.mustache" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/ios/1.0/ios_base_service_header.mustache">
           <provider selected="true" editor-type-id="text-editor">
@@ -157,10 +147,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="androidGenerator.rb" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="androidGenerator.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/androidGenerator.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="96" column="68" selection-start="4262" selection-end="4262" vertical-scroll-proportion="0.7768595">
+            <state line="63" column="22" selection-start="2531" selection-end="2531" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="iosGenerator.rb" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/iosGenerator.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="118" column="101" selection-start="5547" selection-end="5547" vertical-scroll-proportion="0.78503186">
               <folding />
             </state>
           </provider>
@@ -191,12 +190,13 @@
         <option value="$PROJECT_DIR$/templates/ios/2.0/ios_task_implementation.mustache" />
         <option value="$PROJECT_DIR$/templates/ios/2.0/ios_base_service_implementation.mustache" />
         <option value="$PROJECT_DIR$/androidGenerator.rb" />
+        <option value="$PROJECT_DIR$/iosGenerator.rb" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="y" value="22" />
-    <option name="width" value="1280" />
+    <option name="width" value="1920" />
     <option name="height" value="774" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -257,6 +257,10 @@
               <option name="myItemId" value="templates" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ios" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -295,40 +299,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="1.0" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="service-generator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="service-generator" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="templates" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="1.0" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="static" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mobivery" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -449,14 +419,14 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1280" height="774" extended-state="0" />
+    <frame x="0" y="22" width="1920" height="774" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18557537" sideWeight="0.9975845" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18783352" sideWeight="0.9975845" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -527,13 +497,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/templates/ios/1.0/ios_base_service_implementation.mustache">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/ios/1.0/ios_base_service_header.mustache">
       <provider selected="true" editor-type-id="text-editor">
         <state line="40" column="105" selection-start="1018" selection-end="1018" vertical-scroll-proportion="0.0">
@@ -626,7 +589,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/androidGenerator.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="96" column="68" selection-start="4262" selection-end="4262" vertical-scroll-proportion="0.7768595">
+        <state line="63" column="22" selection-start="2531" selection-end="2531" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/iosGenerator.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="118" column="101" selection-start="5547" selection-end="5547" vertical-scroll-proportion="0.78503186">
           <folding />
         </state>
       </provider>

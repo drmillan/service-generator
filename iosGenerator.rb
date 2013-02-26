@@ -114,9 +114,9 @@ class IOSGenerator
     helper_header_file=helper_dir+'/'+project_name+'Helper.h'
     helper_implementation_file=helper_dir+'/'+project_name+'Helper.m'
     res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_helper_header.mustache').read,parameters)
-    File.open(helper_header_file,'w'){|file| file.write(res)}
+    File.open(helper_header_file,'w'){|file| file.write(res)}  unless File.exists?(helper_header_file)
     res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_helper_implementation.mustache').read,parameters)
-    File.open(helper_implementation_file,'w'){|file| file.write(res)}
+    File.open(helper_implementation_file,'w'){|file| file.write(res)} unless File.exists?(helper_implementation_file)
 
   end
 end
