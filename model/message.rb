@@ -40,11 +40,11 @@ class Message
   def serviceNameLower
     service.downcase
   end
-  
+
   def methodUpperCase
-    method.classify
+    return method.slice(0,1).capitalize + method.slice(1..-1)
   end
-  
+
   def javaRequestParams
     params=Array.new
     request.fields.each do |field|

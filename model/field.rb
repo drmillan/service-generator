@@ -31,7 +31,7 @@ class Field
   end
   def javaName
     return name.camelize()[0..1].downcase<<name.camelize()[2..-1]
-    return name
+
   end
   def nameUcase
     return name.camelize()
