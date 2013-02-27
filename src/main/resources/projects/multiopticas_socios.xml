@@ -237,6 +237,7 @@
 			<field name="name" type="String" description="Título de la campaña" />
 			<field name="promoDescription" type="String" description="Descripción de la campaña" />
 			<field name="lastUpdate" type="double" description="Fecha de la última actualización de la imagen" />
+			<field name="order" type="int" description="Orden en el que aparecera en los listados" />
 		</type>
 		<type name="AgeDTO">
 			<field name="ageId" type="String" description="Id de edad" />
@@ -255,15 +256,14 @@
 		</type>
 		<type name="ColorDTO">
 			<field name="colorId" type="String" description="Id de color" />
-			<field name="name" type="String" description="Nombre del color" />
+			<field name="name" type="String" description="Nombre del color para los filtros" />
 			<field name="order" type="int" description="Orden en el que aparecera en los filtros" />
-			<field name="webColor" type="String" description="Nombre del color (Web)" />
 		</type>
 		<type name="CollectionDTO">
 			<field name="collectionId" type="String" description="Id de coleccion" />
 			<field name="name" type="String" description="Nombre de la coleccion" />
 			<field name="order" type="int" description="Orden en el que aparecera en los filtros" />
-      <field name="frameTypeId" type="String" description="Id del tipo de montura" />
+      	  	<field name="frameTypeId" type="String" description="Id del tipo de montura" />
 		</type>
 		<type name="MaterialDTO">
 			<field name="materialId" type="String" description="Id de material" />
@@ -311,7 +311,7 @@
 		</type>
 		<type name="VariantDTO">
 			<field name="variantId" type="String" description="Id de la variante" />
-      <field name="name" type="String" description="Nombre de la variante" />
+      	  	<field name="name" type="String" description="Nombre de la variante" />
 			<field name="colorId" type="int" description="Id del color" />
 			<field name="order" type="int" description="Orden en el listado" />
 			<field name="mainVariant" type="boolean" description="Indicativo si la variante es la principal para esta montura" />
@@ -323,6 +323,7 @@
 			<field name="type" type="String" description="Tipo de lente 0 -> monofocal, 1 -> progresivo" />
 			<field name="name" type="String" description="Nombre del tipo de lente (monofocal , progresivo)" />
 			<field name="lensTypeDescription" type="String" description="Descripción del tipo de lente" />
+			<field name="order" type="int" description="Orden en el que aparecera en los listados" />
 			<field name="price" type="double" description="Precio del tipo de lente" />
 			<field name="imageURL" type="String" description="URL absoluta de la imagen" />
 			<field name="lastUpdate" type="double" description="Fecha de la última actualización de la imagen" />
@@ -334,6 +335,7 @@
 			<field name="lensEquipmentId" type="int" description="Id del equipamiento de la lente" />
 			<field name="name" type="String" description="Nombre del equipamiento" />
 			<field name="lensEquipmentDescription" type="String" description="Descripción del equipamiento" />
+			<field name="order" type="int" description="Orden en el que aparecera en los listados" />
 			<field name="price" type="double" description="precio del equipamiento" />
 			<field name="imageURL" type="String" description="URL absoluta de la imagen" />
 			<field name="lastUpdate" type="double" description="Fecha de la última actualización de la imagen" />
@@ -342,7 +344,8 @@
 			<field name="treatmentId" type="int" description="id del tratamiento" />
 			<field name="treatmentType" type="String" description="Tipo de tratamiento (1,2,SOL)" />
 			<field name="name" type="String" description="Nombre del tratamiento" />
-			<field name="treatmentDescription" type="String" description="Descripción del tratamiento" />			
+			<field name="treatmentDescription" type="String" description="Descripción del tratamiento" />
+			<field name="order" type="int" description="Orden en el que aparecera en los listados" />			
 			<field name="price" type="double" description="precio del tratamiento" />
 			<field name="imageURL" type="String" description="URL absoluta de la imagen" />
 			<field name="lastUpdate" type="double" description="Fecha de la última actualización de la imagen" />
@@ -350,7 +353,8 @@
 		<type name="CrossSellDTO">
 			<field name="crossSellId" type="int" description="Id de venta cruzada" />
 			<field name="name" type="String" description="Nombre de la venta cruzada" />
-			<field name="crossSellDescription" type="String" description="Descripción de la venta cruzada" />			
+			<field name="crossSellDescription" type="String" description="Descripción de la venta cruzada" />	
+			<field name="order" type="int" description="Orden en el que aparecera en los listados" />		
 			<field name="price" type="double" description="Coste adicional de la venta cruzada" />
 			<field name="priceType" type="String" description="Indica si el precio es absoluto o porcentaje" />
 			<field name="framesFilterId" type="int" description="Id del filtro a aplicar para la segunda montura" />
@@ -369,6 +373,7 @@
 			<field name="crossSellDetailId" type="int" description="Id del detalle de venta cruzada" />
 			<field name="name" type="String" description="Nombre de la venta cruzada" />
 			<field name="crossSellDetailDescription" type="String" description="Descripción del detalle de la venta cruzada" />
+			<field name="order" type="int" description="Orden en el que aparecera en los listados" />
 			<field name="price" type="double" description="Coste adicional" />
 			<field name="priceType" type="String" description="Tipo de precio a aplicar: Porcentaje o Absoluto" />
 			<field name="imageURL" type="String" description="URL absoluta de la imagen" />
@@ -378,6 +383,7 @@
 			<field name="warrantyId" type="int" description="id de tipo de garantía" />
 			<field name="name" type="String" description="Nombre de la garantía" />
 			<field name="warrantyDescription" type="String" description="Descripción de la garantía" />
+			<field name="order" type="int" description="Orden en el que aparecera en los listados" />
 			<field name="imageURL" type="String" description="URL absoluta de la imagen" />
 			<field name="lastUpdate" type="double" description="Fecha de la última actualización de la imagen" />
 			<field name="price" type="double" description="Coste adicional" />
