@@ -120,4 +120,10 @@ Nombre del tipo (Es el nombre que tendrá el DTO generado)
 
 ## Generación
 
-ruby generator.rb -f [Ruta absoluta fichero xml] -pn [Nombre de proyecto] -package [Paquete Java Base] -aOutput [Ruta al proyecto Android] -iOutput [Ruta al proyecto iOS]
+1.- Instalar dependencias, comando terminal...
+
+*rake setup*
+
+2.- Comando terminal...
+
+*ruby generator.rb -f [Ruta absoluta fichero xml] -pn [Nombre de proyecto] -package [Paquete Java Base] -aOutput [Ruta al proyecto Android] -iOutput [Ruta al proyecto iOS]*
