@@ -69,7 +69,7 @@
 			<response>
 				<field name="status" type="String" description="OK/NO_OK" />
 				<field name="statusMessage" type="String" description="Mensaje a mostrar al usuario en caso de error" />
-				<field name="promos" type="PromoDTO*" description="Listado de campañas" />				
+				<field name="promos" type="PromoDTO*" description="Listado de campañas" />
 				<field name="ages" type="AgeDTO*" description="Listado de edades" />
 				<field name="genders" type="GenderDTO*" description="Listado de generos" />
 				<field name="frameTypes" type="FrameTypeDTO*" description="Listado de tipos de monturas" />
@@ -123,6 +123,8 @@
 				<field name="treatmentSunPrice" type="double" description="Precio del tratamiento" />
 				<field name="crossSellId_MO" type="int" description="Id de la venta cruzada" />
 				<field name="crossSellName" type="String" description="Nombre de la venta cruzada" />
+				<field name="crossSellPrice" type="double" description="Precio de la venta cruzada" />
+				<field name="crossSellBasePrice" type="double" description="Precio base de la venta cruzada" />
 				<field name="crossSellDiscount" type="double" description="Descuento para la segunda montura" />
 				<field name="crossSellDiscountType" type="String" description="Tipo de descuento para la segunda montura" />
 				<field name="crossSellDetailId_MO" type="int" description="Id del detalle de la venta cruzada" />
@@ -198,6 +200,8 @@
 				<field name="treatmentSunPrice" type="double" description="Precio del tratamiento" />
 				<field name="crossSellId_MO" type="int" description="Id de la venta cruzada" />
 				<field name="crossSellName" type="String" description="Nombre de la venta cruzada" />
+				<field name="crossSellPrice" type="double" description="Precio de la venta cruzada" />
+				<field name="crossSellBasePrice" type="double" description="Precio base de la venta cruzada" />
 				<field name="crossSellDiscount" type="double" description="Descuento para la segunda montura" />
 				<field name="crossSellDiscountType" type="String" description="Tipo de descuento para la segunda montura" />
 				<field name="crossSellDetailId_MO" type="int" description="Id del detalle de la venta cruzada" />
@@ -356,8 +360,10 @@
 		<type name="CrossSellDTO">
 			<field name="crossSellId" type="int" description="Id de venta cruzada" />
 			<field name="name" type="String" description="Nombre de la venta cruzada" />
-			<field name="crossSellDescription" type="String" description="Descripción de la venta cruzada" />	
-			<field name="order" type="int" description="Orden en el que aparecera en los listados" />		
+			<field name="crossSellDescription" type="String" description="Descripción de la venta cruzada" />
+			<field name="order" type="int" description="Orden en el que aparecera en los listados" />
+			<field name="price" type="double" description="Precio de la venta cruzada" />
+			<field name="basePrice" type="double" description="Precio base para la venta cruzada" />
 			<field name="discount" type="double" description="Descuento para la segunda montura" />
 			<field name="discountType" type="String" description="Indica si el descuento es absoluto o porcentaje" />
 			<field name="framesFilterId" type="int" description="Id del filtro a aplicar para la segunda montura" />
