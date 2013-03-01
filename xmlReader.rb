@@ -82,6 +82,20 @@ class XmlReader
         protocol.messages[i].response.name=protocol.messages[i].methodUpperCase+'ResponseDTO'
       end
 
+      # If there is name but not type
+      if !protocol.messages[i].response.type && protocol.messages[i].response.name
+        protocol.messages[i].response.type=protocol.messages[i].response.name
+      end
+      if !protocol.messages[i].request.type && protocol.messages[i].request.name
+        protocol.messages[i].request.type=protocol.messages[i].request.name
+      end
+      # If there is type but not name
+      if !protocol.messages[i].response.name && protocol.messages[i].response.type
+        protocol.messages[i].response.name=protocol.messages[i].response.type
+      end
+      if !protocol.messages[i].request.name && protocol.messages[i].request.type
+        protocol.messages[i].request.name=protocol.messages[i].request.type
+      end
 
       if(!protocol.services[protocol.messages[i].service])
         protocol.services[protocol.messages[i].service]=Service.new

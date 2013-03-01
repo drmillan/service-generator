@@ -99,7 +99,7 @@
 {{/isDelete}}
 {{#isPostJSON}}
 
-    NSDictionary *jsonDict=[[{{request.typeIOSDAO}} sharedInstance] writeToDictionary:{{request.javaInstanceName}}];
+    NSDictionary *jsonDict=[[{{request.daoClassName}} sharedInstance] writeToDictionary:{{request.javaInstanceName}}];
 
     NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict
                                                options:NSJSONWritingPrettyPrinted
@@ -116,7 +116,7 @@
 {{/isPostJSON}}
 {{#isDeleteJSON}}
 
-    NSDictionary *jsonDict=[[{{request.typeIOSDAO}} sharedInstance] writeToDictionary:{{request.javaInstanceName}}];
+    NSDictionary *jsonDict=[[{{request.daoClassName}} sharedInstance] writeToDictionary:{{request.javaInstanceName}}];
 
     NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict
                                                options:NSJSONWritingPrettyPrinted
@@ -133,7 +133,7 @@
 {{/isDeleteJSON}}
 {{#isPutJSON}}
 
-    NSDictionary *jsonDict=[[{{request.typeIOSDAO}} sharedInstance] writeToDictionary:{{request.javaInstanceName}}];
+    NSDictionary *jsonDict=[[{{request.daoClassName}} sharedInstance] writeToDictionary:{{request.javaInstanceName}}];
 
     NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict
                                                options:NSJSONWritingPrettyPrinted
