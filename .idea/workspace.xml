@@ -2,14 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="63637c4b-6140-4bdc-a96e-92aa5088bb91" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/androidGenerator.rb" afterPath="$PROJECT_DIR$/androidGenerator.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/field.rb" afterPath="$PROJECT_DIR$/model/field.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/model/message.rb" afterPath="$PROJECT_DIR$/model/message.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xmlReader.rb" afterPath="$PROJECT_DIR$/xmlReader.rb" />
     </list>
     <ignored path="service-generator.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1362006850550" ignored="false" />
+    <file path="/Dummy.txt" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1362142387872" ignored="false" />
     <file path="$USER_HOME$/Documents/workspace/FundacionMapfre/server/trunk/app/controllers/virtual_visits_controller.rb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361438505511" ignored="false" />
     <file path="$USER_HOME$/Documents/workspace/FundacionMapfre/server/trunk/app/controllers/virtual_auditories_controller.rb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361438525166" ignored="false" />
     <file path="$USER_HOME$/Documents/workspace/FundacionMapfre/server/trunk/config/routes.rb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361437552742" ignored="false" />
@@ -55,7 +53,7 @@
     <file path="/ios_task_implementation.mustache" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361400986080" ignored="false" />
     <file path="/virtual_visits_controller.rb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361438415056" ignored="false" />
     <file path="/virtual_auditories_controller.rb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361438404591" ignored="false" />
-    <file path="/xmlReader.rb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361451874047" ignored="false" />
+    <file path="/xmlReader.rb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1362142444821" ignored="false" />
     <file path="/ios_task_header.mustache" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361452766925" ignored="false" />
     <file path="/androidGenerator.rb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1362007085426" ignored="false" />
     <file path="$USER_HOME$/Documents/workspace/FundacionMapfre/server/trunk/app/views/expositions/get_exposition.json.erb" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1361872204264" ignored="false" />
@@ -78,15 +76,6 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="generator.rb" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/generator.rb">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="47" column="4" selection-start="1305" selection-end="1305" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="string.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/string.rb">
           <provider selected="true" editor-type-id="text-editor">
@@ -150,10 +139,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="message.rb" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="message.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model/message.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="44" column="48" selection-start="839" selection-end="839" vertical-scroll-proportion="0.7133758">
+            <state line="44" column="48" selection-start="839" selection-end="839" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="xmlReader.rb" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/xmlReader.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="81" column="79" selection-start="2962" selection-end="2962" vertical-scroll-proportion="0.40605095">
               <folding />
             </state>
           </provider>
@@ -186,7 +184,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/xmlReader.rb" />
         <option value="$PROJECT_DIR$/templates/ios/1.0/ios_base_service_implementation.mustache" />
         <option value="$PROJECT_DIR$/templates/ios/2.0/ios_dto_header.mustache" />
         <option value="$PROJECT_DIR$/templates/ios/2.0/ios_task_header.mustache" />
@@ -196,11 +193,11 @@
         <option value="$PROJECT_DIR$/androidGenerator.rb" />
         <option value="$PROJECT_DIR$/model/field.rb" />
         <option value="$PROJECT_DIR$/model/message.rb" />
+        <option value="$PROJECT_DIR$/xmlReader.rb" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="170" />
     <option name="y" value="22" />
     <option name="width" value="1280" />
     <option name="height" value="774" />
@@ -231,6 +228,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -323,7 +321,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -425,14 +422,14 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="170" y="22" width="1280" height="774" extended-state="0" />
-    <editor active="true" />
+    <frame x="0" y="22" width="1280" height="774" extended-state="0" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19124797" sideWeight="0.9975845" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19448946" sideWeight="0.9975845" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -503,49 +500,29 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/xmlReader.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="75" column="41" selection-start="2571" selection-end="2571" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_dto_header.mustache">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="0" selection-start="519" selection-end="519" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="25" column="0" selection-start="519" selection-end="519" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_dto_implementation.mustache">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_task_header.mustache">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="25" selection-start="385" selection-end="399" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="17" column="25" selection-start="385" selection-end="399" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_task_implementation.mustache">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="25" selection-start="361" selection-end="361" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="15" column="25" selection-start="361" selection-end="361" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/ios/1.0/ios_base_service_implementation.mustache">
       <provider selected="true" editor-type-id="text-editor">
         <state line="259" column="68" selection-start="9635" selection-end="9635" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_base_service_implementation.mustache">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="11" selection-start="1280" selection-end="1280" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/generator.rb">
@@ -562,9 +539,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/iosGenerator.rb">
+    <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_base_service_implementation.mustache">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="85" column="41" selection-start="3867" selection-end="3867" vertical-scroll-proportion="0.0">
+        <state line="44" column="11" selection-start="1280" selection-end="1280" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/androidGenerator.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="70" column="78" selection-start="3051" selection-end="3051" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -590,13 +574,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/androidGenerator.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="70" column="78" selection-start="3051" selection-end="3051" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/android/1.0/android_tasks.mustache">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
@@ -604,9 +581,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/iosGenerator.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="85" column="41" selection-start="3867" selection-end="3867" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/model/message.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="48" selection-start="839" selection-end="839" vertical-scroll-proportion="0.7133758">
+        <state line="44" column="48" selection-start="839" selection-end="839" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xmlReader.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="81" column="79" selection-start="2962" selection-end="2962" vertical-scroll-proportion="0.40605095">
           <folding />
         </state>
       </provider>

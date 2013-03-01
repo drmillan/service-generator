@@ -72,14 +72,14 @@ class XmlReader
 
       # Fix standard names if no request type name is given
       if !protocol.messages[i].request.type && !protocol.messages[i].request.name
-        protocol.messages[i].request.type=protocol.messages[i].name+'RequestDTO'
-        protocol.messages[i].request.name=protocol.messages[i].name+'RequestDTO'
+        protocol.messages[i].request.type=protocol.messages[i].methodUpperCase+'RequestDTO'
+        protocol.messages[i].request.name=protocol.messages[i].methodUpperCase+'RequestDTO'
       end
 
       # Fix standard names if no response type name is given
       if !protocol.messages[i].response.type && !protocol.messages[i].response.name
-        protocol.messages[i].response.type=protocol.messages[i].name+'ResponseDTO'
-        protocol.messages[i].response.name=protocol.messages[i].name+'ResponseDTO'
+        protocol.messages[i].response.type=protocol.messages[i].methodUpperCase+'ResponseDTO'
+        protocol.messages[i].response.name=protocol.messages[i].methodUpperCase+'ResponseDTO'
       end
 
 
