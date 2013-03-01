@@ -27,7 +27,7 @@ class ServiceType
   end
   
   def javaInstanceName
-    return name[0..1].downcase+name[1..-1]
+    return name.slice(0,1).downcase + name.slice(1..-1)
   end
   def baseArrayFields
     returnValues=Array.new
