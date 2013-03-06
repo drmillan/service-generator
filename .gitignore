@@ -1,9 +1,0 @@
-*.class
-.metadata/
-bin/
-target/
-# Package Files #
-*.jar
-*.war
-*.ear
-.DS_Store
