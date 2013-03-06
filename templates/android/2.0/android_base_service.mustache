@@ -223,7 +223,13 @@ public class Base{{{serviceName}}}Logic
 		
 		{{{method}}}LastResponse = {{{response.javaInstanceName}}};
 		{{{method}}}LastResponseTime = new Date();
-		
+
+		if(responseInfo!=null)
+		{
+		    responseInfo.setStatusCode(response.getStatusLine().getStatusCode());
+		}
+
+
 		return {{{response.javaInstanceName}}};
 		}
 		catch(Exception ex)

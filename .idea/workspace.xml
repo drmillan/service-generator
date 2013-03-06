@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="63637c4b-6140-4bdc-a96e-92aa5088bb91" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/android/2.0/static/com/mobivery/utils/CustomSSLSocketFactory.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/android/2.0/static/com/mobivery/utils/HttpClientHelper.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/android/2.0/static/com/mobivery/logic/ServiceException.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/android/2.0/static/com/mobivery/logic/ServiceExceptionListener.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/android/2.0/android_base_dto.mustache" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/android/2.0/android_base_dto_bundle.mustache" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/android/2.0/android_base_service.mustache" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/android/2.0/android_dao.mustache" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/android/2.0/android_helper.mustache" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/android/2.0/android_service.mustache" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/android/2.0/android_tasks.mustache" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/android/1.0/android_base_dto_bundle.mustache" afterPath="$PROJECT_DIR$/templates/android/1.0/android_base_dto_bundle.mustache" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/android/2.0/android_base_service.mustache" afterPath="$PROJECT_DIR$/templates/android/2.0/android_base_service.mustache" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="service-generator.iws" />
@@ -75,7 +64,7 @@
     <file path="/android_tasks.mustache" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1362606972027" ignored="false" />
     <file path="/android_base_dto_bundle.mustache" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1362598238240" ignored="false" />
     <file path="/ResponseInfo.java" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1362605675448" ignored="false" />
-    <file path="/android_base_service.mustache" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1362605967553" ignored="false" />
+    <file path="/android_base_service.mustache" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1362608550167" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,19 +126,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="android_base_service.mustache" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="android_base_service.mustache" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/android/2.0/android_base_service.mustache">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="21" column="0" selection-start="486" selection-end="525" vertical-scroll-proportion="0.0">
+            <state line="228" column="81" selection-start="8902" selection-end="8902" vertical-scroll-proportion="0.5771028">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="android_tasks.mustache" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="android_tasks.mustache" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/android/2.0/android_tasks.mustache">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="117" column="46" selection-start="3375" selection-end="3375" vertical-scroll-proportion="0.70198673">
+            <state line="117" column="46" selection-start="3375" selection-end="3375" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -204,9 +193,9 @@
         <option value="$PROJECT_DIR$/templates/ios/1.0/ios_base_service_implementation.mustache" />
         <option value="$PROJECT_DIR$/templates/android/1.0/android_tasks.mustache" />
         <option value="$PROJECT_DIR$/templates/android/1.0/android_base_dto_bundle.mustache" />
-        <option value="$PROJECT_DIR$/templates/android/2.0/android_base_service.mustache" />
         <option value="$PROJECT_DIR$/templates/android/2.0/static/com/mobivery/utils/ResponseInfo.java" />
         <option value="$PROJECT_DIR$/templates/android/2.0/android_tasks.mustache" />
+        <option value="$PROJECT_DIR$/templates/android/2.0/android_base_service.mustache" />
       </list>
     </option>
   </component>
@@ -710,6 +699,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/android/2.0/android_tasks.mustache">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="117" column="46" selection-start="3375" selection-end="3375" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/android/2.0/static/com/mobivery/utils/ResponseInfo.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="26" column="1" selection-start="505" selection-end="505" vertical-scroll-proportion="0.8300221">
@@ -719,14 +715,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/android/2.0/android_base_service.mustache">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="0" selection-start="486" selection-end="525" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/android/2.0/android_tasks.mustache">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="117" column="46" selection-start="3375" selection-end="3375" vertical-scroll-proportion="0.70198673">
+        <state line="228" column="81" selection-start="8902" selection-end="8902" vertical-scroll-proportion="0.5771028">
           <folding />
         </state>
       </provider>
