@@ -13,7 +13,7 @@
 
 @implementation {{message.methodUpperCase}}Task
 
-+ (void) {{message.name}}TaskForRequest:({{message.request.name}} *)request completed:(void(^)({{message.response.name}} *response))completedBlock error:(void(^)(NSError *error))errorBlock {
++ (void) {{message.method}}TaskForRequest:({{message.request.name}} *)request completed:(void(^)({{message.response.name}} *response))completedBlock error:(void(^)(NSError *error))errorBlock {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 		
