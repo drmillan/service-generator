@@ -9,7 +9,7 @@
 
 #import "Base{{{serviceName}}}Logic.h"
 
-#import "AFJSONRequestOperation.h"
+#import "AFHTTPRequestOperation.h"
 #import "MVYDefines.h"
 #import "{{{projectName}}}Helper.h"
 {{#imports}}
@@ -34,7 +34,9 @@
 
 	NSString *url=@"{{{url}}}";
 
-	url=[[{{projectName}}Helper sharedInstance] preInjectURLParameters:url  withObject:{{request.javaInstanceName}}];
+	if ([[{{{projectName}}}Helper sharedInstance] respondsToSelector:@selector(preInjectURLParameters:withObject:)]) {
+		url=[[{{projectName}}Helper sharedInstance] preInjectURLParameters:url  withObject:{{request.javaInstanceName}}];
+	}	
 {{#request.fields}}
 	NSString *string{{nameUcase}}=[NSString stringWithFormat:@"%@",{{request.javaInstanceName}}.{{name}}];
 {{/request.fields}}
@@ -48,7 +50,9 @@
     url = [url stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}",@"{{name}}"] withString:string{{nameUcase}}];
 {{/request.fields}}
 
-	url = [[{{projectName}}Helper sharedInstance] postInjectURLParameters:url  withObject:{{request.javaInstanceName}}];
+	if ([[{{{projectName}}}Helper sharedInstance] respondsToSelector:@selector(postInjectURLParameters:withObject:)]) {
+		url = [[{{projectName}}Helper sharedInstance] postInjectURLParameters:url  withObject:{{request.javaInstanceName}}];
+	}
 
 	_ModelGenLog(@"URL: %@", url);
 
@@ -59,7 +63,12 @@
 	double time = [[NSDate date] timeIntervalSince1970];
     [dict setValue:[NSNumber numberWithDouble:time] forKey:@"requestTime"];
 
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
+	if ([[{{{projectName}}}Helper sharedInstance] respondsToSelector:@selector(escapeUrl:)]) {
+		url = [[{{{projectName}}}Helper sharedInstance] escapeUrl:url];
+	} else {
+		url = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+	}
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
 
 {{#isPost}}
 	NSMutableArray * content = [NSMutableArray array];
@@ -77,7 +86,7 @@
 	NSMutableArray * content = [NSMutableArray array];
 	for(NSString * key in dict) {
 
-  		[content addObject: [NSString stringWithFormat: @"%@=%@", key, dict[key]]];
+		[content addObject: [NSString stringWithFormat: @"%@=%@", key, dict[key]]];
     }
 	NSString * body = [content componentsJoinedByString: @"&"];
 	NSData * bodyData = [body dataUsingEncoding: NSUTF8StringEncoding];
@@ -149,24 +158,41 @@
 
 {{/isPutJSON}}
 {{#isGet}}
-		[request setHTTPMethod:@"GET"];
+	[request setHTTPMethod:@"GET"];
 {{/isGet}}
 
-	AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+  	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+		
+		NSData *data = operation.responseData;
+		
+		if ([[{{{projectName}}}Helper sharedInstance] respondsToSelector:@selector(preprocessResponse:)]) {
+			NSString *stringData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+			stringData =[[{{{projectName}}}Helper sharedInstance] preprocessResponse:stringData];
+			data = [stringData dataUsingEncoding:NSUTF8StringEncoding];			
+		}
+		
+		NSError *error;
+		NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+		
+    	if (!error) {
+	        _ModelGenLog(@"JSON: %@", json);
+			{{response.name}} *dto = [[{{response.daoClassName}} sharedInstance] readFromDictionary:json];
 
-        _ModelGenLog(@"JSON: %@",JSON);
-		{{response.name}} *dto = [[{{response.daoClassName}} sharedInstance] readFromDictionary:JSON];
-
-        if (onSucces) {
-            onSucces(dto);
-        }
-
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON){
-
-        if (onError) {
-            onError(error);
-        }
-    }];
+	        if (onSucces) {
+	            onSucces(dto);
+	        }      	  
+	  	} else {
+			if (onError) {
+				onError(error);
+			}    	      
+		}    
+		
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		if (onError) {
+			onError(error);
+		}
+	}];
 
 	[operation start];
 }

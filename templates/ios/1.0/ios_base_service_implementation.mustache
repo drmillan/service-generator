@@ -31,427 +31,417 @@
 
 {{#service.messages}}
 
-	/**
-	 * Método {{{method}}}JSON: {{{description}}}
-	 * @param {{{request.javaInstanceName}}} Petición al servicio
-	 * @returns NSDictionary Respuesta del servidor
-	 */
+/**
+* Método {{{method}}}JSON: {{{description}}}
+* @param {{{request.javaInstanceName}}} Petición al servicio
+* @returns NSDictionary Respuesta del servidor
+*/
 	
-	-(NSDictionary *) {{{method}}}JSON:({{{request.name}}} *){{{request.javaInstanceName}}} onError:(NSError *__autoreleasing *)inError
-	{
-		NSString *url=@"{{{url}}}";
+-(NSDictionary *) {{{method}}}JSON:({{{request.name}}} *){{{request.javaInstanceName}}} onError:(NSError *__autoreleasing *)inError {
+	
+	NSString *url=@"{{{url}}}";
 		
-		url=[[{{{projectName}}}Helper sharedInstance] preInjectURLParameters:url withObject:{{{request.javaInstanceName}}}];
-		{{#request.fields}}
-
-			{{#isBoolean}}
-				NSString *string{{{nameUcase}}}=[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}.boolValue ? @"true": @"false"];  
-			{{/isBoolean}}
-			{{^isBoolean}}
-				NSString *string{{{nameUcase}}}=@"";
-				if({{{request.javaInstanceName}}}.{{{name}}})
-				{
-				string{{{nameUcase}}}=[[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-				if(!string{{{nameUcase}}})
-				{
-					string{{{nameUcase}}}=[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}];
-				}
-				
-				}							 
-			{{/isBoolean}}
-		{{/request.fields}}
-		
-		{{#inURLbutNotField}}
-			#ifdef $field
-				url=[url stringByReplacingOccurrencesOfString:@"${${field}}" withString:${field}];
-			#endif
-		{{/inURLbutNotField}}
-
-		{{#request.fields}}
-        	url=[url stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}",@"{{{name}}}"]
-        	    withString:string{{{nameUcase}}}];
-  		{{/request.fields}}
-  		
-  		url=[[{{{projectName}}}Helper sharedInstance] postInjectURLParameters:url withObject:{{{request.javaInstanceName}}}];
-  		
-  		_ModelGenLog(@"URL: %@", url);  		
-  		
-		NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
-
-		{{#request.fields}}
-		[dict setValue:[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}] forKey:@"{{{name}}}"];       
-		{{/request.fields}}
-
-		double time=[[NSDate date] timeIntervalSince1970];
-        [dict setValue:[NSNumber numberWithDouble:time] forKey:@"requestTime"];
-    
-    	NSString *escapedUrl = [[{{{projectName}}}Helper sharedInstance] escapeUrl:url];
-	    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:escapedUrl] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
-		
-		NSError *error=nil;
-
-        {{#isPost}}
-		
-		NSMutableArray * content = [NSMutableArray array];
-		for(NSString * key in dict)
-		{
-      		[content
-        		addObject: [NSString stringWithFormat: @"%@=%@", key, dict[key]]];
-        }
-    	NSString * body = [content componentsJoinedByString: @"&"];
-    	NSData * bodyData = [body dataUsingEncoding: NSUTF8StringEncoding];
-    	[request setHTTPBody:bodyData];
-    	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];		
-    	[request setHTTPMethod:@"POST"];
-
-		{{/isPost}}
-
-        {{#isPut}}
-		
-		NSMutableArray * content = [NSMutableArray array];
-		for(NSString * key in dict)
-		{
-      		[content
-        		addObject: [NSString stringWithFormat: @"%@=%@", key, dict[key]]];
-        }
-    	NSString * body = [content componentsJoinedByString: @"&"];
-    	NSData * bodyData = [body dataUsingEncoding: NSUTF8StringEncoding];
-    	[request setHTTPBody:bodyData];
-    	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];		
-    	[request setHTTPMethod:@"PUT"];
-		
-        {{/isPut}}
-        {{#isDelete}}
-		NSMutableArray * content = [NSMutableArray array];
-		for(NSString * key in dict)
-		{
-      		[content
-        		addObject: [NSString stringWithFormat: @"%@=%@", key, dict[key]]];
-        }
-    	NSString * body = [content componentsJoinedByString: @"&"];
-    	NSData * bodyData = [body dataUsingEncoding: NSUTF8StringEncoding];
-    	[request setHTTPBody:bodyData];
-    	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];		
-    	[request setHTTPMethod:@"DELETE"];
-		
-        {{/isDelete}}
-
-        {{#isPostJSON}}
-  
-	    NSDictionary *jsonDict=[[{{request.daoClassName}} sharedInstance] writeToDictionary:{{{request.javaInstanceName}}}];
-	    
-	    NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict 
-                                                   options:NSJSONWritingPrettyPrinted
-                                                     error:&error];		
-
-		_ModelGenLog(@"%@",[[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding]);
-		
-		[request setHTTPMethod:@"POST"];
-		[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-		[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-		[request setValue:[NSString stringWithFormat:@"%d", [requestData length]] forHTTPHeaderField:@"Content-Length"];
-		[request setHTTPBody: requestData];
-
-        {{/isPostJSON}}
-        {{#isDeleteJSON}}
-			    
-	    NSDictionary *jsonDict=[[{{request.daoClassName}} sharedInstance] writeToDictionary:{{{request.javaInstanceName}}}];
-	    
-	    NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict 
-                                                   options:NSJSONWritingPrettyPrinted
-                                                     error:&error];		
-
-		_ModelGenLog(@"%@",[[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding]);
-		
-		[request setHTTPMethod:@"DELETE"];
-		[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-		[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-		[request setValue:[NSString stringWithFormat:@"%d", [requestData length]] forHTTPHeaderField:@"Content-Length"];
-		[request setHTTPBody: requestData];
-
-        {{/isDeleteJSON}}
-
-        {{#isPutJSON}}
-			    
-	    NSDictionary *jsonDict=[[{{request.daoClassName}} sharedInstance] writeToDictionary:{{{request.javaInstanceName}}}];
-	    
-	    NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict 
-                                                   options:NSJSONWritingPrettyPrinted
-                                                     error:&error];		
-
-		_ModelGenLog(@"%@",[[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding]);
-		
-		[request setHTTPMethod:@"PUT"];
-		[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-		[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-		[request setValue:[NSString stringWithFormat:@"%d", [requestData length]] forHTTPHeaderField:@"Content-Length"];
-		[request setHTTPBody: requestData];
-
-        {{/isPutJSON}}
-
-        {{#isGet}}
-		[request setHTTPMethod:@"GET"];
-        {{/isGet}}
-
-        {{#isHttps}}
-	  
-    Base{{{serviceName}}}ConnectionDelegate *delegate = [[Base{{{serviceName}}}ConnectionDelegate alloc] init];  
-		delegate.receivedData = [[NSMutableData alloc] init];
-        NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:delegate];
-
-        [connection start];
-        
-        NSRunLoop *theRL = [NSRunLoop currentRunLoop];
-        while (!delegate.downloadComplete && [theRL runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]);
-        
-	    if(!delegate.error) {
-
-	        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:delegate.receivedData options:kNilOptions error:&error];
-	        return json;
-	        
-	    } else {
-	    
-	    	_ModelGenLog(@"Error: %@",delegate.error);
-	    	if (inError) {
-	    		*inError = delegate.error;
-	    	}
-	    	return nil;
-	    }
-		    
-        {{/isHttps}}
-        {{^isHttps}}
-  	
-		NSURLResponse *response = nil;
-  		NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-	    if(!error) {
-	     
-	        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-	        return json;
-	        
-	    } else {
-	    
-	    	_ModelGenLog(@"Error: %@",error);
-	    	if (inError) {
-	    		*inError=error;
-	    	}
-	    	return nil;
-	    }
-	    {{/isHttps}}
+	if ([[{{{projectName}}}Helper sharedInstance] respondsToSelector:@selector(preInjectURLParameters:withObject:)]) {
+		url=[[{{projectName}}Helper sharedInstance] preInjectURLParameters:url  withObject:{{request.javaInstanceName}}];
 	}
-	
-	
-	/**
-	 * Método {{{method}}}: {{{description}}}
-	 * @param {{{request.javaInstanceName}}} Petición al servicio
-	 * @returns {{{response.name}}} Respuesta del servidor
-	 */
-	-({{{response.name}}} *) {{{method}}}:({{{request.name}}} *){{{request.javaInstanceName}}} onError:(NSError *__autoreleasing *)inError
+	{{#request.fields}}
+
+	{{#isBoolean}}
+	NSString *string{{{nameUcase}}}=[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}.boolValue ? @"true": @"false"];  
+	{{/isBoolean}}
+	{{^isBoolean}}
+	NSString *string{{{nameUcase}}}=@"";
+	if({{{request.javaInstanceName}}}.{{{name}}})
 	{
-		NSString *url=@"{{{url}}}";
-		
-		url=[[{{{projectName}}}Helper sharedInstance] preInjectURLParameters:url withObject:{{{request.javaInstanceName}}}];
-		{{#request.fields}}
-			{{#isBoolean}}
-				NSString *string{{{nameUcase}}}=[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}.boolValue ? @"true": @"false"];
-		    {{/isBoolean}}
-			{{^isBoolean}}
-				NSString *string{{{nameUcase}}}=@"";
-				if({{{request.javaInstanceName}}}.{{{name}}})
-				{
-                    string{{{nameUcase}}}=[[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-                    if(!string{{{nameUcase}}})
-                    {
-                        string{{{nameUcase}}}=[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}];
-                    }
-				}							 
-			{{/isBoolean}}
-		{{/request.fields}}
-
-		{{#inURLbutNotField}}
-		    #ifdef {{.}}
-        		url=[url stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}",@"{{.}}"] withString:{{.}}];
-            #endif
-		{{/inURLbutNotField}}
-
-		{{#request.fields}}
-        url=[url stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}",@"{{{name}}}"]
-                	    withString:string{{{nameUcase}}}];
-  		{{/request.fields}}
-  		
-  		url=[[{{{projectName}}}Helper sharedInstance] postInjectURLParameters:url  withObject:{{{request.javaInstanceName}}}];
-  		
-  		_ModelGenLog(@"URL: %@", url);
-  		
-		NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
-		{{#request.fields}}
-		[dict setValue:[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}] forKey:@"{{{name}}}"];       
-		{{/request.fields}}
-		double time=[[NSDate date] timeIntervalSince1970];
-        [dict setValue:[NSNumber numberWithDouble:time] forKey:@"requestTime"];
-        
-		
-		{{response.name}} *result;
-    
-    	NSError *error=nil;
-    	NSString *escapedUrl = [[{{{projectName}}}Helper sharedInstance] escapeUrl:url];
-	    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:escapedUrl] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
+		string{{{nameUcase}}}=[[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+		if(!string{{{nameUcase}}})
+		{
+			string{{{nameUcase}}}=[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}];
+		}
 				
-        {{#isPost}}
-		NSMutableArray * content = [NSMutableArray array];
-		for(NSString * key in dict)
-		{
-      		[content
-        		addObject: [NSString stringWithFormat: @"%@=%@", key, dict[key]]];
-        }
-    	NSString * body = [content componentsJoinedByString: @"&"];
-    	NSData * bodyData = [body dataUsingEncoding: NSUTF8StringEncoding];
-    	[request setHTTPBody:bodyData];
-    	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];		
-    	[request setHTTPMethod:@"POST"];
-        {{/isPost}}
-        {{#isPut}}
-		NSMutableArray * content = [NSMutableArray array];
-		for(NSString * key in dict)
-		{
-      		[content
-        		addObject: [NSString stringWithFormat: @"%@=%@", key, dict[key]]];
-        }
-    	NSString * body = [content componentsJoinedByString: @"&"];
-    	NSData * bodyData = [body dataUsingEncoding: NSUTF8StringEncoding];
-    	[request setHTTPBody:bodyData];
-    	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];		
-    	[request setHTTPMethod:@"PUT"];
-        {{/isPut}}
-        {{#isDelete}}
-		NSMutableArray * content = [NSMutableArray array];
-		for(NSString * key in dict)
-		{
-      		[content
-        		addObject: [NSString stringWithFormat: @"%@=%@", key, dict[key]]];
-        }
-    	NSString * body = [content componentsJoinedByString: @"&"];
-    	NSData * bodyData = [body dataUsingEncoding: NSUTF8StringEncoding];
-    	[request setHTTPBody:bodyData];
-    	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];		
-    	[request setHTTPMethod:@"DELETE"];
-        {{/isDelete}}
-        {{#isPostJSON}}
-			    
-	    NSDictionary *jsonDict=[[{{request.daoClassName}} sharedInstance] writeToDictionary:{{{request.javaInstanceName}}}];
-	    
-	    NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict 
-                                                   options:NSJSONWritingPrettyPrinted
-                                                     error:&error];		
-
-		_ModelGenLog(@"%@",[[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding]);
+	}							 
+	{{/isBoolean}}
+	{{/request.fields}}
 		
-		[request setHTTPMethod:@"POST"];
-		[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-		[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-		[request setValue:[NSString stringWithFormat:@"%d", [requestData length]] forHTTPHeaderField:@"Content-Length"];
-		[request setHTTPBody: requestData];
+	{{#inURLbutNotField}}
+	#ifdef $field
+	url=[url stringByReplacingOccurrencesOfString:@"${${field}}" withString:${field}];
+	#endif
+	{{/inURLbutNotField}}
 
-        {{/isPostJSON}}
+	{{#request.fields}}
+	url=[url stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}",@"{{{name}}}"]
+	withString:string{{{nameUcase}}}];
+	{{/request.fields}}
+  		
+	if ([[{{{projectName}}}Helper sharedInstance] respondsToSelector:@selector(postInjectURLParameters:withObject:)]) {
+		url = [[{{projectName}}Helper sharedInstance] postInjectURLParameters:url  withObject:{{request.javaInstanceName}}];
+	}
+  		
+	_ModelGenLog(@"URL: %@", url);  		
+  		
+	NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
 
-        {{#isDeleteJSON}}
+	{{#request.fields}}
+	[dict setValue:[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}] forKey:@"{{{name}}}"];       
+	{{/request.fields}}
 
-			    
-	    NSDictionary *jsonDict=[[{{request.daoClassName}} sharedInstance] writeToDictionary:{{{request.javaInstanceName}}}];
+	double time=[[NSDate date] timeIntervalSince1970];
+	[dict setValue:[NSNumber numberWithDouble:time] forKey:@"requestTime"];
+    
+	NSString *escapedUrl = [[{{{projectName}}}Helper sharedInstance] escapeUrl:url];
+	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:escapedUrl] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
+		
+	NSError *error=nil;
+
+	{{#isPost}}		
+	NSMutableArray * content = [NSMutableArray array];
+	for(NSString * key in dict) {
+		[content addObject: [NSString stringWithFormat: @"%@=%@", key, dict[key]]];
+	}
+	NSString * body = [content componentsJoinedByString: @"&"];
+	NSData * bodyData = [body dataUsingEncoding: NSUTF8StringEncoding];
+	[request setHTTPBody:bodyData];
+	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];		
+	[request setHTTPMethod:@"POST"];
+	{{/isPost}}
+
+	{{#isPut}}		
+	NSMutableArray * content = [NSMutableArray array];
+	for(NSString * key in dict) {
+		[content addObject: [NSString stringWithFormat: @"%@=%@", key, dict[key]]];
+	}
+	NSString * body = [content componentsJoinedByString: @"&"];
+	NSData * bodyData = [body dataUsingEncoding: NSUTF8StringEncoding];
+	[request setHTTPBody:bodyData];
+	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];		
+	[request setHTTPMethod:@"PUT"];		
+	{{/isPut}}
+	
+	{{#isDelete}}
+	NSMutableArray * content = [NSMutableArray array];
+	for(NSString * key in dict) {
+		[content addObject: [NSString stringWithFormat: @"%@=%@", key, dict[key]]];
+	}
+	NSString * body = [content componentsJoinedByString: @"&"];
+	NSData * bodyData = [body dataUsingEncoding: NSUTF8StringEncoding];
+	[request setHTTPBody:bodyData];
+	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];		
+	[request setHTTPMethod:@"DELETE"];		
+	{{/isDelete}}
+
+	{{#isPostJSON}}  
+	NSDictionary *jsonDict=[[{{request.daoClassName}} sharedInstance] writeToDictionary:{{{request.javaInstanceName}}}];
+	    
+	NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict 
+	options:NSJSONWritingPrettyPrinted
+	error:&error];		
+
+	_ModelGenLog(@"%@",[[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding]);
+		
+	[request setHTTPMethod:@"POST"];
+	[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+	[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+	[request setValue:[NSString stringWithFormat:@"%d", [requestData length]] forHTTPHeaderField:@"Content-Length"];
+	[request setHTTPBody: requestData];
+	{{/isPostJSON}}
+	
+	{{#isDeleteJSON}}			    
+	NSDictionary *jsonDict=[[{{request.daoClassName}} sharedInstance] writeToDictionary:{{{request.javaInstanceName}}}];
+	    
+	NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict 
+	options:NSJSONWritingPrettyPrinted
+	error:&error];		
+
+	_ModelGenLog(@"%@",[[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding]);
+		
+	[request setHTTPMethod:@"DELETE"];
+	[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+	[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+	[request setValue:[NSString stringWithFormat:@"%d", [requestData length]] forHTTPHeaderField:@"Content-Length"];
+	[request setHTTPBody: requestData];
+	{{/isDeleteJSON}}
+
+	{{#isPutJSON}}			    
+	NSDictionary *jsonDict=[[{{request.daoClassName}} sharedInstance] writeToDictionary:{{{request.javaInstanceName}}}];
+	    
+	NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict 
+	options:NSJSONWritingPrettyPrinted
+	error:&error];		
+
+	_ModelGenLog(@"%@",[[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding]);
+		
+	[request setHTTPMethod:@"PUT"];
+	[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+	[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+	[request setValue:[NSString stringWithFormat:@"%d", [requestData length]] forHTTPHeaderField:@"Content-Length"];
+	[request setHTTPBody: requestData];
+	{{/isPutJSON}}
+
+	{{#isGet}}
+	[request setHTTPMethod:@"GET"];
+	{{/isGet}}
+
+	{{#isHttps}}	  
+	Base{{{serviceName}}}ConnectionDelegate *delegate = [[Base{{{serviceName}}}ConnectionDelegate alloc] init];  
+	delegate.receivedData = [[NSMutableData alloc] init];
+	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:delegate];
+
+	[connection start];
+        
+	NSRunLoop *theRL = [NSRunLoop currentRunLoop];
+	while (!delegate.downloadComplete && [theRL runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]);
+        
+	if(!delegate.error) {
+
+		NSDictionary *json = [NSJSONSerialization JSONObjectWithData:delegate.receivedData options:kNilOptions error:&error];
+		return json;
+	        
+	} else {
+	    
+		_ModelGenLog(@"Error: %@",delegate.error);
+		if (inError) {
+			*inError = delegate.error;
+		}
+		return nil;
+	}		    
+	{{/isHttps}}
+	
+	{{^isHttps}}  	
+	NSURLResponse *response = nil;
+	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+	if(!error) {
+	     
+		NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+		return json;
+	        
+	} else {
+	    
+		_ModelGenLog(@"Error: %@",error);
+		if (inError) {
+			*inError=error;
+		}
+		return nil;
+	}
+	{{/isHttps}}
+}
+	
+	
+/**
+* Método {{{method}}}: {{{description}}}
+* @param {{{request.javaInstanceName}}} Petición al servicio
+* @returns {{{response.name}}} Respuesta del servidor
+*/
+-({{{response.name}}} *) {{{method}}}:({{{request.name}}} *){{{request.javaInstanceName}}} onError:(NSError *__autoreleasing *)inError {
+	
+	NSString *url=@"{{{url}}}";
+		
+	if ([[{{{projectName}}}Helper sharedInstance] respondsToSelector:@selector(preInjectURLParameters:withObject:)]) {
+		url=[[{{projectName}}Helper sharedInstance] preInjectURLParameters:url  withObject:{{request.javaInstanceName}}];
+	}
+	{{#request.fields}}
+	{{#isBoolean}}
+	NSString *string{{{nameUcase}}}=[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}.boolValue ? @"true": @"false"];
+	{{/isBoolean}}
+	{{^isBoolean}}
+	NSString *string{{{nameUcase}}}=@"";
+	if({{{request.javaInstanceName}}}.{{{name}}}) {
+		
+		string{{{nameUcase}}}=[[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+		if(!string{{{nameUcase}}}) {
+			string{{{nameUcase}}}=[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}];
+		}
+	}							 
+	{{/isBoolean}}
+	{{/request.fields}}
+
+	{{#inURLbutNotField}}
+	#ifdef {{.}}
+	url=[url stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}",@"{{.}}"] withString:{{.}}];
+	#endif
+	{{/inURLbutNotField}}
+
+	{{#request.fields}}
+	url=[url stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}",@"{{{name}}}"] withString:string{{{nameUcase}}}];
+	{{/request.fields}}
+  		
+	if ([[{{{projectName}}}Helper sharedInstance] respondsToSelector:@selector(postInjectURLParameters:withObject:)]) {
+		url = [[{{projectName}}Helper sharedInstance] postInjectURLParameters:url  withObject:{{request.javaInstanceName}}];
+	}  		
+  		
+	_ModelGenLog(@"URL: %@", url);
+  		
+	NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
+	{{#request.fields}}
+	[dict setValue:[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}] forKey:@"{{{name}}}"];       
+	{{/request.fields}}
+	double time=[[NSDate date] timeIntervalSince1970];
+	[dict setValue:[NSNumber numberWithDouble:time] forKey:@"requestTime"];
+        		
+	{{response.name}} *result;
+    
+	NSError *error=nil;
+	NSString *escapedUrl = [[{{{projectName}}}Helper sharedInstance] escapeUrl:url];
+	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:escapedUrl] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
+				
+	{{#isPost}}
+	NSMutableArray * content = [NSMutableArray array];
+	for(NSString * key in dict) {
+		[content addObject: [NSString stringWithFormat: @"%@=%@", key, dict[key]]];
+	}
+	NSString * body = [content componentsJoinedByString: @"&"];
+	NSData * bodyData = [body dataUsingEncoding: NSUTF8StringEncoding];
+	[request setHTTPBody:bodyData];
+	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];		
+	[request setHTTPMethod:@"POST"];
+	{{/isPost}}
+	
+	{{#isPut}}
+	NSMutableArray * content = [NSMutableArray array];
+	for(NSString * key in dict){
+		[content addObject: [NSString stringWithFormat: @"%@=%@", key, dict[key]]];
+	}
+	NSString * body = [content componentsJoinedByString: @"&"];
+	NSData * bodyData = [body dataUsingEncoding: NSUTF8StringEncoding];
+	[request setHTTPBody:bodyData];
+	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];		
+	[request setHTTPMethod:@"PUT"];
+	{{/isPut}}
+	
+	{{#isDelete}}
+	NSMutableArray * content = [NSMutableArray array];
+	for(NSString * key in dict) {
+		[content addObject: [NSString stringWithFormat: @"%@=%@", key, dict[key]]];
+	}
+	NSString * body = [content componentsJoinedByString: @"&"];
+	NSData * bodyData = [body dataUsingEncoding: NSUTF8StringEncoding];
+	[request setHTTPBody:bodyData];
+	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];		
+	[request setHTTPMethod:@"DELETE"];
+	{{/isDelete}}
+	
+	{{#isPostJSON}}			    
+	NSDictionary *jsonDict=[[{{request.daoClassName}} sharedInstance] writeToDictionary:{{{request.javaInstanceName}}}];
+	    
+	NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict 
+	options:NSJSONWritingPrettyPrinted
+	error:&error];		
+
+	_ModelGenLog(@"%@",[[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding]);
+		
+	[request setHTTPMethod:@"POST"];
+	[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+	[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+	[request setValue:[NSString stringWithFormat:@"%d", [requestData length]] forHTTPHeaderField:@"Content-Length"];
+	[request setHTTPBody: requestData];
+	{{/isPostJSON}}
+
+	{{#isDeleteJSON}}
+	NSDictionary *jsonDict=[[{{request.daoClassName}} sharedInstance] writeToDictionary:{{{request.javaInstanceName}}}];
 	  
-	    NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict 
-                                                   options:NSJSONWritingPrettyPrinted
-                                                     error:&error];		
+	NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict 
+	options:NSJSONWritingPrettyPrinted
+	error:&error];		
 
-		_ModelGenLog(@"%@",[[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding]);
+	_ModelGenLog(@"%@",[[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding]);
 		
-		[request setHTTPMethod:@"DELETE"];
-		[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-		[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-		[request setValue:[NSString stringWithFormat:@"%d", [requestData length]] forHTTPHeaderField:@"Content-Length"];
-		[request setHTTPBody: requestData];
+	[request setHTTPMethod:@"DELETE"];
+	[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+	[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+	[request setValue:[NSString stringWithFormat:@"%d", [requestData length]] forHTTPHeaderField:@"Content-Length"];
+	[request setHTTPBody: requestData];
+	{{/isDeleteJSON}}
 
-        {{/isDeleteJSON}}
-
-        {{#isPutJSON}}
-	    NSDictionary *jsonDict=[[{{request.daoClassName}} sharedInstance] writeToDictionary:{{{request.javaInstanceName}}}];
+	{{#isPutJSON}}
+	NSDictionary *jsonDict=[[{{request.daoClassName}} sharedInstance] writeToDictionary:{{{request.javaInstanceName}}}];
 	    
-	    NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict 
-                                                   options:NSJSONWritingPrettyPrinted
-                                                     error:&error];		
+	NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict 
+	options:NSJSONWritingPrettyPrinted
+	error:&error];		
 
-		_ModelGenLog(@"%@",[[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding]);
+	_ModelGenLog(@"%@",[[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding]);
 		
-		[request setHTTPMethod:@"PUT"];
-		[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-		[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-		[request setValue:[NSString stringWithFormat:@"%d", [requestData length]] forHTTPHeaderField:@"Content-Length"];
-		[request setHTTPBody: requestData];
+	[request setHTTPMethod:@"PUT"];
+	[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+	[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+	[request setValue:[NSString stringWithFormat:@"%d", [requestData length]] forHTTPHeaderField:@"Content-Length"];
+	[request setHTTPBody: requestData];
+	{{/isPutJSON}}
+	
+	{{#isGet}}
+	[request setHTTPMethod:@"GET"];
+	{{/isGet}}
 
-        {{/isPutJSON}}
-        {{#isGet}}
-		[request setHTTPMethod:@"GET"];
-        {{/isGet}}
+	{{#isHttps}}    
+	Base{{{serviceName}}}ConnectionDelegate *delegate = [[Base{{{serviceName}}}ConnectionDelegate alloc] init];  
+	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:delegate];
 
-        {{#isHttps}}
-	    
-		Base{{{serviceName}}}ConnectionDelegate *delegate = [[Base{{{serviceName}}}ConnectionDelegate alloc] init];  
-        NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:delegate];
-
-        [connection start];
+	[connection start];
         
-        NSRunLoop *theRL = [NSRunLoop currentRunLoop];
-        while (!delegate.downloadComplete && [theRL runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]);
+	NSRunLoop *theRL = [NSRunLoop currentRunLoop];
+	while (!delegate.downloadComplete && [theRL runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]);
         
-	    if(!delegate.error) {
+	if(!delegate.error) {
+		
+		if ([[{{{projectName}}}Helper sharedInstance] respondsToSelector:@selector(preprocessResponse:)]) {
 			NSString *stringData = [[NSString alloc] initWithData:delegate.receivedData encoding:NSUTF8StringEncoding];
 			stringData =[[{{{projectName}}}Helper sharedInstance] preprocessResponse:stringData];
 			[delegate.receivedData setData:[stringData dataUsingEncoding:NSUTF8StringEncoding]];
+		}
 	    	
-	        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:delegate.receivedData options:kNilOptions error:&error];
-	        _ModelGenLog(@"JSON: %@",json);
-	        result = [[{{response.daoClassName}} sharedInstance] readFromDictionary:json];
+		NSDictionary *json = [NSJSONSerialization JSONObjectWithData:delegate.receivedData options:kNilOptions error:&error];
+		_ModelGenLog(@"JSON: %@",json);
+		result = [[{{response.daoClassName}} sharedInstance] readFromDictionary:json];
 
-            }
-            else
-            {
-	    	_ModelGenLog(@"Error: %@",delegate.error);
-
-	    	if (inError) {
-	    		*inError = delegate.error;
-	    	}
-	    	return nil;
-	    }
-	    {{/isHttps}}
-        {{^isHttps}}
-
-
-  		NSURLResponse *response = nil;
-  		NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-  		
-  		NSString *stringData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-  		stringData =[[{{{projectName}}}Helper sharedInstance] preprocessResponse:stringData];
-  		data = [stringData dataUsingEncoding:NSUTF8StringEncoding];
-  		
-	    if(!error) {
-	    
-	        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-	        _ModelGenLog(@"JSON: %@",json);
-	        result = [[{{response.daoClassName}} sharedInstance] readFromDictionary:json];
-	        
-	    } else {
-	    
-	    	_ModelGenLog(@"Error: %@",error);
-	    	if (inError) {
-	    		*inError=error;
-	    	}
-	    	return nil;
-	    }
-  		
-        {{/isHttps}}
-
-		return result;
+	} else {
 		
+		_ModelGenLog(@"Error: %@",delegate.error);
+
+		if (inError) {
+			*inError = delegate.error;
+		}
+		return nil;
 	}
+	{{/isHttps}}
+	
+	{{^isHttps}}
+	NSURLResponse *response = nil;
+	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+	
+	if(!error) {
+		
+		if ([[{{{projectName}}}Helper sharedInstance] respondsToSelector:@selector(preprocessResponse:)]) {
+			NSString *stringData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+			stringData =[[{{{projectName}}}Helper sharedInstance] preprocessResponse:stringData];
+			data = [stringData dataUsingEncoding:NSUTF8StringEncoding];
+		}
+	    
+		NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+		
+    	if (!error) {
+			_ModelGenLog(@"JSON: %@",json);
+			result = [[{{response.daoClassName}} sharedInstance] readFromDictionary:json];	              	  
+	  	} else {
+			_ModelGenLog(@"Error: %@",error);
+			if (inError) {
+				*inError=error;
+			}
+			return nil;			    	      
+		}
+	        
+	} else {
+	    
+		_ModelGenLog(@"Error: %@",error);
+		if (inError) {
+			*inError=error;
+		}
+		return nil;
+	}
+	{{/isHttps}}
+
+	return result;
+		
+}
 
 {{/service.messages}}
 
@@ -463,43 +453,43 @@
 
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
     
-    return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
+	return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
-    if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
-            [challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
+	if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
+	[challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust] forAuthenticationChallenge:challenge];
     
-    [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
+	[challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
 }
 
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
     
-    self.receivedData = nil;
+	self.receivedData = nil;
     
-    NSLog(@"Connection failed! Error - %@ %@",
-          [error localizedDescription],
-          [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
+	NSLog(@"Connection failed! Error - %@ %@",
+	[error localizedDescription],
+	[[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
     
-    self.error = error;
-    self.downloadComplete = YES;
+	self.error = error;
+	self.downloadComplete = YES;
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     
-    self.receivedData = [[NSMutableData alloc] init];
-    [self.receivedData setLength:0];
+	self.receivedData = [[NSMutableData alloc] init];
+	[self.receivedData setLength:0];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     
-    [self.receivedData appendData:data];
+	[self.receivedData appendData:data];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     
-    self.downloadComplete = YES;
+	self.downloadComplete = YES;
     
 }
 
