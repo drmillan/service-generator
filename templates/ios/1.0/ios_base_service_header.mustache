@@ -27,10 +27,6 @@
 
 @interface Base{{{serviceName}}}Logic : NSObject
 
-@property (nonatomic, strong) NSMutableData *receivedData;
-@property (nonatomic, strong) NSError *error;
-@property (nonatomic) BOOL downloadComplete;
-
 {{#service.messages}}
 	
 	/**
@@ -40,7 +36,7 @@
 	 */
 	-({{{response.name}}} *) {{{method}}}:({{{request.name}}} *){{{request.javaInstanceName}}} onError:(NSError *__autoreleasing *)inError;
 	/**
-	 * M�todo ${message.method}: ${message.description}
+	 * Método ${message.method}: ${message.description}
 	 * @param ${message.request.javaInstanceName} Petición al servicio
 	 * @returns NSDictionary Diccionario respuesta del servidor
 	 */

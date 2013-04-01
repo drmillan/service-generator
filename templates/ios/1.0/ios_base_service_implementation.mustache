@@ -18,6 +18,14 @@
 #import "{{response.daoClassName}}.h"
 {{/imports}}
 
+@interface Base{{{serviceName}}}ConnectionDelegate : NSObject
+
+@property (nonatomic, strong) NSMutableData *receivedData;
+@property (nonatomic, strong) NSError *error;
+@property (nonatomic) BOOL downloadComplete;
+
+@end
+
 @implementation Base{{{serviceName}}}Logic
 
 
@@ -186,28 +194,26 @@
         {{/isGet}}
 
         {{#isHttps}}
-	    
-		self.receivedData = [[NSMutableData alloc] init];
-        NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+	  
+    Base{{{serviceName}}}ConnectionDelegate *delegate = [[Base{{{serviceName}}}ConnectionDelegate alloc] init];  
+		delegate.receivedData = [[NSMutableData alloc] init];
+        NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:delegate];
 
         [connection start];
         
-        self.downloadComplete = NO;
-        self.error = nil;
-        
         NSRunLoop *theRL = [NSRunLoop currentRunLoop];
-        while (!self.downloadComplete && [theRL runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]);
+        while (!delegate.downloadComplete && [theRL runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]);
         
-	    if(!self.error) {
+	    if(!delegate.error) {
 
-	        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.receivedData options:kNilOptions error:&error];
+	        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:delegate.receivedData options:kNilOptions error:&error];
 	        return json;
 	        
 	    } else {
 	    
-	    	_ModelGenLog(@"Error: %@",self.error);
+	    	_ModelGenLog(@"Error: %@",delegate.error);
 	    	if (inError) {
-	    		*inError = self.error;
+	    		*inError = delegate.error;
 	    	}
 	    	return nil;
 	    }
@@ -388,33 +394,30 @@
 
         {{#isHttps}}
 	    
-		self.receivedData = [[NSMutableData alloc] init];
-        NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+		Base{{{serviceName}}}ConnectionDelegate *delegate = [[Base{{{serviceName}}}ConnectionDelegate alloc] init];  
+        NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:delegate];
 
         [connection start];
         
-        self.downloadComplete = NO;
-        self.error = nil;
-        
         NSRunLoop *theRL = [NSRunLoop currentRunLoop];
-        while (!self.downloadComplete && [theRL runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]);
+        while (!delegate.downloadComplete && [theRL runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]);
         
-	    if(!self.error) {
-			NSString *stringData = [[NSString alloc] initWithData:self.receivedData encoding:NSUTF8StringEncoding];
+	    if(!delegate.error) {
+			NSString *stringData = [[NSString alloc] initWithData:delegate.receivedData encoding:NSUTF8StringEncoding];
 			stringData =[[{{{projectName}}}Helper sharedInstance] preprocessResponse:stringData];
-			[self.receivedData setData:[stringData dataUsingEncoding:NSUTF8StringEncoding]];
+			[delegate.receivedData setData:[stringData dataUsingEncoding:NSUTF8StringEncoding]];
 	    	
-	        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:self.receivedData options:kNilOptions error:&error];
+	        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:delegate.receivedData options:kNilOptions error:&error];
 	        _ModelGenLog(@"JSON: %@",json);
 	        result = [[{{response.daoClassName}} sharedInstance] readFromDictionary:json];
 
             }
             else
             {
-	    	_ModelGenLog(@"Error: %@",self.error);
+	    	_ModelGenLog(@"Error: %@",delegate.error);
 
 	    	if (inError) {
-	    		*inError = self.error;
+	    		*inError = delegate.error;
 	    	}
 	    	return nil;
 	    }
@@ -452,6 +455,10 @@
 
 {{/service.messages}}
 
+@end
+
+@implementation Base{{{serviceName}}}ConnectionDelegate
+
 #pragma mark - Metodos heredados de NSURLConnectionDelegate
 
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
@@ -481,6 +488,7 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     
+    self.receivedData = [[NSMutableData alloc] init];
     [self.receivedData setLength:0];
 }
 
@@ -497,5 +505,3 @@
 
 
 @end
-
- 
