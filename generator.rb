@@ -43,7 +43,7 @@ loop { case ARGV[0]
 
 puts 'Generation for:'.cyan << file
 puts 'Project Name:'.cyan << project_name
-puts 'Package Name:'.cyan << package_name
+puts 'Package Name:'.cyan << package_name if android_output
 puts 'Android output:'.cyan << android_output if android_output
 puts 'Android version:'.cyan << android_version if android_output
 puts 'iOS output:'.cyan << ios_output if ios_output
