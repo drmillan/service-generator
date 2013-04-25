@@ -13,9 +13,10 @@
 
 // Get the shared instance and create it if necessary.
 + ({{{projectName}}}Helper *)sharedInstance;
-- (NSString *) preInjectURLParameters:(NSString *)url withObject:(NSObject *)obj;
-- (NSString *) postInjectURLParameters:(NSString *)url withObject:(NSObject *)obj;
-- (NSString *) escapeUrl:(NSString *)url;
-- (NSString *) preprocessResponse:(NSString *)responseString;
-- (UIView *) loadingViewForTasks;
+- (NSString *)preInjectURLParameters:(NSString *)url withObject:(NSObject *)obj;
+- (NSString *)postInjectURLParameters:(NSString *)url withObject:(NSObject *)obj;
+- (NSString *)escapeUrl:(NSString *)url;
+- (NSMutableURLRequest *)manageRequest:(NSMutableURLRequest *)request;
+- (NSString *)preprocessResponse:(NSString *)responseString;
+- (UIView *)loadingViewForTasks;
 @end
