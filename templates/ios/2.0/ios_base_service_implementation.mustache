@@ -174,7 +174,9 @@
 		
 		NSError *error;
 		NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
-		
+
+		json=[[{{{projectName}}}Helper sharedInstance] preprocessResponseAsDictionary:json];
+
     	if (!error) {
 	        _ModelGenLog(@"JSON: %@", json);
 			{{response.name}} *dto = [[{{response.daoClassName}} sharedInstance] readFromDictionary:json];

@@ -1,0 +1,42 @@
+package {{{packagename}}}.database;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class Base{{{projectName}}}DatabaseHandler extends SQLiteOpenHelper {
+
+    // All Static variables
+    // Database Version
+    private static final int DATABASE_VERSION = 1;
+
+    // Database Name
+    private static final String DATABASE_NAME = "{{{projectName}}}";
+
+    // Contacts table name
+    {{#dtos}}
+    private static final String TABLE_{{{name}}} = "{{{name}}}";
+    {{/dtos}}
+
+    public Base{{{projectName}}}DatabaseHandler(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+    public void onCreate(SQLiteDatabase db)
+    {
+
+        StringBuilder create=new StringBuilder();
+        {{#dtos}}
+        create.setLength(0);
+        create.append("CREATE TABLE "+TABLE_{{{name}}}+"(");
+        create.append(")");
+        db.execSQL(create.toString());
+        {{/dtos}}
+
+    }
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        {{#dtos}}
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_{{{name}}});
+        {{/dtos}}
+        onCreate(db);
+    }
+}
