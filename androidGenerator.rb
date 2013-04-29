@@ -92,21 +92,6 @@ class AndroidGenerator
     res=Mustache.render(File.open("templates/android/"+aVersion+"/android_helper.mustache").read,parameters)
     File.open(helperFile, 'w') { |file| file.write(res) } unless File.exists?(helperFile)
 
-    if aVersion.to_f>=2
-      ## DATABASE
-      puts 'DATABASE'
-      puts '--------------'
-      dbDir=aOutput+'/'+packageName.gsub(".",'/')+"/database/";
-      puts "\tCreating Base DatabaseHandler ... \t#{projectName}DatabaseHandler";
-      FileUtils.mkdir_p(dbDir);
-      dbHandler=aOutput+'/'+packageName.gsub(".",'/')+"/database/Base"+projectName+"DatabaseHandler.java"
-      res=Mustache.render(File.open("templates/android/"+aVersion+"/android_base_db_logic.mustache").read,parameters)
-      File.open(dbHandler, 'w') { |file| file.write(res) }
-    end
-
-
-
-
 
     ############ Copy common folder
     puts 'Copying common folder'
