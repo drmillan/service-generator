@@ -11,5 +11,17 @@
 
 @implementation {{{dto.name}}}
 
+     // Creates a copy of this DTO Object
+     -(id)copyWithZone:(NSZone *)zone
+     {
+        id copy=[[[self class] alloc] init];
+        if(copy)
+        {
+            {{#dto.fields}}
+            [copy set{{{nameUcase}}}:[self.{{{name}}} copyWithZone:zone]];
+            {{/dto.fields}}
+        }
+        return copy;
+     }
 @end
  
