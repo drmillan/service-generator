@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="63637c4b-6140-4bdc-a96e-92aa5088bb91" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/templates/android/2.0/android_base_db_logic.mustache" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/androidGenerator.rb" afterPath="$PROJECT_DIR$/androidGenerator.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/ios/2.0/ios_dto_header.mustache" afterPath="$PROJECT_DIR$/templates/ios/2.0/ios_dto_header.mustache" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/ios/2.0/ios_dto_implementation.mustache" afterPath="$PROJECT_DIR$/templates/ios/2.0/ios_dto_implementation.mustache" />
     </list>
     <ignored path="service-generator.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -64,8 +64,8 @@
     <file path="/android_base_db_logic.mustache" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1366321164323" ignored="false" />
     <file path="$PROJECT_DIR$/../../service-generator/templates/ios/2.0/ios_helper_implementation.mustache" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1367225035191" ignored="false" />
     <file path="/ios_helper_implementation.mustache" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1367225035191" ignored="false" />
-    <file path="/ios_dto_header.mustache" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1367244923590" ignored="false" />
-    <file path="/ios_dto_implementation.mustache" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1367245705077" ignored="false" />
+    <file path="/ios_dto_header.mustache" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1367247731614" ignored="false" />
+    <file path="/ios_dto_implementation.mustache" changelist="63637c4b-6140-4bdc-a96e-92aa5088bb91" time="1367249545931" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,19 +91,37 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ios_dto_header.mustache" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_dto_header.mustache">
+      <file leaf-file-name="ios_service_implementation.mustache" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_service_implementation.mustache">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="17" selection-start="536" selection-end="536" vertical-scroll-proportion="0.0">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ios_dto_implementation.mustache" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="ios_dto_header.mustache" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_dto_header.mustache">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="25" column="9" selection-start="548" selection-end="548" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ios_dto_implementation.mustache" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_dto_implementation.mustache">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="21" selection-start="327" selection-end="327" vertical-scroll-proportion="0.0">
+            <state line="8" column="32" selection-start="158" selection-end="158" vertical-scroll-proportion="0.058577407">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ios_dao_implementation.mustache" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_dao_implementation.mustache">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="97" column="29" selection-start="2865" selection-end="2886" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -145,19 +163,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ios_helper_implementation.mustache" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_helper_implementation.mustache">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="47" selection-start="902" selection-end="902" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="androidGenerator.rb" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="androidGenerator.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/androidGenerator.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="95" column="0" selection-start="4162" selection-end="4162" vertical-scroll-proportion="0.66188526">
+            <state line="95" column="0" selection-start="4162" selection-end="4162" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -193,9 +202,9 @@
         <option value="$PROJECT_DIR$/templates/ios/2.0/ios_helper_header.mustache" />
         <option value="$PROJECT_DIR$/templates/ios/2.0/ios_helper_implementation.mustache" />
         <option value="$PROJECT_DIR$/templates/ios/2.0/ios_base_service_implementation.mustache" />
+        <option value="$PROJECT_DIR$/androidGenerator.rb" />
         <option value="$PROJECT_DIR$/templates/ios/2.0/ios_dto_header.mustache" />
         <option value="$PROJECT_DIR$/templates/ios/2.0/ios_dto_implementation.mustache" />
-        <option value="$PROJECT_DIR$/androidGenerator.rb" />
       </list>
     </option>
   </component>
@@ -526,11 +535,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/model/message.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="61" selection-start="795" selection-end="852" vertical-scroll-proportion="0.026548672" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/model/service_type.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state line="10" column="18" selection-start="201" selection-end="213" vertical-scroll-proportion="0.026548672" />
@@ -567,13 +571,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_base_service_implementation.mustache">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="169" column="26" selection-start="6914" selection-end="6914" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_helper_header.mustache">
       <provider selected="true" editor-type-id="text-editor">
         <state line="13" column="54" selection-start="303" selection-end="303" vertical-scroll-proportion="0.0">
@@ -602,23 +599,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_dto_implementation.mustache">
+    <entry file="file://$PROJECT_DIR$/androidGenerator.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="21" selection-start="327" selection-end="327" vertical-scroll-proportion="0.0">
+        <state line="95" column="0" selection-start="4162" selection-end="4162" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_base_service_implementation.mustache">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="169" column="26" selection-start="6914" selection-end="6914" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_service_implementation.mustache">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_dto_header.mustache">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="17" selection-start="536" selection-end="536" vertical-scroll-proportion="0.0">
+        <state line="25" column="9" selection-start="548" selection-end="548" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/androidGenerator.rb">
+    <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_dao_implementation.mustache">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="95" column="0" selection-start="4162" selection-end="4162" vertical-scroll-proportion="0.66188526">
+        <state line="97" column="29" selection-start="2865" selection-end="2886" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_dto_implementation.mustache">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="32" selection-start="158" selection-end="158" vertical-scroll-proportion="0.058577407">
           <folding />
         </state>
       </provider>
