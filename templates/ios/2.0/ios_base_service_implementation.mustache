@@ -160,7 +160,9 @@
 {{#isGet}}
 	[request setHTTPMethod:@"GET"];
 {{/isGet}}
-
+	
+	request = [[{{{projectName}}}Helper sharedInstance] manageRequest:request];
+	
 	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
   	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
 		
