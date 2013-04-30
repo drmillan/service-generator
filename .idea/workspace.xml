@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="63637c4b-6140-4bdc-a96e-92aa5088bb91" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/ios/2.0/ios_dto_implementation.mustache" afterPath="$PROJECT_DIR$/templates/ios/2.0/ios_dto_implementation.mustache" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/ios/2.0/ios_helper_header.mustache" afterPath="$PROJECT_DIR$/templates/ios/2.0/ios_helper_header.mustache" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/ios/2.0/ios_helper_implementation.mustache" afterPath="$PROJECT_DIR$/templates/ios/2.0/ios_helper_implementation.mustache" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="service-generator.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -132,7 +129,7 @@
       <file leaf-file-name="ios_dto_implementation.mustache" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_dto_implementation.mustache">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="53" selection-start="819" selection-end="819" vertical-scroll-proportion="0.505988">
+            <state line="29" column="24" selection-start="699" selection-end="699" vertical-scroll-proportion="0.41616768">
               <folding />
             </state>
           </provider>
@@ -599,13 +596,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_dto_header.mustache">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="9" selection-start="548" selection-end="548" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_dao_header.mustache">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
@@ -627,6 +617,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_dto_header.mustache">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="9" selection-start="548" selection-end="548" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_helper_implementation.mustache">
       <provider selected="true" editor-type-id="text-editor">
         <state line="51" column="0" selection-start="1224" selection-end="1224" vertical-scroll-proportion="0.0">
@@ -636,7 +633,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/ios/2.0/ios_dto_implementation.mustache">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="53" selection-start="819" selection-end="819" vertical-scroll-proportion="0.505988">
+        <state line="29" column="24" selection-start="699" selection-end="699" vertical-scroll-proportion="0.41616768">
           <folding />
         </state>
       </provider>

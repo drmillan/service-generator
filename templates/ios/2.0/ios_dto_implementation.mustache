@@ -14,7 +14,7 @@
      // Creates a non-mutable copy of this DTO Object
      -(id)copyWithZone:(NSZone *)zone
      {
-        id copy=[[[self class] alloc] init];
+        {{{dto.name}}} *copy=[[[self class] alloc] init];
         if(copy)
         {
             {{#dto.fields}}
@@ -27,7 +27,7 @@
      // Creates a mutable copy of this DTO Object
      -(id)mutableCopyWithZone:(NSZone *)zone
      {
-        id copy=[[[self class] alloc] init];
+        {{{dto.name}}} *copy=[[[self class] alloc] init];
         if(copy)
         {
             {{#dto.baseFields}}
