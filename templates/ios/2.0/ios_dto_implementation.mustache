@@ -31,7 +31,7 @@
         if(copy)
         {
             {{#dto.baseFields}}
-            [copy set{{{nameUcase}}}:self.{{{name}}};
+            [copy set{{{nameUcase}}}:self.{{{name}}}];
             {{/dto.baseFields}}
             {{#dto.baseArrayFields}}
             [copy set{{{nameUcase}}}:[self.{{{name}}} mutableCopyWithZone:zone]];
