@@ -18,7 +18,7 @@
         if(copy)
         {
             {{#dto.fields}}
-            [copy set{{{nameUcase}}}:[self.{{{name}}} copyWithZone:zone]];
+            copy.{{{name}}}=[self.{{{name}}} copyWithZone:zone];
             {{/dto.fields}}
         }
         return copy;
@@ -31,16 +31,16 @@
         if(copy)
         {
             {{#dto.baseFields}}
-            [copy set{{{nameUcase}}}:self.{{{name}}}];
+            copy.{{{name}}}=self.{{{name}}};
             {{/dto.baseFields}}
             {{#dto.baseArrayFields}}
-            [copy set{{{nameUcase}}}:[self.{{{name}}} mutableCopyWithZone:zone]];
+            copy.{{{name}}}=[self.{{{name}}} mutableCopyWithZone:zone];
             {{/dto.baseArrayFields}}
             {{#dto.objectFields}}
-            [copy set{{{nameUcase}}}:[self.{{{name}}} mutableCopyWithZone:zone]];
+            copy.{{{name}}}=[self.{{{name}}} mutableCopyWithZone:zone];
             {{/dto.objectFields}}
             {{#dto.objectArrayFields}}
-            [copy set{{{nameUcase}}}:[self.{{{name}}} mutableCopyWithZone:zone]];
+            copy.{{{name}}}=[self.{{{name}}} mutableCopyWithZone:zone];
             {{/dto.objectArrayFields}}
         }
         return copy;
