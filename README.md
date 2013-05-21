@@ -131,3 +131,17 @@ comando terminal...
 Comando terminal...
 
 *ruby generator.rb -f [Ruta absoluta fichero xml] -pn [Nombre de proyecto] -package [Paquete Java Base] -aOutput [Ruta al proyecto Android] -iOutput [Ruta al proyecto iOS]*
+
+
+## Parámetros
+
+1.- [ANDROID] Parámetros a System.properties
+
+### DEBUG
+Si la propiedad DEBUG existe y tiene valor "true", la capa de servicios generará por consola el resultado de las llamadas a servidor
+
+### LOG
+Si la propiedad LOG existe y tiene valor "true", la capa de servicios generará un fichero log.txt con el resultado de la interacción con el servidor, dicho fichero se creará en la ruta especificada en la siguiente propiedad
+
+####LOG.folder
+Si la propiedad LOG.folder existe y contiene una ruta existente y dicha ruta hace referencia a un directorio, la aplicación generará en dicha ruta el fichero log.txt con el contenido resultado de la interacción con el servidor
