@@ -89,7 +89,7 @@
 	double time=[[NSDate date] timeIntervalSince1970];
 	[dict setValue:[NSNumber numberWithDouble:time] forKey:@"requestTime"];
     
-	NSString *escapedUrl = [[{{{projectName}}}Helper sharedInstance] escapeUrl:url];
+	NSString *escapedUrl = url;
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:escapedUrl] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
 		
 	NSError *error=nil;
@@ -281,7 +281,7 @@
 	{{response.name}} *result;
     
 	NSError *error=nil;
-	NSString *escapedUrl = [[{{{projectName}}}Helper sharedInstance] escapeUrl:url];
+	NSString *escapedUrl = url;
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:escapedUrl] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
 				
 	{{#isPost}}
