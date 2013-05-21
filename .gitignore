@@ -2,6 +2,7 @@
 .metadata/
 bin/
 target/
+.idea/
 # Package Files #
 *.jar
 *.war
