@@ -236,7 +236,9 @@ public class Base{{{serviceName}}}Logic
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
-			log("{{method}}","ERROR",ex.toString());
+			if("true".equalsIgnoreCase(System.getProperty("LOG"))){
+			    log("{{method}}","ERROR",ex.toString());
+			}
 			throw new com.mobivery.logic.ServiceException(ex);
 		}
 	}
