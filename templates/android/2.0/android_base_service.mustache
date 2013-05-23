@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.FileWriter;
+import java.io.File;
 import java.io.BufferedWriter;
 import java.text.SimpleDateFormat;
 
@@ -235,7 +236,9 @@ public class Base{{{serviceName}}}Logic
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
-			log("{{method}}","ERROR",ex.toString());
+			if("true".equalsIgnoreCase(System.getProperty("LOG"))){
+			    log("{{method}}","ERROR",ex.toString());
+			}
 			throw new com.mobivery.logic.ServiceException(ex);
 		}
 	}
@@ -293,7 +296,9 @@ public class Base{{{serviceName}}}Logic
 		return {{{method}}}LastResponseTime;
 	}	
 
-    /**
+
+{{/messages}}
+/**
      * Write to Log
      * @param method Method called
      * @param level Log message tag
@@ -330,5 +335,4 @@ public class Base{{{serviceName}}}Logic
         }
 
     }
-{{/messages}}
 }
