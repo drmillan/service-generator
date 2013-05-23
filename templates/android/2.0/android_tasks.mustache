@@ -14,6 +14,7 @@ import {{{packagename}}}.logic.*;
 
 import com.mobivery.utils.ResponseInfo;
 
+import java.lang.reflect.Method;
 
 import android.os.AsyncTask;
 import android.app.Activity;
@@ -171,7 +172,16 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 		}
 	}
 	public {{{message.response.name}}} execOnBackground({{{message.request.name}}} request,ResponseInfo responseInfo) throws com.mobivery.logic.ServiceException{
-		return {{{message.service}}}Logic.getInstance().{{{message.method}}}(request,responseInfo);
+
+	        try
+    		{
+    			Method method=AffiliatesLogic.class.getDeclaredMethod("{{{message.method}}}", new Class[]{request.getClass(),responseInfo.getClass()});
+    			return {{{message.service}}}Logic.getInstance().{{{message.method}}}(request,responseInfo);
+    		}
+    		catch(Exception ex)
+    		{
+    			return {{{message.service}}}Logic.getInstance().{{{message.method}}}(request);
+    		}
 	}
 	public void onCompleteResponse({{{message.response.name}}} response,ResponseInfo responseInfo){
 

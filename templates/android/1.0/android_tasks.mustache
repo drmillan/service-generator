@@ -8,6 +8,8 @@
 */
 package {{{packagename}}}.tasks.{{{message.serviceNameLower}}};
 
+import java.lang.reflect.Method;
+
 import {{{packagename}}}.R;
 import {{{packagename}}}.model.dto.*; 
 import {{{packagename}}}.logic.*;
@@ -159,6 +161,14 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 	}
 	public {{{message.response.name}}} execOnBackground({{{message.request.name}}} request) throws com.mobivery.logic.ServiceException
 	{
-		return {{{message.service}}}Logic.getInstance().{{{message.method}}}(request);
+		try
+        {
+        	Method method=AffiliatesLogic.class.getDeclaredMethod("{{{message.method}}}", new Class[]{request.getClass(),responseInfo.getClass()});
+        	return {{{message.service}}}Logic.getInstance().{{{message.method}}}(request,responseInfo);
+        }
+        catch(Exception ex)
+        {
+            return {{{message.service}}}Logic.getInstance().{{{message.method}}}(request);
+        }
 	}
 }
