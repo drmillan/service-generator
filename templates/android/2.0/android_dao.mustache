@@ -16,10 +16,11 @@ import java.util.ArrayList;
 import {{{packagename}}}.model.dto.*;
 
 /**
- * DAO de la entidad {{{entity.daoClassName}}}, Singleton
+ * DAO for entity {{{entity.daoClassName}}}, Singleton
  */
 public final class {{{entity.daoClassName}}}{
-	// Constantes para la lectura de campos de los XML
+
+	// XML field constants
 	{{#entity.baseFields}}
 	private static final String CONSTANT_{{{nameFullUcase}}}="{{{name}}}";	
 	{{/entity.baseFields}}
@@ -33,28 +34,21 @@ public final class {{{entity.daoClassName}}}{
 	private static final String CONSTANT_{{{nameFullUcase}}}="{{{name}}}";	
 	{{/entity.objectArrayFields}}
 	
-
-
-	/**
-	 * Instancia privada del singleton
-	 */
 	private static {{{entity.daoClassName}}} instance=new {{{entity.daoClassName}}}();
-	/**
-	 * Constructor privado para prevenir instanciación de objetos
-	 */
+
 	private {{{entity.daoClassName}}}(){
 		
 	}
 	/**
-	 * Obtiene la instancia del dao
-	 * @returns Instancia del DAO
+	 * Gets DAO instance
+	 * @returns instance
 	 */
 	public static {{{entity.daoClassName}}} getInstance(){
 		return instance;
 	}
+	
 	/**
-	 * Construye un objeto del tipo {{{entity.name}}} a partir del
-	 * JSON del mismo.
+	 * Build an {{{entity.name}}} from JSON
 	 */
 	public {{{entity.name}}} create(JSONObject value) throws JSONException{
 		{{{entity.name}}} returnValue=new {{{entity.name}}}();
@@ -160,7 +154,7 @@ public final class {{{entity.daoClassName}}}{
 	}
 	
 	/**
-	 * Construye un JSONObject partiendo de un DTO
+	 * Build JSON (JSONObject) from a DTO object
 	 */
 	public JSONObject serialize({{{entity.name}}} object) throws JSONException {		
 		JSONObject returnValue = new JSONObject();

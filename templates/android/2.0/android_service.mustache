@@ -42,27 +42,17 @@ import org.json.JSONObject;
 
 
 /**
- * Servicio que realiza las llamadas a DAO,
- * Este servicio corresponde con la lógica ${serviceName}
+ * Service doing DAO calls
+ * This service complements Logic class ${serviceName}
  */
 public class {{{serviceName}}}Logic extends Base{{{serviceName}}}Logic{
-/**
-	 * Evitamos que se reinicialice mediante un constructor privado
-	 */
+
     private {{{serviceName}}}Logic() { }
 
-    /**
-    * Solo se va a ejecutar la primera vez, y nos va a instanciar el objeto
-    * para los posteriores usos
-    */
     private static class {{{serviceName}}}Holder { 
           public static final {{{serviceName}}}Logic instance = new {{{serviceName}}}Logic();
     }
 
-    /**
-     * Obtener la instancia unica del objeto
-     * @return 
-     */
     public static {{{serviceName}}}Logic getInstance() {
             return {{{serviceName}}}Holder.instance;
     }

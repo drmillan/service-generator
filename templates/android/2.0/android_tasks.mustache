@@ -27,13 +27,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
- * Task de {{{message.method}}}
- *
+ * Task for {{{message.method}}}
  */
 public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.request.name}}},Integer, {{{message.response.name}}}> implements com.mobivery.logic.ServiceExceptionListener {
 
-	// Instancia local de la activity que crea la tarea
+	// Local instance of the activity calling
 	private Activity activity;
+	
 	private int loadingView;
 	private int progressText;
 	private View innerView;
@@ -62,7 +62,7 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 		if(loadingView!=-1)
 		{
 		    if(activity!=null){
-			activity.runOnUiThread(new Thread(new Runnable(){public void run(){initSpinner();}}));
+				activity.runOnUiThread(new Thread(new Runnable(){public void run(){initSpinner();}}));
 			}
 		}
 		super.execute(request);
@@ -118,14 +118,13 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 	}
 	@Override
 	public final {{{message.response.name}}} doInBackground({{{message.request.name}}}... params) {
-		// Obtenemos el dto de petición
 		{{{message.request.name}}} request=params[0];
 		{{{message.response.name}}} response=null;
-		try{
+
+		try {
 {{#preMethod}}
 		{{{preMethod}}}(request);
 {{/preMethod}}	
-			// Llamamos al servicio
 			final ResponseInfo responseInfo=new ResponseInfo();
 			final {{{message.response.name}}} tempResponse=execOnBackground(request,responseInfo);
 			response=tempResponse;
@@ -142,9 +141,9 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 			}
 {{/onTask}}
 		}
-		catch(final com.mobivery.logic.ServiceException ex){
+		catch (final com.mobivery.logic.ServiceException ex){
 			if(!isCancelled()){
-			// Si se produce una excepción , llamamos a onServiceError en otro hilo.
+			// If an exception is raised, we should operate in UI thread
 			if (activity!=null) {
 				activity.runOnUiThread(new Runnable(){public void run(){
 					{{{message.methodUpperCase}}}Task.this.onServiceError(ex);}});
