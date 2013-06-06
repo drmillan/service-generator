@@ -16,15 +16,11 @@ import com.mobivery.utils.ResponseInfo;
 
 import java.lang.reflect.Method;
 
-import android.os.AsyncTask;
 import android.app.Activity;
-import android.widget.Toast;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
+import android.view.Window;
 import android.widget.TextView;
 
 /**
@@ -33,14 +29,11 @@ import android.widget.TextView;
  */
 public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.request.name}}},Integer, {{{message.response.name}}}> implements com.mobivery.logic.ServiceExceptionListener {
 
-	// Instancia local de la activity que crea la tarea
 	private Activity activity;
-	private int loadingView;
-	private int progressText;
-	private View innerView;
-	private LinearLayout loadingLayout;
-	private TextView txtView;
-	private int loadingText;
+        private int loadingView;
+        private int progressText;
+        private int loadingText;
+        private Dialog progressDialog;
 
     public {{{message.methodUpperCase}}}Task()
     {
@@ -69,50 +62,35 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 		super.execute(request);
 	}
 	private void initSpinner(){
-	    if(activity!=null){
-            ViewGroup group=(ViewGroup)activity.getWindow().getDecorView().getRootView();
-            loadingLayout=new LinearLayout(activity);
-            innerView=activity.getLayoutInflater().inflate(loadingView, loadingLayout);
-            LayoutParams viewParams=new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT);
-            innerView.setLayoutParams(viewParams);
-            TextView loadingTextView = (TextView)innerView.findViewById(progressText);
+        if (activity != null) {
+            progressDialog = new Dialog(activity,android.R.style.Theme_Light_NoTitleBar);
+            progressDialog.setCancelable(false);
+            progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            progressDialog.setContentView(loadingView);
+            TextView loadingTextView = (TextView)progressDialog.findViewById(progressText);
             if(loadingTextView != null){
                 loadingTextView.setText(this.loadingText);
             }
-            innerView.bringToFront();
-            LayoutParams params=new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-            loadingLayout.setLayoutParams(params);
-            group.addView(loadingLayout);
-            loadingLayout.bringToFront();
-		}
-	}
+            progressDialog.show();
+        }
+    }
 	private void endSpinner()
 	{
-		if(loadingLayout!=null){
-		    if(activity!=null){
-                ViewGroup group=(ViewGroup)activity.getWindow().getDecorView().getRootView();
-                if(group!=null){
-                    group.removeView(loadingLayout);
-                }
-			}
-		}		
+		if (activity != null) {
+        			if (progressDialog != null) {
+        				progressDialog.dismiss();
+        			}
+        		}
 	}
-	public void updateProgress(final String progress)
-	{
-	    if(activity!=null)
-	    {
-	        activity.runOnUiThread(new Runnable(){public void run()
-	            {
-                    if(txtView==null){
-                        txtView=(TextView)innerView.findViewById(progressText);
-                    }
-                    if(txtView!=null){
-                        txtView.setText(progress);
-                    }
-                }
-            });
-        }
-	}
+	public void updateProgress(final String progress) {
+    	if (activity != null) {
+    		activity.runOnUiThread(new Runnable() {
+    			public void run() {
+    			}
+    		});
+    	}
+    }
 	
 	public {{{message.methodUpperCase}}}Task(Activity activity){
 		this(activity,-1,-1,-1);
