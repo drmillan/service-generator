@@ -128,7 +128,7 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
     			    {
     			        TextView loadingTextView = (TextView)progressDialog.findViewById(progressText);
                             if(loadingTextView != null){
-                                loadingTextView.setText(this.loadingText);
+                                loadingTextView.setText({{{message.methodUpperCase}}}Task.this.loadingText);
                             }
     			    }
     			}
