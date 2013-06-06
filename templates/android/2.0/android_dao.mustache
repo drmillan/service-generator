@@ -61,13 +61,12 @@ public final class {{{entity.daoClassName}}}{
 		
 		{{#entity.baseFields}}
 		{{#isLong}}
-		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null") )
-		{
+		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null")) {
 			returnValue.set{{{nameUcase}}}(Long.parseLong(String.valueOf(value.get(CONSTANT_{{nameFullUcase}}))));
 		}
 		{{/isLong}}
 		{{#isInteger}}
-		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null") ){
+		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null")) {
             if(value.get(CONSTANT_{{nameFullUcase}}).getClass()==String.class){
                 returnValue.set{{{nameUcase}}}(Integer.parseInt((String)value.get(CONSTANT_{{nameFullUcase}})));
             }
@@ -77,7 +76,7 @@ public final class {{{entity.daoClassName}}}{
 		}	
 		{{/isInteger}}
 		{{#isFloat}}
-		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null") ){
+		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null")) {
             if(value.get(CONSTANT_{{nameFullUcase}}}).getClass()==String.class){
                 returnValue.set{{{nameUcase}}}(Float.parseFloat((String)value.get(CONSTANT_{{nameFullUcase}})));
             }
@@ -87,12 +86,12 @@ public final class {{{entity.daoClassName}}}{
 		}	
 		{{/isFloat}}
 		{{#isDouble}}
-		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null") ){
+		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null")) {
 			returnValue.set{{{nameUcase}}}(Double.valueOf(String.valueOf(value.get(CONSTANT_{{nameFullUcase}}))));			
 		}	
 		{{/isDouble}}
 		{{#isBoolean}}
-		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null") ){
+		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null")) {
             if(value.get(CONSTANT_{{nameFullUcase}}).getClass()==String.class){
                 returnValue.set{{{nameUcase}}}(Boolean.parseBoolean((String)value.get(CONSTANT_{{nameFullUcase}})));
             }
@@ -102,15 +101,15 @@ public final class {{{entity.daoClassName}}}{
 		}	
 		{{/isBoolean}}		
 		{{#isString}}
-		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null") ){
-		returnValue.set{{{nameUcase}}}(({{{typeJava}}})value.get(CONSTANT_{{nameFullUcase}}));
+		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null")) {
+		    returnValue.set{{{nameUcase}}}(({{{typeJava}}})value.get(CONSTANT_{{nameFullUcase}}));
 		}
 		{{/isString}}
 		{{/entity.baseFields}}
 	
 		{{#entity.baseArrayFields}}
 		ArrayList<{{{baseTypeSingular}}}> {{{javaName}}}List=new ArrayList<{{{baseTypeSingular}}}>();
-		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null") ){
+		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null")) {
             JSONArray {{{name}}}Array=value.getJSONArray(CONSTANT_{{nameFullUcase}});
             for(int i=0;i!={{{name}}}Array.length();i++){
                     {{#isString}}
@@ -134,7 +133,7 @@ public final class {{{entity.daoClassName}}}{
 		{{/entity.baseArrayFields}}
 	
 		{{#entity.objectFields}}
-		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null") ){
+		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null")) {
 		    {{{typeJava}}} {{{javaName}}}={{{typeJavaDAO}}}.getInstance().create((JSONObject)value.get(CONSTANT_{{nameFullUcase}}));
 		    returnValue.set{{{nameUcase}}}({{{javaName}}});
 		}
@@ -142,8 +141,7 @@ public final class {{{entity.daoClassName}}}{
 	
 		{{#entity.objectArrayFields}}
 		ArrayList<{{{baseTypeSingular}}}> {{{javaName}}}List=new ArrayList<{{{baseTypeSingular}}}>();
-		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null") )
-		{
+		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null")) {
 			if(value.get(CONSTANT_{{nameFullUcase}}) instanceof JSONArray){
 				JSONArray {{{javaName}}}Array=(JSONArray)value.get(CONSTANT_{{nameFullUcase}});
 				for(int i=0;i!={{{javaName}}}Array.length();i++){
