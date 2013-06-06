@@ -117,7 +117,7 @@ public final class {{{entity.daoClassName}}}{
                     {{{javaName}}}List.add({{{name}}}Array.getString(i));
                     {{/isString}}
 					{{#isInteger}}
-                    {{{javaName}}}List.add(Integer.valueOf({{{name}}}Array.getLong(i)));					
+                    {{{javaName}}}List.add(Integer.valueOf((int){{{name}}}Array.getLong(i)));					
 					{{/isInteger}}
 					{{#isFloat}}
                     {{{javaName}}}List.add(Float.valueOf((float){{{name}}}Array.getDouble(i)));					
