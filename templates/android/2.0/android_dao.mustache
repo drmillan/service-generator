@@ -72,7 +72,7 @@ public final class {{{entity.daoClassName}}}{
                 returnValue.set{{{nameUcase}}}(Integer.parseInt((String)value.get(CONSTANT_{{nameFullUcase}})));
             }
             else{
-            returnValue.set{{{nameUcase}}}(({{{typeJava}}})value.get(CONSTANT_{{nameFullUcase}}));
+                returnValue.set{{{nameUcase}}}(({{{typeJava}}})value.get(CONSTANT_{{nameFullUcase}}));
             }
 		}	
 		{{/isInteger}}
@@ -82,7 +82,7 @@ public final class {{{entity.daoClassName}}}{
                 returnValue.set{{{nameUcase}}}(Float.parseFloat((String)value.get(CONSTANT_{{nameFullUcase}})));
             }
             else{
-            returnValue.set{{{nameUcase}}}(({{{typeJava}}})value.get(CONSTANT_{{nameFullUcase}}));
+                returnValue.set{{{nameUcase}}}(({{{typeJava}}})value.get(CONSTANT_{{nameFullUcase}}));
             }
 		}	
 		{{/isFloat}}
@@ -97,7 +97,7 @@ public final class {{{entity.daoClassName}}}{
                 returnValue.set{{{nameUcase}}}(Boolean.parseBoolean((String)value.get(CONSTANT_{{nameFullUcase}})));
             }
             else{
-            returnValue.set{{{nameUcase}}}(({{{typeJava}}})value.get(CONSTANT_{{nameFullUcase}}));
+                returnValue.set{{{nameUcase}}}(({{{typeJava}}})value.get(CONSTANT_{{nameFullUcase}}));
             }
 		}	
 		{{/isBoolean}}		
@@ -135,8 +135,8 @@ public final class {{{entity.daoClassName}}}{
 	
 		{{#entity.objectFields}}
 		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null") ){
-		{{{typeJava}}} {{{javaName}}}={{{typeJavaDAO}}}.getInstance().create((JSONObject)value.get(CONSTANT_{{nameFullUcase}}));
-		returnValue.set{{{nameUcase}}}({{{javaName}}});
+		    {{{typeJava}}} {{{javaName}}}={{{typeJavaDAO}}}.getInstance().create((JSONObject)value.get(CONSTANT_{{nameFullUcase}}));
+		    returnValue.set{{{nameUcase}}}({{{javaName}}});
 		}
 		{{/entity.objectFields}}
 	
