@@ -35,22 +35,49 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
         private int loadingText;
         private Dialog progressDialog;
 
+    /**
+     * Creates default Task for method {{{message.method}}}
+     * @param activity parent Activity
+     */
+    public {{{message.methodUpperCase}}}Task(Activity activity){
+		this(activity,-1,-1,-1);
+	}
+
+    /**
+     * Creates default Task for method {{{message.method}}}
+     */
     public {{{message.methodUpperCase}}}Task()
     {
        this(null,-1,-1,-1);
     }
-
+    /**
+     * Creates Task for method {{{message.method}}}
+     * @param loadingView View resource to show while task is running
+     * @param progressText Resource id for loading dialog message (TextView id)
+     * @param loadingText Resource id for loading dialog message (String id)
+     */
 	public {{{message.methodUpperCase}}}Task(int loadingView,int progressText, int loadingText)
     {
         this(null,loadingView,progressText,loadingText);
     }
-	public {{{message.methodUpperCase}}}Task(Activity activity,int loadingView,int progressText, int loadingText)
+	/**
+     * Creates Task for method {{{message.method}}}
+     * @param activity parent Activity to get Resources from
+     * @param loadingView View resource to show while task is running
+     * @param progressText Resource id for loading dialog message (TextView id)
+     * @param loadingText Resource id for loading dialog message (String id)
+     */
+    public {{{message.methodUpperCase}}}Task(Activity activity,int loadingView,int progressText, int loadingText)
 	{
 		this.activity=activity;
 		this.loadingView=loadingView;
 		this.progressText=progressText;
 		this.loadingText=loadingText;
 	}
+	/**
+	 * Executes the async task with request
+	 * @param request Server request DTO
+	 */
 	public void execute({{{message.request.name}}} request)
 	{
 		if(loadingView!=-1)
@@ -61,6 +88,9 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 		}
 		super.execute(request);
 	}
+	/**
+	 * Start spinner for long operations
+	 */
 	private void initSpinner(){
         if (activity != null) {
             progressDialog = new Dialog(activity,android.R.style.Theme_Light_NoTitleBar);
@@ -75,6 +105,9 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
             progressDialog.show();
         }
     }
+    /**
+     * End spinner
+     */
 	private void endSpinner()
 	{
 		if (activity != null) {
@@ -83,28 +116,36 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
         			}
         		}
 	}
+	/**
+     * Update async task dialog message
+     * @param progress Message to update
+     */
 	public void updateProgress(final String progress) {
     	if (activity != null) {
     		activity.runOnUiThread(new Runnable() {
     			public void run() {
+    			    if(progressDialog!=null)
+    			    {
+    			        TextView loadingTextView = (TextView)progressDialog.findViewById(progressText);
+                            if(loadingTextView != null){
+                                loadingTextView.setText(this.loadingText);
+                            }
+    			    }
     			}
     		});
     	}
     }
 	
-	public {{{message.methodUpperCase}}}Task(Activity activity){
-		this(activity,-1,-1,-1);
-	}
 	@Override
 	public final {{{message.response.name}}} doInBackground({{{message.request.name}}}... params) {
-		// Obtenemos el dto de petición
+		// Get Request DTO
 		{{{message.request.name}}} request=params[0];
 		{{{message.response.name}}} response=null;
 		try{
 {{#preMethod}}
 		{{{preMethod}}}(request);
 {{/preMethod}}	
-			// Llamamos al servicio
+			// Call Service
 			final ResponseInfo responseInfo=new ResponseInfo();
 			final {{{message.response.name}}} tempResponse=execOnBackground(request,responseInfo);
 			response=tempResponse;
@@ -123,7 +164,7 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 		}
 		catch(final com.mobivery.logic.ServiceException ex){
 			if(!isCancelled()){
-			// Si se produce una excepción , llamamos a onServiceError en otro hilo.
+			// If error, call onServiceError on UI Thread
 			if (activity!=null) {
 				activity.runOnUiThread(new Runnable(){public void run(){
 					{{{message.methodUpperCase}}}Task.this.onServiceError(ex);}});
@@ -138,6 +179,10 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 		}
 		return response;
 	}
+	/**
+	 * Callback for service communication error
+	 * @param ex ServiceException
+	 */
 	public void onServiceError(com.mobivery.logic.ServiceException ex)
 	{
 		if(!isCancelled() && activity!=null && ex!=null){
@@ -149,6 +194,11 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 			}
 		}
 	}
+	/**
+	 * Execute task on background
+	 * @param request RequestDTO
+	 * @param responseInfo Response metadata (to get http header errors)
+	 */
 	public {{{message.response.name}}} execOnBackground({{{message.request.name}}} request,ResponseInfo responseInfo) throws com.mobivery.logic.ServiceException{
 
 	        try
@@ -161,6 +211,11 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
     			return {{{message.service}}}Logic.getInstance().{{{message.method}}}(request);
     		}
 	}
+	/**
+	 * Task completed callback (with ResponseInfo)
+	 * @param responseDTO ResponseDTO
+     * @param responseInfo Response metadata (to get http header errors)
+     */
 	public void onCompleteResponse({{{message.response.name}}} response,ResponseInfo responseInfo){
 
 	}
