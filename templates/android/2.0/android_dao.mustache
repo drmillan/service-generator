@@ -114,8 +114,20 @@ public final class {{{entity.daoClassName}}}{
             JSONArray {{{name}}}Array=value.getJSONArray(CONSTANT_{{nameFullUcase}});
             for(int i=0;i!={{{name}}}Array.length();i++){
                     {{#isString}}
-                    {{{javaName}}}List.add({{{name}}}Array.get(i).toString());
+                    {{{javaName}}}List.add({{{name}}}Array.getString(i));
                     {{/isString}}
+					{{#isInteger}}
+                    {{{javaName}}}List.add(Integer.valueOf({{{name}}}Array.getLong(i)));					
+					{{/isInteger}}
+					{{#isFloat}}
+                    {{{javaName}}}List.add(Float.valueOf((float){{{name}}}Array.getDouble(i)));					
+					{{/isFloat}}
+					{{#isDouble}}
+                    {{{javaName}}}List.add(Double.valueOf({{{name}}}Array.getDouble(i)));
+					{{/isDouble}}
+					{{#isBoolean}}
+                    {{{javaName}}}List.add(new Boolean({{{name}}}Array.getBoolean(i)));
+					{{/isBoolean}}
             }
 		}
 		returnValue.set{{{nameUcase}}}({{{javaName}}}List);
