@@ -179,6 +179,7 @@ public class Base{{{serviceName}}}Logic
 		{{^isDelete}}
 		request.setEntity(new UrlEncodedFormEntity(parameters, HTTP.UTF_8));
 		{{/isDelete}}
+		JSONObject jsonObject ={{{request.daoClassName}}}.getInstance().serialize({{{request.javaInstanceName}}});		
 		{{/isWrite}}
 		{{#isWriteJSON}}
 		JSONObject jsonObject ={{{request.daoClassName}}}.getInstance().serialize({{{request.javaInstanceName}}});
