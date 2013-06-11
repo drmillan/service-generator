@@ -203,7 +203,7 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 
 	        try
     		{
-    			Method method=AffiliatesLogic.class.getDeclaredMethod("{{{message.method}}}", new Class[]{request.getClass(),responseInfo.getClass()});
+    			Method method={{{message.service}}}Logic.class.getDeclaredMethod("{{{message.method}}}", new Class[]{request.getClass(),responseInfo.getClass()});
     			return {{{message.service}}}Logic.getInstance().{{{message.method}}}(request,responseInfo);
     		}
     		catch(Exception ex)
