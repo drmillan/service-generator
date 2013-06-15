@@ -19,7 +19,7 @@ class ServiceType
   
   def isMultipart
     fields.each do |field| 
-      if(field.type=="file")
+      if(field.type=="file" || field.type=="File")
         return true
       end
     end
@@ -28,6 +28,15 @@ class ServiceType
   
   def javaInstanceName
     return name.slice(0,1).downcase + name.slice(1..-1)
+  end
+  def fileFields
+    returnValues=Array.new
+    fields.each do |field|
+      if field.isFile
+        returnValues<<field
+      end
+    return returnValues
+  end
   end
   def baseArrayFields
     returnValues=Array.new

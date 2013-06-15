@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.ArrayList;
 import android.os.Parcel;
 import android.os.Parcelable;
+import java.io.File;
 import {{{packagename}}}.model.dto.*;
 
 public class {{{projectName}}}DTOBundle
@@ -56,6 +57,16 @@ public class {{{projectName}}}DTOBundle
 
 		@Override
 		public void writeToParcel(Parcel dest, int flags) {
+		{{#fileFields}}
+		    if({{{javaName}}}!=null){
+		        dest.writeByte((byte)1);
+		        dest.writeString({{{javaName}}}.getAbsolutePath());
+		    }
+		    else
+		    {
+		        dest.writeByte((byte)0);
+		    }
+		{{/fileFields}}
 		{{#baseFields}}
 			{{#isString}}
 			if({{{javaName}}}!=null){
@@ -137,6 +148,12 @@ public class {{{projectName}}}DTOBundle
 		}
 		
 		public void readFromParcel(Parcel in) {
+
+{{#fileFields}}
+    if(in.readByte()==1) {
+        {{{javaName}}}=new java.io.File(in.readString());
+    }
+{{/fileFields}}
 {{#baseFields}}	
 	{{#isString}}
 	        if(in.readByte()==1)
@@ -196,4 +213,6 @@ public class {{{projectName}}}DTOBundle
 			
 	}
 {{/dtos}}
+
+
 }

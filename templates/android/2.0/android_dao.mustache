@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.List;
 import java.util.ArrayList;
+import java.io.*;
 import {{{packagename}}}.model.dto.*;
 
 /**
@@ -22,16 +23,16 @@ public final class {{{entity.daoClassName}}}{
 
 	// XML field constants
 	{{#entity.baseFields}}
-	private static final String CONSTANT_{{{nameFullUcase}}}="{{{name}}}";	
+	private static final String CONSTANT_{{{nameFullUcase}}}="{{{serviceName}}}";
 	{{/entity.baseFields}}
 	{{#entity.baseArrayFields}}
-	private static final String CONSTANT_{{{nameFullUcase}}}="{{{name}}}";	
+	private static final String CONSTANT_{{{nameFullUcase}}}="{{{serviceName}}}";
 	{{/entity.baseArrayFields}}
 	{{#entity.objectFields}}
-	private static final String CONSTANT_{{{nameFullUcase}}}="{{{name}}}";	
+	private static final String CONSTANT_{{{nameFullUcase}}}="{{{serviceName}}}";
 	{{/entity.objectFields}}
 	{{#entity.objectArrayFields}}
-	private static final String CONSTANT_{{{nameFullUcase}}}="{{{name}}}";	
+	private static final String CONSTANT_{{{nameFullUcase}}}="{{{serviceName}}}";
 	{{/entity.objectArrayFields}}
 	
 	private static {{{entity.daoClassName}}} instance=new {{{entity.daoClassName}}}();
@@ -149,7 +150,7 @@ public final class {{{entity.daoClassName}}}{
 		}
 		returnValue.set{{{nameUcase}}}({{{javaName}}}List);
 		{{/entity.objectArrayFields}}
-		
+
 		return returnValue;
 	}
 	
@@ -161,17 +162,17 @@ public final class {{{entity.daoClassName}}}{
 		
 {{#entity.baseFields}}
 		if(object.get{{{nameUcase}}}()!=null){
-			returnValue.put("{{{name}}}", (object.get{{{nameUcase}}}() == null)? JSONObject.NULL : object.get{{{nameUcase}}}());
+			returnValue.put(CONSTANT_{{nameFullUcase}}, (object.get{{{nameUcase}}}() == null)? JSONObject.NULL : object.get{{{nameUcase}}}());
 		}
 {{/entity.baseFields}}
 {{#entity.baseArrayFields}}
 		if(object.get{{{nameUcase}}}()!=null){
-			returnValue.put("{{{name}}}",new JSONArray(object.get{{{nameUcase}}}()));
+			returnValue.put(CONSTANT_{{nameFullUcase}},new JSONArray(object.get{{{nameUcase}}}()));
 		}	
 {{/entity.baseArrayFields}}
 {{#entity.objectFields}}
 		if(object.get{{{nameUcase}}}()!=null){
-			returnValue.put("{{{name}}}",{{{typeJavaDAO}}}.getInstance().serialize(object.get{{{nameUcase}}}()));
+			returnValue.put(CONSTANT_{{nameFullUcase}},{{{typeJavaDAO}}}.getInstance().serialize(object.get{{{nameUcase}}}()));
 		}
 {{/entity.objectFields}}
 {{#entity.objectArrayFields}}
@@ -180,7 +181,7 @@ public final class {{{entity.daoClassName}}}{
 		for ({{{baseTypeSingular}}} {{{javaName}}}Object : object.get{{{nameUcase}}}()) {
 			{{{name}}}Array.put({{{typeJavaDAO}}}.getInstance().serialize({{{javaName}}}Object));
 		}
-		returnValue.put("{{{name}}}",{{{name}}}Array);
+		returnValue.put(CONSTANT_{{nameFullUcase}},{{{name}}}Array);
 		}
 {{/entity.objectArrayFields}}
 

@@ -5,6 +5,8 @@ class Field
   
   attr_accessor :name
   @name=nil
+  attr_accessor :serviceName
+  @serviceName=nil
   attr_accessor :type
   @type=nil
   attr_accessor :description
@@ -44,7 +46,6 @@ class Field
   def isBoolean
     return baseTypeSingular()=="Boolean"
   end
-  
 
   def isInteger
     return baseTypeSingular()=="Integer"
@@ -63,7 +64,7 @@ class Field
   end
 
   def isFile
-    return type=="file"
+    return type=="file" || type=="File"
   end
   
   def baseTypeSingular
@@ -115,7 +116,7 @@ class Field
   end
   
   def isObject
-    if(!isBase() && !isBaseArray() && !type.index('*'))
+    if(!isBase() && !isBaseArray() && !type.index('*') && !isFile())
       return true
       end
     return false
