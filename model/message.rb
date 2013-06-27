@@ -85,4 +85,12 @@ class Message
   def isHttps
     return url.index 'https'
   end
+  def multipart
+    request.fields.each do |field|
+      if field.isFile
+        return true
+      end
+    end
+    return false
+  end
 end

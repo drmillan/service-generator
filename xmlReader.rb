@@ -97,7 +97,7 @@ class XmlReader
         protocol.messages[i].request.name=protocol.messages[i].request.type
       end
 
-      if(!protocol.services[protocol.messages[i].service])
+      if !protocol.services[protocol.messages[i].service]
         protocol.services[protocol.messages[i].service]=Service.new
         protocol.services[protocol.messages[i].service].messages=Array.new
       end
@@ -145,6 +145,10 @@ class XmlReader
     field.type=xmlField.attributes['type']
     field.mimeType=xmlField.attributes['mimeType']
     field.description=xmlField.attributes['description']
+    field.serviceName=xmlField.attributes['serviceName']
+    if !field.serviceName
+      field.serviceName=field.name
+    end
     return field
   end
 
