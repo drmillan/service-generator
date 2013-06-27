@@ -53,7 +53,7 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.entity.mime.content.FileBody;
-
+import org.apache.http.client.methods.HttpPost;
 import java.io.File;
 import java.io.FileInputStream;
 import org.apache.commons.io.IOUtils;
@@ -138,7 +138,7 @@ public class Base{{{serviceName}}}Logic
             log("{{method}}","REQUEST-URL",url);
 		}
 		String result;
-		{{#request.multipart}}
+		{{#request.isMultipart}}
 		DefaultHttpClient httpClient = HttpClientHelper.getInstance().getNewHttpClient();
 		HttpPost postRequest = new HttpPost(url);			
 		MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -166,8 +166,8 @@ public class Base{{{serviceName}}}Logic
 			s = s.append(sResponse);
 		}
 		result=s.toString();
-		{{/request.multipart}}
-		{{^request.multipart}}
+		{{/request.isMultipart}}
+		{{^request.isMultipart}}
 		DefaultHttpClient client = HttpClientHelper.getInstance().getNewHttpClient();
 		Http{{{simpleType}}} request=new Http{{{simpleType}}}(url);
 
@@ -216,7 +216,7 @@ public class Base{{{serviceName}}}Logic
         if("true".equalsIgnoreCase(System.getProperty("LOG"))){
              log("{{method}}","RECEIVE",jsonObject.toString());
         }
-		{{/request.multipart}}
+		{{/request.isMultipart}}
 		
 		{{{response.javaInstanceName}}}={{{response.daoClassName}}}.getInstance().create(
 			new JSONObject(result));
