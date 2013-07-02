@@ -34,13 +34,10 @@
 -(NSDictionary *) writeToDictionary:({{{dto.name}}} *)instance
 {
 NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];	
+		
 	{{#dto.baseFields}}
 		{{#isBoolean}}
-			if (instance.{{{name}}}.boolValue) {
-				dict[@"{{{name}}}"] = @"true";
-			} else {
-				dict[@"{{{name}}}"] = @"false";
-			}
+			dict[@"{{{name}}}"] = instance.{{{name}}}.boolValue ? @"true": @"false";
 	    {{/isBoolean}}
 		{{^isBoolean}}
 			dict[@"{{{name}}}"] = instance.{{{name}}};
@@ -49,11 +46,7 @@ NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
 		
 	{{#dto.baseArrayFields}}
 	    {{#isBoolean}})
-			if (instance.{{{name}}}.boolValue) {
-				dict[@"{{{name}}}"] = @"true";
-			} else {
-				dict[@"{{{name}}}"] = @"false";
-			}
+			dict[@"{{{name}}}"] = instance.{{{name}}}.boolValue ? @"true": @"false";
 		{{/isBoolean}}
         {{^isBoolean}}
         	dict[@"{{{name}}}"] = instance.{{{name}}};
@@ -137,6 +130,7 @@ NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
 	return instance;
 }
 
+
 // Establece valores a partir de un NSArray
 -(NSArray *) readFromDictionaryArray:(NSArray *)dictArray
 {
@@ -148,3 +142,4 @@ NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
 	return mutableArray;
 }
 @end
+ 
