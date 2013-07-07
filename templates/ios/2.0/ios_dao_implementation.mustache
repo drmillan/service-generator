@@ -37,25 +37,25 @@ NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
 		
 	{{#dto.baseFields}}
 		{{#isBoolean}}
-			dict[@"{{{name}}}"] = instance.{{{name}}}.boolValue ? @"true": @"false";
+			dict[@"{{{serviceName}}}"] = instance.{{{name}}}.boolValue ? @"true": @"false";
 	    {{/isBoolean}}
 		{{^isBoolean}}
-			dict[@"{{{name}}}"] = instance.{{{name}}};
+			dict[@"{{{serviceName}}}"] = instance.{{{name}}};
 		{{/isBoolean}}
 	{{/dto.baseFields}}
 		
 	{{#dto.baseArrayFields}}
 	    {{#isBoolean}})
-			dict[@"{{{name}}}"] = instance.{{{name}}}.boolValue ? @"true": @"false";
+			dict[@"{{{serviceName}}}"] = instance.{{{name}}}.boolValue ? @"true": @"false";
 		{{/isBoolean}}
         {{^isBoolean}}
-        	dict[@"{{{name}}}"] = instance.{{{name}}};
+        	dict[@"{{{serviceName}}}"] = instance.{{{name}}};
 		{{/isBoolean}}
 	{{/dto.baseArrayFields}}
 	
 	{{#dto.objectFields}}
 	NSDictionary *dict{{{name}}}=[[{{{typeJavaDAO}}} sharedInstance] writeToDictionary:instance.{{{name}}}];
-	dict[@"{{{name}}}"] = dict{{{name}}};
+	dict[@"{{{serviceName}}}"] = dict{{{name}}};
 	{{/dto.objectFields}}
 
 	{{#dto.objectArrayFields}}
@@ -65,8 +65,8 @@ NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
 		NSDictionary *dict{{{name}}}=[[{{{typeJavaDAO}}} sharedInstance] writeToDictionary:typeItem];
 		[array{{{name}}} addObject:dict{{{name}}}];
 	}
-	dict[@"{{{name}}}"] = array{{{name}}};
-	
+	dict[@"{{{serviceName}}}"] = array{{{name}}};
+
 	{{/dto.objectArrayFields}}
 	return dict;
 }
@@ -80,13 +80,13 @@ NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
     {{/dto.objectArrayFields}}
 
     {{#dto.baseFields}}
-    if (![dict[@"{{{name}}}"] isKindOfClass:[NSNull class]]) {
-    		instance.{{{name}}} = dict[@"{{{name}}}"];
+    if (![dict[@"{{{serviceName}}}"] isKindOfClass:[NSNull class]]) {
+    		instance.{{{name}}} = dict[@"{{{serviceName}}}"];
         }
     {{/dto.baseFields}}
 
     {{#dto.baseArrayFields}}
-	NSArray *{{{name}}}Array=dict[@"{{{name}}}"];
+	NSArray *{{{name}}}Array=dict[@"{{{serviceName}}}"];
 	NSMutableArray *{{{name}}}MutableArray=[[NSMutableArray alloc]init];
 	for({{{iosBaseTypeSingular}}} *item in {{{name}}}Array)
 	{
@@ -96,21 +96,21 @@ NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
     {{/dto.baseArrayFields}}
   
     {{#dto.objectFields}}
-	if (dict[@"{{{name}}}"]) {
-        instance.{{{name}}}=[[{{{typeJavaDAO}}} sharedInstance] readFromDictionary:dict[@"{{{name}}}"]];
+	if (dict[@"{{{serviceName}}}"]) {
+        instance.{{{name}}}=[[{{{typeJavaDAO}}} sharedInstance] readFromDictionary:dict[@"{{{serviceName}}}"]];
     }
     {{/dto.objectFields}}
 
     {{#dto.objectArrayFields}}
 	NSDictionary *{{{name}}}Item = nil;
-	if(![dict[@"{{{name}}}"] isKindOfClass:[NSNull class]])
+	if(![dict[@"{{{serviceName}}}"] isKindOfClass:[NSNull class]])
 	{
-		{{{name}}}Item=dict[@"{{{name}}}"];
+		{{{name}}}Item=dict[@"{{{serviceName}}}"];
 	}
 	
 	if([{{{name}}}Item isKindOfClass:[NSArray class]])
 	{
-		NSArray *{{{name}}}Array=dict[@"{{{name}}}"];
+		NSArray *{{{name}}}Array=dict[@"{{{serviceName}}}"];
 		NSMutableArray *{{{name}}}MutableArray=[[NSMutableArray alloc]init];
 		for(NSDictionary *data in {{{name}}}Array)
 		{
