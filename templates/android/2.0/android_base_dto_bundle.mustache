@@ -27,7 +27,7 @@ public class {{{projectName}}}DTOBundle
 		}
 	
 		{{#fields}}
-		//{{{comment}}}
+		//{{{comment}}} Field name on service:{{serviceName}}
 		private {{{typeJava}}} {{{javaName}}}; 
 		{{/fields}}
 		
@@ -36,6 +36,7 @@ public class {{{projectName}}}DTOBundle
 		{{#fields}}
 		/**
 		 * Setter de la propiedad {{{javaName}}} , {{{comments}}}
+		 * Field name on service:{{serviceName}}
 		 * @param {{{javaName}}} valor a establecer en el set
 		 */
 		public void set{{{nameUcase}}}({{{typeJava}}} {{{javaName}}}){
@@ -43,6 +44,7 @@ public class {{{projectName}}}DTOBundle
 		}
 		/**
 		 * Getter de la propiedad {{{javaName}}} , {{{comments}}}
+		 * Field name on service:{{serviceName}}
 		 * @returns Valor de la propiedad {{{javaName}}}
 		 */
 		public {{{typeJava}}} get{{{nameUcase}}}(){

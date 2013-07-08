@@ -100,6 +100,8 @@ Nombre del DTO en el código generado
 #### ATRIBUTOS:
 ##### name: 
 Nombre del campo (Nombre de la propiedad en el DTO generado)
+##### serviceName:
+Nombre del campo en el servicio (Nombre de la propiedad en el DTO generado)
 ##### type: 
 Tipo del campo, los tipos pueden ser :<br>
 - básicos:<br>
