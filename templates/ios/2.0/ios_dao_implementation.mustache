@@ -74,7 +74,8 @@ NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
 -({{{dto.name}}} *) readFromDictionary:(NSDictionary *)dict
 {
 	{{{dto.name}}} *instance=[[{{{dto.name}}} alloc]init];
-
+	if(![dict isKindOfClass:[NSNull class]])
+	    {
     {{#dto.objectArrayFields}}
     instance.{{{name}}}=[[NSMutableArray alloc]init];
     {{/dto.objectArrayFields}}
@@ -127,6 +128,7 @@ NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
 		instance.{{{name}}}={{{name}}}MutableArray;
 	}
     {{/dto.objectArrayFields}}
+	}
 	return instance;
 }
 
