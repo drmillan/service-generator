@@ -16,11 +16,11 @@
 {{/dto.objectArrayFields}}
 
 
-@interface {{{dto.name}}} : NSObject <NSCopying,NSMutableCopying>
+@interface {{{dto.name}}} : NSObject <NSCopying, NSMutableCopying, NSCoding>
 
 
 {{#dto.fields}}
-  @property (nonatomic, strong) {{{typeIOS}}} *{{{name}}};	///< {{{comment}}} - Field name on service:{{serviceName}}.
+@property (nonatomic, strong) {{{typeIOS}}} *{{{name}}};	///< {{{comment}}} - Field name on service:{{serviceName}}.
 {{/dto.fields}}
 
 
