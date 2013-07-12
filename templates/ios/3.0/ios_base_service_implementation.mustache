@@ -30,7 +30,7 @@
 * @param {{request.javaInstanceName}} Service request
 * @returns {{response.type}} Service response
 */
-- (void){{method}}:({{request.type}} *){{request.javaInstanceName}} onSuccess:(void(^)({{response.type}} *response))onSuccess onError:(void(^)(NSError *error))onError {
+- (void){{method}}:({{request.type}} *){{request.javaInstanceName}} onSuccess:(void(^)(int responseCode,{{response.type}} *response))onSuccess onError:(void(^)(NSError *error))onError {
 
 	NSString *url=@"{{{url}}}";
 
@@ -166,13 +166,12 @@
 	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
   	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
 
-		{{response.name}} *dto=[self ${method}DTOFromOperation:operation];
+		NSError *error;
+		{{response.name}} *dto=[self {{method}}DTOFromOperation:operation withError:&error];
 
     	if (!error) {
-	        _ModelGenLog(@"JSON: %@", json);
-
 	        if (onSuccess) {
-	            onSuccess(dto);
+	            onSuccess(operation.response.statusCode,dto);
 	        }      	  
 	  	} else {
 			if (onError) {
@@ -182,16 +181,22 @@
 		
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
-	    {{response.name}} *dto=[self ${method}DTOFromOperation:operation];
-		if (onError) {
-			onError(error,dto);
+	    {{response.name}} *dto=[self {{method}}DTOFromOperation:operation withError:nil];
+		if(dto)
+		{
+	        if (onSuccess) {
+	            onSuccess(operation.response.statusCode,dto);
+	        }
+		}
+		else if (onError) {
+			onError(error);
 		}
 	}];
 
 	[operation start];
 }
 
--({{response.name}} *) ${{method}}DTOFromOperation:(AFHTTPRequestOperation *)operation
+-({{response.name}} *) {{method}}DTOFromOperation:(AFHTTPRequestOperation *)operation withError:(NSError **)error
 {
         NSData *data = operation.responseData;
 
@@ -201,14 +206,14 @@
 			data = [stringData dataUsingEncoding:NSUTF8StringEncoding];
 		}
 
-		NSError *error;
-		NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+		NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:error];
 
 		json=[[{{{projectName}}}Helper sharedInstance] preprocessResponseAsDictionary:json];
 
         {{response.name}} *dto=nil;
          if(json)
          {
+			 _ModelGenLog(@"JSON: %@", json);
             dto = [[{{response.daoClassName}} sharedInstance] readFromDictionary:json];
          }
          return dto;
