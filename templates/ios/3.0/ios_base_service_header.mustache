@@ -9,6 +9,7 @@
 
 #import <Foundation/Foundation.h>
 #import "MVYDefines.h"
+#import "AFHTTPRequestOperation.h"
 {{#imports}}
 #import "{{request.name}}.h"
 #import "{{response.name}}.h"
@@ -36,7 +37,8 @@
 * @param {{request.javaInstanceName}} Service request
 * @returns {{response.type}} Service response
 */
-- (void){{method}}:({{request.type}} *){{request.javaInstanceName}} onSucces:(void(^)({{response.type}} *response))onSucces onError:(void(^)(NSError *error))onError;
+- (void){{method}}:({{request.type}} *){{request.javaInstanceName}} onSuccess:(void(^)(int responseCode,{{response.type}} *response))onSucces onError:(void(^)(NSError *error))onError;
+-({{response.name}} *) {{method}}DTOFromOperation:(AFHTTPRequestOperation *)operation withError:(NSError **)error;
 
 
 

@@ -13,7 +13,7 @@
 
 @implementation {{message.methodUpperCase}}Task
 
-+ (void) {{message.method}}TaskForRequest:({{message.request.name}} *)request completed:(void(^)({{message.response.name}} *response))completedBlock error:(void(^)(NSError *error,{{message.response.name}} *response))errorBlock {
++ (void) {{message.method}}TaskForRequest:({{message.request.name}} *)request completed:(void(^)(int statusCode,{{message.response.name}} *response))completedBlock error:(void(^)(NSError *error))errorBlock {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 		
@@ -28,14 +28,14 @@
 	}
 
 
-	[[{{message.service}}Logic sharedInstance] {{message.method}}:request onSucces:^({{message.response.name}} *response){
+	[[{{message.service}}Logic sharedInstance] {{message.method}}:request onSuccess:^(int statusCode,{{message.response.name}} *response){
 
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 		if (loadingView) {
 			[loadingView removeFromSuperview];
 		}
 		if(completedBlock){
-			completedBlock(response);
+			completedBlock(statusCode,response);
 		}
 
 	} onError:^(NSError *error){
