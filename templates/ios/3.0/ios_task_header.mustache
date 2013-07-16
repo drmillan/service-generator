@@ -15,6 +15,6 @@
 
 @interface {{message.methodUpperCase}}Task : NSObject
 
-+ (void) {{message.method}}TaskForRequest:({{message.request.name}} *)request completed:(void(^)({{message.response.name}} *response))completedBlock error:(void(^)(NSError *error,{{message.response.name}} *response))errorBlock;
++ (void) {{message.method}}TaskForRequest:({{message.request.name}} *)request completed:(void(^)(int statusCode,{{message.response.name}} *response))completedBlock error:(void(^)(NSError *error))errorBlock;
 
 @end
