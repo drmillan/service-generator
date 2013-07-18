@@ -81,8 +81,20 @@ NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
     {{/dto.objectArrayFields}}
 
     {{#dto.baseFields}}
-    if (![dict[@"{{{serviceName}}}"] isKindOfClass:[NSNull class]]) {
-    		instance.{{{name}}} = dict[@"{{{serviceName}}}"];
+    if (dict[@"{{{serviceName}}}"] && ![dict[@"{{{serviceName}}}"] isKindOfClass:[NSNull class]]) {
+	 {{#isString}}
+	if([dict[@"{{{serviceName}}}"] isKindOfClass:[NSString class]])
+	{
+		instance.{{{name}}}=dict[@"{{{serviceName}}}"];
+	}
+	else
+	{
+		instance.{{{name}}}=[NSString stringWithFormat:@"%@",dict[@"{{{serviceName}}}"]];
+	}
+	{{/isString}}
+    	{{^isString}}
+		instance.{{{name}}} = dict[@"{{{serviceName}}}"];
+	{{/isString}}
         }
     {{/dto.baseFields}}
 
