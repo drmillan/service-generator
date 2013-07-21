@@ -5,6 +5,8 @@ class ServiceType
   attr_accessor :name
   @name
   attr_accessor :type
+  @typeRef
+  attr_accessor :typeRef
   @type
   attr_accessor :fields
   @fields
