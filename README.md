@@ -88,12 +88,17 @@ Si no se encuentran los parámetrosen ése nivel, se consultan entre las propied
 #### ATRIBUTOS:
 ##### name:
 Nombre del DTO en el código generado
+##### typeRef
+True si este DTO no debe ser generado por ser definido en el bloque de types
+
                 
 ### TAG: response
 
 #### ATRIBUTOS:
 ##### name:
 Nombre del DTO en el código generado
+##### typeRef
+True si este DTO no debe ser generado por ser definido en el bloque de types
 
 ### TAG: field
 
