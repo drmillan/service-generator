@@ -60,6 +60,7 @@ class XmlReader
       protocol.messages[i].response=XmlReader.read_type(xmlMessage.elements['response'])
 
       # Add types to global types
+      # If is a ref type, do not add to global values
       if !protocol.messages[i].request.typeRef
         protocol.types << protocol.messages[i].request
       end
