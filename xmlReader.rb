@@ -60,8 +60,13 @@ class XmlReader
       protocol.messages[i].response=XmlReader.read_type(xmlMessage.elements['response'])
 
       # Add types to global types
-      protocol.types << protocol.messages[i].request
-      protocol.types << protocol.messages[i].response
+      if !protocol.messages[i].request.typeRef
+        protocol.types << protocol.messages[i].request
+      end
+      if !protocol.messages[i].response.typeRef
+        protocol.types << protocol.messages[i].response
+      end
+
 
       # Read common protocol properties
       protocol.messages[i].name=xmlMessage.attributes['name']
@@ -127,6 +132,7 @@ class XmlReader
     serviceType=ServiceType.new
     serviceType.name=xmlServiceType.attributes['name']
     serviceType.type=xmlServiceType.attributes['type']
+    serviceType.typeRef=xmlServiceType.attributes['typeRef']
     serviceType.fields=Array.new
     i=0
     xmlServiceType.each_element('field') do |xmlField|
