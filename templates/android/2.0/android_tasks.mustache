@@ -167,7 +167,8 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 			// If error, call onServiceError on UI Thread
 			if (activity!=null) {
 				activity.runOnUiThread(new Runnable(){public void run(){
-					{{{message.methodUpperCase}}}Task.this.onServiceError(ex);}});
+				    endSpinner();
+				    {{{message.methodUpperCase}}}Task.this.onServiceError(ex);}});
 			}
 			return null;
 			}
@@ -187,11 +188,6 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 	{
 		if(!isCancelled() && activity!=null && ex!=null){
 			ex.printStackTrace();
-		}
-		if(loadingView!=-1){
-			if(activity!=null){
-				activity.runOnUiThread(new Runnable(){public void run(){endSpinner();}});
-			}
 		}
 	}
 	/**
