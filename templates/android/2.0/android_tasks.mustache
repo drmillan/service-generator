@@ -146,7 +146,7 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 		{{{preMethod}}}(request);
 {{/preMethod}}	
 			// Call Service
-			ResponseInfo responseInfo=new ResponseInfo();
+			final ResponseInfo responseInfo=new ResponseInfo();
 			final {{{message.response.name}}} tempResponse=execOnBackground(request,responseInfo);
 			response=tempResponse;
 			if(activity!=null){
