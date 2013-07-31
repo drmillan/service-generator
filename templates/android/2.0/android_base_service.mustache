@@ -107,7 +107,13 @@ public class Base{{{serviceName}}}Logic
 	{
 		try
 		{
-		CookieStore cookieStore = new BasicCookieStore();	
+
+		if(responseInfo==null)
+		{
+		    responseInfo=new ResponseInfo();
+		}
+
+		CookieStore cookieStore = new BasicCookieStore();
 		HttpContext localContext = new BasicHttpContext();
 		localContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
 	
