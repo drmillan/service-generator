@@ -195,8 +195,17 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 	 * @param request RequestDTO
 	 * @param responseInfo Response metadata (to get http header errors)
 	 */
-	public {{{message.response.name}}} execOnBackground({{{message.request.name}}} request, ResponseInfo responseInfo) throws com.mobivery.logic.ServiceException{
-        return {{{message.service}}}Logic.getInstance().{{{message.method}}}(request,responseInfo);
+	public {{{message.response.name}}} execOnBackground({{{message.request.name}}} request,ResponseInfo responseInfo) throws com.mobivery.logic.ServiceException{
+
+	        try
+    		{
+    			Method method={{{message.service}}}Logic.class.getDeclaredMethod("{{{message.method}}}", new Class[]{request.getClass(),responseInfo.getClass()});
+    			return {{{message.service}}}Logic.getInstance().{{{message.method}}}(request,responseInfo);
+    		}
+    		catch(Exception ex)
+    		{
+    			return {{{message.service}}}Logic.getInstance().{{{message.method}}}(request);
+    		}
 	}
 	/**
 	 * Task completed callback (with ResponseInfo)
