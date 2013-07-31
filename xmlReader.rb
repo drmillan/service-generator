@@ -61,12 +61,25 @@ class XmlReader
 
       # Add types to global types
       # If is a ref type, do not add to global values
-      if !protocol.messages[i].request.typeRef
+      if protocol.messages[i].request.typeRef
+          protocol.types.each do |type|
+            if type.name==protocol.messages[i].request.type
+              protocol.messages[i].request=type
+            end
+          end
+      else
         protocol.types << protocol.messages[i].request
       end
-      if !protocol.messages[i].response.typeRef
+      if protocol.messages[i].response.typeRef
+        protocol.types.each do |type|
+          if type.name==protocol.messages[i].response.type
+            protocol.messages[i].response=type
+          end
+        end
+      else
         protocol.types << protocol.messages[i].response
       end
+
 
 
       # Read common protocol properties
