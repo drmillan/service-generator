@@ -87,16 +87,6 @@ public class Base{{{serviceName}}}Logic
 
 
 	/**
-     * Method {{{method}}}: {{{description}}}
-     * @param {{{request.javaInstanceName}}} Service Request
-     * @returns {{{response.name}}} Service Response
-     * @throws com.mobivery.logic.ServiceException Network/Data error
-     */
-    public {{{response.name}}} {{{method}}}({{{request.name}}} {{{request.javaInstanceName}}}) throws com.mobivery.logic.ServiceException
-    {
-    	 return {{{method}}}({{{request.javaInstanceName}}},null);
-    }
-	/**
 	 * Metodo {{{method}}}: {{{description}}}
 	 * @param {{{request.javaInstanceName}}} Service Request
 	 * @returns {{{response.name}}} Service Response
@@ -108,10 +98,6 @@ public class Base{{{serviceName}}}Logic
 		try
 		{
 
-		if(responseInfo==null)
-		{
-		    responseInfo=new ResponseInfo();
-		}
 
 		CookieStore cookieStore = new BasicCookieStore();
 		HttpContext localContext = new BasicHttpContext();
