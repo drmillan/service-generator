@@ -59,28 +59,6 @@ class XmlReader
       # Read Response Type
       protocol.messages[i].response=XmlReader.read_type(xmlMessage.elements['response'])
 
-      # Add types to global types
-      # If is a ref type, do not add to global values
-      if protocol.messages[i].request.typeRef
-          protocol.types.each do |type|
-            if type.name==protocol.messages[i].request.type
-              protocol.messages[i].request=type
-            end
-          end
-      else
-        protocol.types << protocol.messages[i].request
-      end
-      if protocol.messages[i].response.typeRef
-        protocol.types.each do |type|
-          if type.name==protocol.messages[i].response.type
-            protocol.messages[i].response=type
-          end
-        end
-      else
-        protocol.types << protocol.messages[i].response
-      end
-
-
 
       # Read common protocol properties
       protocol.messages[i].name=xmlMessage.attributes['name']
@@ -120,6 +98,37 @@ class XmlReader
         protocol.services[protocol.messages[i].service]=Service.new
         protocol.services[protocol.messages[i].service].messages=Array.new
       end
+
+
+
+      # Add types to global types
+      # If is a ref type, do not add to global values
+      if protocol.messages[i].request.typeRef
+        protocol.types.each do |type|
+          if type.name==protocol.messages[i].request.type
+            protocol.messages[i].request=type
+            puts 'FOUND REQUEST:-------------------------------------'
+            puts type.name
+            puts protocol.messages[i].method
+          end
+        end
+      else
+        protocol.types << protocol.messages[i].request
+      end
+      if protocol.messages[i].response.typeRef
+        protocol.types.each do |type|
+          if type.name==protocol.messages[i].response.type
+            protocol.messages[i].response=type
+            puts 'FOUND RESPONSE:-------------------------------------'
+            puts type.name
+            puts protocol.messages[i].method
+          end
+        end
+      else
+        protocol.types << protocol.messages[i].response
+      end
+
+
       protocol.services[protocol.messages[i].service].messages<<protocol.messages[i]
 
       i=i+1
