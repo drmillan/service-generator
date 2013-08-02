@@ -1,13 +1,3 @@
-/**
-  {{{serviceName}}}Service
-  {{{projectName}}}
-
-Created by Service-Generator.
-  Copyright (c) 2012 Mobivery. All rights reserved.
-  Version: {{{version}}}
-*/
-package {{{packagename}}}.logic.base;
-
 
 import {{{packagename}}}.model.dao.*;
 import {{{packagename}}}.model.dto.*; 
@@ -18,12 +8,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.util.Date;
-import java.util.List;
-import java.util.ArrayList;
-import java.io.FileWriter;
-import java.io.File;
-import java.io.BufferedWriter;
-import java.text.SimpleDateFormat;
 
 import com.mobivery.utils.ResponseInfo;
 import com.mobivery.utils.HttpClientHelper;
@@ -53,7 +37,7 @@ import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.client.methods.HttpPost;
+
 import java.io.File;
 import java.io.FileInputStream;
 import org.apache.commons.io.IOUtils;
@@ -66,18 +50,20 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
-
+import java.util.List;
+import java.util.ArrayList;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
 /**
- * Base class for {{serviceName}} Logic , handles communication with server and creates
- * local domain objects from server response
+ * Servicio que realiza las llamadas a DAO,
+ * Este servicio corresponde con la logica {{{serviceName}}}
  */
 public class Base{{{serviceName}}}Logic
 {
+
 {{#messages}}
 	private {{{response.name}}} {{{method}}}LastResponse;
 	private Date {{{method}}}LastResponseTime;	
@@ -87,19 +73,27 @@ public class Base{{{serviceName}}}Logic
 
 
 	/**
+     * Metodo {{{method}}}: {{{description}}}
+     * @param {{{request.javaInstanceName}}} Peticion al servicio
+     * @returns {{{response.name}}} Respuesta del servidor
+     * @throws com.mobivery.logic.ServiceException Error de comunicacion / datos
+     */
+    public {{{response.name}}} {{{method}}}({{{request.name}}} {{{request.javaInstanceName}}}) throws com.mobivery.logic.ServiceException
+    {
+    	 return {{{method}}}({{{request.javaInstanceName}}},null);
+    }
+	/**
 	 * Metodo {{{method}}}: {{{description}}}
-	 * @param {{{request.javaInstanceName}}} Service Request
-	 * @returns {{{response.name}}} Service Response
+	 * @param {{{request.javaInstanceName}}} Peticion al servicio
+	 * @returns {{{response.name}}} Respuesta del servidor
 	 * @param responseInfo Server response metadata
-	 * @throws com.mobivery.logic.ServiceException Network/Data error
+	 * @throws com.mobivery.logic.ServiceException Error de comunicacion / datos 
 	 */
 	public {{{response.name}}} {{{method}}}({{{request.name}}} {{{request.javaInstanceName}}},ResponseInfo responseInfo) throws com.mobivery.logic.ServiceException
 	{
 		try
 		{
-
-
-		CookieStore cookieStore = new BasicCookieStore();
+		CookieStore cookieStore = new BasicCookieStore();	
 		HttpContext localContext = new BasicHttpContext();
 		localContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
 	
@@ -126,11 +120,8 @@ public class Base{{{serviceName}}}Logic
 		if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
 		    System.out.println(Base{{{serviceName}}}Logic.class.getName()+" SENT:"+url);
 		}
-		if("true".equalsIgnoreCase(System.getProperty("LOG"))){
-            log("{{method}}","REQUEST-URL",url);
-		}
 		String result;
-		{{#request.isMultipart}}
+		{{#request.multipart}}
 		DefaultHttpClient httpClient = HttpClientHelper.getInstance().getNewHttpClient();
 		HttpPost postRequest = new HttpPost(url);			
 		MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -158,8 +149,8 @@ public class Base{{{serviceName}}}Logic
 			s = s.append(sResponse);
 		}
 		result=s.toString();
-		{{/request.isMultipart}}
-		{{^request.isMultipart}}
+		{{/request.multipart}}
+		{{^request.multipart}}
 		DefaultHttpClient client = HttpClientHelper.getInstance().getNewHttpClient();
 		Http{{{simpleType}}} request=new Http{{{simpleType}}}(url);
 
@@ -171,30 +162,20 @@ public class Base{{{serviceName}}}Logic
 		{{^isDelete}}
 		request.setEntity(new UrlEncodedFormEntity(parameters, HTTP.UTF_8));
 		{{/isDelete}}
-		JSONObject jsonObject ={{{request.daoClassName}}}.getInstance().serialize({{{request.javaInstanceName}}});		
 		{{/isWrite}}
 		{{#isWriteJSON}}
 		JSONObject jsonObject ={{{request.daoClassName}}}.getInstance().serialize({{{request.javaInstanceName}}});
 		StringEntity requestEntity = new StringEntity(jsonObject.toString(), HTTP.UTF_8);
-		if("true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+		if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
         	System.out.println(Base{{{serviceName}}}Logic.class.getName()+" SENT (application/json):"+jsonObject.toString());
         }
-        if("true".equalsIgnoreCase(System.getProperty("LOG"))){
-             log("{{method}}","SEND",jsonObject.toString());
-        }
-
         requestEntity.setContentType("application/json");
 		request.setEntity(requestEntity);
 		{{/isWriteJSON}}
 		{{#isGet}}
 		JSONObject jsonObject ={{{request.daoClassName}}}.getInstance().serialize({{{request.javaInstanceName}}});
-		request.addHeader("data",jsonObject.toString());
-		if("true".equalsIgnoreCase(System.getProperty("DEBUG"))){
-		    System.out.println(Base{{{serviceName}}}Logic.class.getName()+" SENT (application/json):"+jsonObject.toString());
-        }
-        if("true".equalsIgnoreCase(System.getProperty("LOG"))){
-             log("{{method}}","SENT",jsonObject.toString());
-        }
+		request.addHeader("data",jsonObject.toString());	
+		System.out.println(Base{{{serviceName}}}Logic.class.getName()+" SENT (application/json):"+jsonObject.toString());			
 		{{/isGet}}
         {{{projectName}}}Helper.getInstance().preExecute(client,request,cookieStore,localContext);
 		HttpResponse response = client.execute(request,localContext);
@@ -202,13 +183,9 @@ public class Base{{{serviceName}}}Logic
 		HttpEntity entity = response.getEntity();
 		result=convertStreamToString(entity.getContent());
 		result={{{projectName}}}Helper.getInstance().preprocessResponse(result);
-        if("true".equalsIgnoreCase(System.getProperty("DEBUG"))){
-	    	System.out.println(Base{{{serviceName}}}Logic.class.getName()+" RECEIVED:"+result);
-		}
-        if("true".equalsIgnoreCase(System.getProperty("LOG"))){
-             log("{{method}}","RECEIVE",jsonObject.toString());
-        }
-		{{/request.isMultipart}}
+		
+		System.out.println(Base{{{serviceName}}}Logic.class.getName()+" RECEIVED:"+result);
+		{{/request.multipart}}		
 		
 		{{{response.javaInstanceName}}}={{{response.daoClassName}}}.getInstance().create(
 			new JSONObject(result));
@@ -219,7 +196,8 @@ public class Base{{{serviceName}}}Logic
 		{{{method}}}LastResponse = {{{response.javaInstanceName}}};
 		{{{method}}}LastResponseTime = new Date();
 
-		if(responseInfo!=null){
+		if(responseInfo!=null)
+		{
 		    responseInfo.setStatusCode(response.getStatusLine().getStatusCode());
 		}
 
@@ -229,18 +207,15 @@ public class Base{{{serviceName}}}Logic
 		catch(Exception ex)
 		{
 			ex.printStackTrace();
-			if("true".equalsIgnoreCase(System.getProperty("LOG"))){
-			    log("{{method}}","ERROR",ex.toString());
-			}
 			throw new com.mobivery.logic.ServiceException(ex);
 		}
 	}
 {{/messages}}	
 	
 	/**
-	 * Reads stream contents as a String
-	 * @param is InputStream to read from
-	 * @return String representation of Input Stream
+	 * Lee el contenido de un stream como una cadena
+	 * @param is InputStream del que leer
+	 * @return Cadena leida
 	 * @throws IOException
 	 */
 	private String convertStreamToString(InputStream is) throws IOException {
@@ -255,9 +230,9 @@ public class Base{{{serviceName}}}Logic
 	}
 	
 	/**
-	 * Adds System properties to request url
-	 * @param URL Source url
-	 * @returns URL Fixed url whith parameters replaced with System properties
+	 * A�ade las propiedades de sistema en los par�metros que aun no tienen valor establecido
+	 * @param URL original
+	 * @returns URL modificada anyadiendo las propiedades de sistema
 	 */
 	private  String fixSystemProperties(String url)
 	{
@@ -274,58 +249,20 @@ public class Base{{{serviceName}}}Logic
 	
 {{#messages}}
 	/**
-	 * Get last cached response from previous {{{methodUpperCase}}} call
-	 * @returns Cached response
+	 * Obtiene la ultima respuesta cacheada de {{{methodUpperCase}}}
+	 * @returns valor cacheado
 	 */
 	public {{{response.name}}} get{{{methodUpperCase}}}LastResponse() {
 		return {{{method}}}LastResponse;
 	}
 
 	/**
-	 * Get last cached response date from previous{{{methodUpperCase}}} call
-	 * @returns Last requestTime
+	 * Obtiene cuando se obtuvo la ultima respuesta cacheada de {{{methodUpperCase}}}
+	 * @returns ultima actualizacion
 	 */	
 	public Date get{{{methodUpperCase}}}LastResponseTime() {
 		return {{{method}}}LastResponseTime;
 	}	
-
-
+	
 {{/messages}}
-/**
-     * Write to Log
-     * @param method Method called
-     * @param level Log message tag
-     * @param data Data to write
-     */
-    private void log(String method,String level,String data)
-    {
-        String rootFolderPath=System.getProperty("LOG.folder");
-        File rootFolder=new File(rootFolderPath);
-        if(rootFolderPath!=null && rootFolder.exists() && rootFolder.isDirectory())
-        {
-            BufferedWriter logWriter=null;
-            try
-            {
-                logWriter=new BufferedWriter(new FileWriter(rootFolderPath+"/log.txt",true));
-                SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                logWriter.write(sdf.format(new Date())+" "+method+" "+level);
-                logWriter.newLine();
-                logWriter.write(data);
-                logWriter.newLine();
-                logWriter.flush();
-            }
-            catch(IOException ex)
-            {
-
-            }
-            finally
-            {
-                if(logWriter!=null)
-                {
-                    try{logWriter.close();}catch(IOException ex){}
-                }
-            }
-        }
-
-    }
 }
