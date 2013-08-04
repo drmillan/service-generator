@@ -13,6 +13,7 @@ import {{{packagename}}}.model.dto.*;
 import {{{packagename}}}.logic.*;
 
 import com.mobivery.utils.ResponseInfo;
+import com.mobivery.logic.TaskListener;
 
 import java.lang.reflect.Method;
 
@@ -28,6 +29,8 @@ import android.widget.TextView;
  *
  */
 public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.request.name}}},Integer, {{{message.response.name}}}> implements com.mobivery.logic.ServiceExceptionListener {
+
+    private TaskListener<{{{message.request.name}}},{{{message.response.name}}}> listener;
 
 	private Activity activity;
         private int loadingView;
@@ -135,23 +138,25 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
     		});
     	}
     }
-	
+
 	@Override
 	public final {{{message.response.name}}} doInBackground({{{message.request.name}}}... params) {
 		// Get Request DTO
-		{{{message.request.name}}} request=params[0];
+		final {{{message.request.name}}} request=params[0];
 		{{{message.response.name}}} response=null;
 		try{
 {{#preMethod}}
 		{{{preMethod}}}(request);
-{{/preMethod}}	
+{{/preMethod}}
 			// Call Service
 			final ResponseInfo responseInfo=new ResponseInfo();
 			final {{{message.response.name}}} tempResponse=execOnBackground(request,responseInfo);
 			response=tempResponse;
-			if(activity!=null){
+			if(activity!=null && listener!=null){
 			     activity.runOnUiThread(new Runnable(){public void run(){
-                 			{{message.methodUpperCase}}Task.this.onCompleteResponse(tempResponse,responseInfo);}});
+                 	    listener.onServiceResponse(request,tempResponse,responseInfo);
+                    }
+                });
 			}
 {{#onTask}}
 			if (activity==null) {
@@ -165,10 +170,11 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 		catch(final com.mobivery.logic.ServiceException ex){
 			if(!isCancelled()){
 			// If error, call onServiceError on UI Thread
-			if (activity!=null) {
+			if (activity!=null && listener!=null) {
 				activity.runOnUiThread(new Runnable(){public void run(){
 				    endSpinner();
-				    {{{message.methodUpperCase}}}Task.this.onServiceError(ex);}});
+				    listener.onServiceError(request,ex);
+				    }});
 			}
 			return null;
 			}
@@ -198,13 +204,11 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 	public {{{message.response.name}}} execOnBackground({{{message.request.name}}} request, ResponseInfo responseInfo) throws com.mobivery.logic.ServiceException{
         return {{{message.service}}}Logic.getInstance().{{{message.method}}}(request,responseInfo);
 	}
-	/**
-	 * Task completed callback (with ResponseInfo)
-	 * @param responseDTO ResponseDTO
-     * @param responseInfo Response metadata (to get http header errors)
-     */
-	public void onCompleteResponse({{{message.response.name}}} responseDTO, ResponseInfo responseInfo){
 
+	public void execute({{{message.request.name}}} requestDTO,TaskListener<{{{message.request.name}}},{{{message.response.name}}}> listener)
+	{
+         this.listener=listener;
+         this.execute(requestDTO);
 	}
 }
 
