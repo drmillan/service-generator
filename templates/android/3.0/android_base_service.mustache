@@ -202,7 +202,7 @@ public class Base{{{serviceName}}}Logic
 		HttpEntity entity = response.getEntity();
 		result=convertStreamToString(entity.getContent());
 		result={{{projectName}}}Helper.getInstance().preprocessResponse(result);
-		jsonObject={{{projectName}}}Helper.getInstance().preProcessJSON(jsonObject);
+		jsonObject={{{projectName}}}Helper.getInstance().preProcessJSON(new JSONObject(result));
         if("true".equalsIgnoreCase(System.getProperty("DEBUG"))){
 	    	System.out.println(Base{{{serviceName}}}Logic.class.getName()+" RECEIVED:"+result);
 		}
