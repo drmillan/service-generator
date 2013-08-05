@@ -211,8 +211,7 @@ public class Base{{{serviceName}}}Logic
         }
 		{{/request.isMultipart}}
 		
-		{{{response.javaInstanceName}}}={{{response.daoClassName}}}.getInstance().create(
-			new JSONObject(result));
+		{{{response.javaInstanceName}}}={{{response.daoClassName}}}.getInstance().create(jsonObject);
 		{{#onReceive}}
 			{{{onReceive}}}({{{request.javaInstanceName}}},{{{response.javaInstanceName}}});
 		{{/onReceive}}
