@@ -188,7 +188,6 @@ public class Base{{{serviceName}}}Logic
 		{{/isWriteJSON}}
 		{{#isGet}}
 		JSONObject jsonObject ={{{request.daoClassName}}}.getInstance().serialize({{{request.javaInstanceName}}});
-		jsonObject={{{projectName}}}Helper.getInstance().preProcessJSON(jsonObject);
 		request.addHeader("data",jsonObject.toString());
 		if("true".equalsIgnoreCase(System.getProperty("DEBUG"))){
 		    System.out.println(Base{{{serviceName}}}Logic.class.getName()+" SENT (application/json):"+jsonObject.toString());
@@ -203,6 +202,7 @@ public class Base{{{serviceName}}}Logic
 		HttpEntity entity = response.getEntity();
 		result=convertStreamToString(entity.getContent());
 		result={{{projectName}}}Helper.getInstance().preprocessResponse(result);
+		jsonObject={{{projectName}}}Helper.getInstance().preProcessJSON(jsonObject);
         if("true".equalsIgnoreCase(System.getProperty("DEBUG"))){
 	    	System.out.println(Base{{{serviceName}}}Logic.class.getName()+" RECEIVED:"+result);
 		}
