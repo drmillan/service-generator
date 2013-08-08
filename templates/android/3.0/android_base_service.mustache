@@ -148,7 +148,10 @@ public class Base{{{serviceName}}}Logic
 		postRequest.setEntity(reqEntity);
 		{{{projectName}}}Helper.getInstance().preExecute(httpClient,postRequest,cookieStore,localContext);
 		HttpResponse response = httpClient.execute(postRequest,localContext);
-		{{{projectName}}}Helper.getInstance().postExecute(httpClient,postRequest,response,cookieStore);
+		if(responseInfo!=null){
+                    responseInfo.setStatusCode(response.getStatusLine().getStatusCode());
+                }
+        {{{projectName}}}Helper.getInstance().postExecute(httpClient,postRequest,response,cookieStore);
 		BufferedReader reader = new BufferedReader(
 			new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
 		String sResponse;
@@ -158,6 +161,7 @@ public class Base{{{serviceName}}}Logic
 			s = s.append(sResponse);
 		}
 		result=s.toString();
+		JSONObject jsonObject={{{projectName}}}Helper.getInstance().preProcessJSON(new JSONObject(result));
 		{{/request.isMultipart}}
 		{{^request.isMultipart}}
 		DefaultHttpClient client = HttpClientHelper.getInstance().getNewHttpClient();
@@ -198,10 +202,14 @@ public class Base{{{serviceName}}}Logic
 		{{/isGet}}
         {{{projectName}}}Helper.getInstance().preExecute(client,request,cookieStore,localContext);
 		HttpResponse response = client.execute(request,localContext);
-		{{{projectName}}}Helper.getInstance().postExecute(client,request,response,cookieStore);
+		if(responseInfo!=null){
+                    responseInfo.setStatusCode(response.getStatusLine().getStatusCode());
+                }
+        {{{projectName}}}Helper.getInstance().postExecute(client,request,response,cookieStore);
 		HttpEntity entity = response.getEntity();
 		result=convertStreamToString(entity.getContent());
 		result={{{projectName}}}Helper.getInstance().preprocessResponse(result);
+
 		jsonObject={{{projectName}}}Helper.getInstance().preProcessJSON(new JSONObject(result));
         if("true".equalsIgnoreCase(System.getProperty("DEBUG"))){
 	    	System.out.println(Base{{{serviceName}}}Logic.class.getName()+" RECEIVED:"+result);
@@ -219,9 +227,6 @@ public class Base{{{serviceName}}}Logic
 		{{{method}}}LastResponse = {{{response.javaInstanceName}}};
 		{{{method}}}LastResponseTime = new Date();
 
-		if(responseInfo!=null){
-		    responseInfo.setStatusCode(response.getStatusLine().getStatusCode());
-		}
 
 
 		return {{{response.javaInstanceName}}};
