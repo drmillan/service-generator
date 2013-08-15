@@ -115,8 +115,17 @@ public class Base{{{serviceName}}}Logic
 			url=url.replace("${"+"{{{name}}}"+"}","");
 		}
 		else{
-			url=url.replace("${"+"{{{name}}}"+"}",URLEncoder.encode(String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}()),"UTF-8"));
-		}	
+			if(url.contains("${"+"{{{name}}}"+"}"))
+			{
+			    url=url.replace("${"+"{{{name}}}"+"}",URLEncoder.encode(String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}()),"UTF-8"));
+			}
+			{{#isGet}}
+			else
+			{
+                url=url+(url.contains("?")?"&":"?")+"{{{serviceName}}}="+String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}());
+			}
+			{{/isGet}}
+		}
 		{{/request.fields}}
 		
 		url=fixSystemProperties(url);
