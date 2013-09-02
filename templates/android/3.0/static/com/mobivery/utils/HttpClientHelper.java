@@ -22,6 +22,8 @@ import org.apache.http.protocol.HTTP;
  * @author Service Generator
  */
 public class HttpClientHelper {
+    public final static String SYSTEM_TIMEOUT="Service_Timeout";
+    private final static String DEFAULT_TIMEOUT="4000";
 	private static HttpClientHelper instance=new HttpClientHelper();
 	/**
 	 * private constructor, prevents instantiation
@@ -56,8 +58,9 @@ public class HttpClientHelper {
 	        HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
 	        HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
 
-            HttpConnectionParams.setConnectionTimeout(params, 4000);
-            HttpConnectionParams.setSoTimeout(params, 4000);
+            int timeout=Integer.parseInt(System.getProperty(SYSTEM_TIMEOUT,DEFAULT_TIMEOUT));
+            HttpConnectionParams.setConnectionTimeout(params, timeout);
+            HttpConnectionParams.setSoTimeout(params, timeout);
 
 	        SchemeRegistry registry = new SchemeRegistry();
 	        registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
