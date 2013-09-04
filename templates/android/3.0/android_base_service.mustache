@@ -216,9 +216,12 @@ public class Base{{{serviceName}}}Logic
                 }
         {{{projectName}}}Helper.getInstance().postExecute(client,request,response,cookieStore);
 		HttpEntity entity = response.getEntity();
-		result=convertStreamToString(entity.getContent());
-		result={{{projectName}}}Helper.getInstance().preprocessResponse(result);
-		
+               if (entity != null) {
+			result=convertStreamToString(entity.getContent());
+			result={{{projectName}}}Helper.getInstance().preprocessResponse(result);
+		} else {
+                      result = "";
+	       }
 		if("".equals(result)){
 			jsonObject={{{projectName}}}Helper.getInstance().preProcessJSON(new JSONObject());
 		} else {
