@@ -158,6 +158,10 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
                     }
                 });
 			}
+			if(activity==null && listener!=null)
+			{
+			    listener.onServiceResponse(request,tempResponse,responseInfo);
+			}
 {{#onTask}}
 			if (activity==null) {
 				throw new com.mobivery.logic.ServiceException(new Exception("Activity to go back to already removed from memory"));
@@ -175,6 +179,11 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 				    endSpinner();
 				    listener.onServiceError(request,ex);
 				    }});
+			}
+			if(activity==null && listener!=null)
+			{
+			    endSpinner();
+			    listener.onServiceError(request,ex);
 			}
 			return null;
 			}
