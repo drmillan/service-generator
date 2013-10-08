@@ -115,7 +115,14 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 	{
 		if (activity != null) {
         			if (progressDialog != null) {
+        			try
+        			{
         				progressDialog.dismiss();
+        				}
+        				catch(java.lang.IllegalArgumentException ex)
+        				{
+        				// Ignore: View not attached to window manager
+        				}
         			}
         		}
 	}
