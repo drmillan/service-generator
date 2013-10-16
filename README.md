@@ -129,9 +129,9 @@ Nombre del tipo (Es el nombre que tendrá el DTO generado)
 
 1.- Instalar dependencias
 
-comando terminal...
-
-*rake setup*
+```shell
+$ rake setup
+```
 
 2.- Ejecutar generador
 
