@@ -72,7 +72,7 @@ public final class {{{entity.daoClassName}}}{
 		{{/isInteger}}
 		{{#isFloat}}
 		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null")) {
-            if(value.get(CONSTANT_{{nameFullUcase}}}).getClass()==String.class){
+            if(value.get(CONSTANT_{{nameFullUcase}}).getClass()==String.class){
                 returnValue.set{{{nameUcase}}}(Float.parseFloat((String)value.get(CONSTANT_{{nameFullUcase}})));
             }
             else{
