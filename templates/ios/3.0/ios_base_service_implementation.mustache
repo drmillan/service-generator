@@ -28,9 +28,9 @@
 /**
 * Method {{method}}: {{description}}
 * @param {{request.javaInstanceName}} Service request
-* @returns {{response.type}} Service response
+* @returns {{response.name}} Service response
 */
-- (void){{method}}:({{request.type}} *){{request.javaInstanceName}} onSuccess:(void(^)(int responseCode,{{response.type}} *response))onSuccess onError:(void(^)(NSError *error))onError {
+- (void){{method}}:({{request.type}} *){{request.javaInstanceName}} onSuccess:(void(^)(int responseCode,{{response.name}} *response))onSuccess onError:(void(^)(NSError *error))onError {
 
 	NSString *url=@"{{{url}}}";
 

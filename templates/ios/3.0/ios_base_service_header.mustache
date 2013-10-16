@@ -37,7 +37,7 @@
 * @param {{request.javaInstanceName}} Service request
 * @returns {{response.type}} Service response
 */
-- (void){{method}}:({{request.type}} *){{request.javaInstanceName}} onSuccess:(void(^)(int responseCode,{{response.type}} *response))onSucces onError:(void(^)(NSError *error))onError;
+- (void){{method}}:({{request.type}} *){{request.javaInstanceName}} onSuccess:(void(^)(int responseCode,{{response.name}} *response))onSucces onError:(void(^)(NSError *error))onError;
 -({{response.name}} *) {{method}}DTOFromOperation:(AFHTTPRequestOperation *)operation withError:(NSError **)error;
 
 
