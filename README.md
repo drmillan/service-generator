@@ -135,7 +135,6 @@ comando terminal...
 
 2.- Ejecutar generador
 
-####Rakefile
 El proyecto incluye un archivo Rakefile para CI y generar los servicios web, para ello es necesario tener instalado [ruby](http://www.rvm.io).
 
 Para que **Rakefile** funcione correctamente, es necesario crear un configurar un fichero **build.yml** y asegurarse que cualquier parámetro customizable dentro de Rakefile está configurado (Ejemplo de [build.yml](https://github.com/mobivery/tribeza-ios/blob/master/build.yml) y [Rakefile](https://github.com/mobivery/tribeza-ios/blob/master/Rakefile))
