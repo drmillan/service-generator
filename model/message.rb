@@ -22,7 +22,7 @@ class Message
 
   def inURLbutNotField
     fields=Array.new
-    url.scan(/\{(.*?)\}/) {
+    url.scan(/\$\{(.*?)\}/) {
         |found|
       isField=false
       request.fields.each do |field|
