@@ -14,7 +14,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.json.JSONObject;
 
-public interface FilterInterface;
+public interface FilterInterface
 {
 	public String preInjectURLParameters(String url,Object request);
 	public String postInjectURLParameters(String url,Object request);
