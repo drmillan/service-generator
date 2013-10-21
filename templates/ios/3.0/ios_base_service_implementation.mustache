@@ -30,7 +30,7 @@
 * @param {{request.javaInstanceName}} Service request
 * @returns {{response.name}} Service response
 */
-- (void){{method}}:({{request.type}} *){{request.javaInstanceName}} onSuccess:(void(^)(NSInteger responseCode,{{response.name}} *response))onSuccess onError:(void(^)(NSError *error))onError {
+- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} onSuccess:(void(^)(NSInteger responseCode,{{response.name}} *response))onSuccess onError:(void(^)(NSError *error))onError {
 
 	NSString *url=@"{{{url}}}";
 
