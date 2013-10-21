@@ -158,27 +158,27 @@ public class {{{projectName}}}DTOBundle
 {{/fileFields}}
 {{#baseFields}}	
 	{{#isString}}
-	        if(in.readByte()==1)
-			{{{javaName}}} = in.readString();
+	        if(in.readByte()==1){
+			{{{javaName}}} = in.readString();}
 	{{/isString}}
 	{{#isLong}}
-	        if(in.readByte()==1)
-			{{{javaName}}} = in.readLong();
+	        if(in.readByte()==1){
+			{{{javaName}}} = in.readLong();}
 	{{/isLong}}
 	{{#isInteger}}
-	        if(in.readByte()==1)
-			{{{javaName}}} = in.readInt();
+	        if(in.readByte()==1){
+			{{{javaName}}} = in.readInt();}
 	{{/isInteger}}
 	{{#isDouble}}
-	        if(in.readByte()==1)
-			{{{javaName}}} = in.readDouble();
+	        if(in.readByte()==1){
+			{{{javaName}}} = in.readDouble();}
 	{{/isDouble}}
 	{{#isBoolean}}
 			{{{javaName}}} = in.readByte() == 1;
 	{{/isBoolean}}
 	{{#isFloat}}
-	        if(in.readByte()==1)
-			{{{javaName}}} = in.readFloat();
+	        if(in.readByte()==1){
+			{{{javaName}}} = in.readFloat();}
 	{{/isFloat}}
 {{/baseFields}}
 {{#baseArrayFields}}
