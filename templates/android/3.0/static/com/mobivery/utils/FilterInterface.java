@@ -16,10 +16,10 @@ import org.json.JSONObject;
 
 public interface FilterInterface
 {
-	public String preInjectURLParameters(String url,Object request);
-	public String postInjectURLParameters(String url,Object request);
-	public void preExecute(String logic,String method,DefaultHttpClient client, HttpRequestBase request, CookieStore cookieStore, HttpContext context);
-	public void postExecute(String logic,String method,DefaultHttpClient client, HttpRequestBase request, HttpResponse response, CookieStore cookieStore);
-	public String preprocessResponse(String responseString);
-	public JSONObject preProcessJSON(JSONObject jsonObject);
+	String preInjectURLParameters(String url,Object request);
+	String postInjectURLParameters(String url,Object request);
+	void preExecute(String logic,String method,DefaultHttpClient client, HttpRequestBase request, CookieStore cookieStore, HttpContext context);
+	void postExecute(String logic,String method,DefaultHttpClient client, HttpRequestBase request, HttpResponse response, CookieStore cookieStore);
+	String preprocessResponse(String responseString);
+	JSONObject preProcessJSON(JSONObject jsonObject);
 }
