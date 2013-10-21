@@ -5,7 +5,7 @@
   Copyright (c) 2012 Mobivery. All rights reserved.
   Version: ${version}
 */
-package com.mobivery.utils.logic;
+package com.mobivery.utils;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.CookieStore;
