@@ -13,7 +13,7 @@
 
 @implementation {{message.methodUpperCase}}Task
 
-+ (void) {{message.method}}TaskForRequest:({{message.request.name}} *)request showLoadingView:(BOOL)showLoadingView completed:(void(^)(int statusCode,{{message.response.name}} *response))completedBlock error:(void(^)(NSError *error))errorBlock {
++ (void) {{message.method}}TaskForRequest:({{message.request.name}} *)request showLoadingView:(BOOL)showLoadingView completed:(void(^)(NSInteger statusCode,{{message.response.name}} *response))completedBlock error:(void(^)(NSError *error))errorBlock {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 		
@@ -28,7 +28,7 @@
 	}
 
 
-	[[{{message.service}}Logic sharedInstance] {{message.method}}:request onSuccess:^(int statusCode,{{message.response.name}} *response){
+	[[{{message.service}}Logic sharedInstance] {{message.method}}:request onSuccess:^(NSInteger statusCode,{{message.response.name}} *response){
 
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 		if (loadingView) {
@@ -51,7 +51,7 @@
 
 }
 
-+ (void) {{message.method}}TaskForRequest:({{message.request.name}} *)request completed:(void(^)(int statusCode,{{message.response.name}} *response))completedBlock error:(void(^)(NSError *error))errorBlock {
++ (void) {{message.method}}TaskForRequest:({{message.request.name}} *)request completed:(void(^)(NSInteger statusCode,{{message.response.name}} *response))completedBlock error:(void(^)(NSError *error))errorBlock {
 
 	[self {{message.method}}TaskForRequest:request showLoadingView:YES completed:completedBlock error:errorBlock];
 }
