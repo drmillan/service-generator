@@ -157,7 +157,7 @@ public class Base{{{serviceName}}}Logic
 		{{/request.fields}}
 			
 		postRequest.setEntity(reqEntity);
-		{{{projectName}}}Helper.getInstance().preExecute(httpClient,postRequest,cookieStore,localContext);
+		{{{projectName}}}Helper.getInstance().preExecute("{{{serviceName}}}","{{{method}}}",httpClient,postRequest,cookieStore,localContext);
 		startTime=System.currentTimeMillis();
 		HttpResponse response = httpClient.execute(postRequest,localContext);
 		endTime=System.currentTimeMillis();
@@ -170,7 +170,7 @@ public class Base{{{serviceName}}}Logic
 		if(responseInfo!=null){
                     responseInfo.setStatusCode(response.getStatusLine().getStatusCode());
                 }
-        {{{projectName}}}Helper.getInstance().postExecute(httpClient,postRequest,response,cookieStore);
+        {{{projectName}}}Helper.getInstance().postExecute("{{{serviceName}}}","{{{method}}}",httpClient,postRequest,response,cookieStore);
 		BufferedReader reader = new BufferedReader(
 			new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
 		String sResponse;
@@ -219,7 +219,7 @@ public class Base{{{serviceName}}}Logic
              log("{{method}}","SENT",jsonObject.toString());
         }
 		{{/isGet}}
-        {{{projectName}}}Helper.getInstance().preExecute(client,request,cookieStore,localContext);
+        {{{projectName}}}Helper.getInstance().preExecute("{{{serviceName}}}","{{{method}}}",client,request,cookieStore,localContext);
         startTime=System.currentTimeMillis();
 		HttpResponse response = client.execute(request,localContext);
         endTime=System.currentTimeMillis();
@@ -230,7 +230,7 @@ public class Base{{{serviceName}}}Logic
 		if(responseInfo!=null){
                     responseInfo.setStatusCode(response.getStatusLine().getStatusCode());
                 }
-        {{{projectName}}}Helper.getInstance().postExecute(client,request,response,cookieStore);
+        {{{projectName}}}Helper.getInstance().postExecute("{{{serviceName}}}","{{{method}}}",client,request,response,cookieStore);
 		HttpEntity entity = response.getEntity();
                if (entity != null) {
 			result=convertStreamToString(entity.getContent());
