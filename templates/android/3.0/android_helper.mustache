@@ -14,7 +14,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.json.JSONObject;
 
-public class {{{projectName}}}Helper
+public class {{{projectName}}}Helper implements com.mobivery.utils.FilterInterface
 {
 	private static {{{projectName}}}Helper instance=new {{{projectName}}}Helper();
 	
@@ -29,11 +29,11 @@ public class {{{projectName}}}Helper
 	public String postInjectURLParameters(String url,Object request) {
 		return url;
 	}
-	public void preExecute(DefaultHttpClient client, HttpRequestBase request, CookieStore cookieStore, HttpContext context) {	
-		
+	public void preExecute(String logic,String method,DefaultHttpClient client, HttpRequestBase request, CookieStore cookieStore, HttpContext context) {
+
 	}
-	public void postExecute(DefaultHttpClient client, HttpRequestBase request, HttpResponse response, CookieStore cookieStore) {
-	
+	public void postExecute(String logic,String method,DefaultHttpClient client, HttpRequestBase request, HttpResponse response, CookieStore cookieStore) {
+
 	}	
 	public String preprocessResponse(String responseString) {
 		return responseString;
