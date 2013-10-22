@@ -26,6 +26,18 @@
 
 {{#service.messages}}
 
+
+-(id) init
+{
+    self = [super init];
+    if(self)
+    {
+        [self addFilter:[{{projectName}}Helper sharedInstance]];
+    }
+    return self;
+}
+
+
 /**
 * Method {{method}}: {{description}}
 * @param {{request.javaInstanceName}} Service request

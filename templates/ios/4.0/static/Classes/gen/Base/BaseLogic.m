@@ -20,7 +20,7 @@
     self = [super init];
     if(self)
     {
-       //do something
+       self.filters=[[NSMutableArray alloc]init];
     }
     return self;
 }
