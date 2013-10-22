@@ -13,6 +13,9 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.json.JSONObject;
+import java.util.List;
+import java.util.ArrayList;
+
 
 public class BaseLogic implements FilterInterface
 {
