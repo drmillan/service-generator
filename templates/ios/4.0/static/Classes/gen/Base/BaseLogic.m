@@ -14,6 +14,17 @@
 
 @implementation BaseLogic
 
+
+-(id) init
+{
+    self = [super init];
+    if(self)
+    {
+       //do something
+    }
+    return self;
+}
+
 -(void) addFilter:(LogicFilter *)filter
 {
     [self.filters addObject:filter];
