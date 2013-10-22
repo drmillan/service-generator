@@ -13,6 +13,7 @@
 {{#imports}}
 #import "{{request.name}}.h"
 #import "{{response.name}}.h"
+#import "BaseLogic.h"
 {{/imports}}
 
 // Definimos macro para log
@@ -28,7 +29,7 @@
 
 #define AFNETWORKING_ALLOW_INVALID_SSL_CERTIFICATES 1
 
-@interface Base{{{serviceName}}}Logic : NSObject
+@interface Base{{{serviceName}}}Logic : BaseLogic
 
 {{#service.messages}}
 
