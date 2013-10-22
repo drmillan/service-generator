@@ -122,7 +122,7 @@ class IOSGenerator
 
     ############ Copy common folder
     puts 'Copying common folder'
-    FileUtils.cp_r Dir.glob("templates/ios/"+ios_version+"/static/*"),aOutput
+    FileUtils.cp_r Dir.glob("templates/ios/"+ios_version+"/static/*"),ios_output
 
 
   end
