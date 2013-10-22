@@ -1,0 +1,159 @@
+//
+//  {{{dto.className}}}.m
+//  ${projectName}
+//  Version: ${version}
+//
+//  Created by Mobivery
+//  Copyright (c) 2012 Mobivery. All rights reserved.
+//
+
+#import "{{{dto.name}}}.h"
+{{#dto.objectFields}}
+#import "{{{iosBaseTypeSingular}}}.h"
+#import "{{{typeJavaDAO}}}.h"
+{{/dto.objectFields}}
+{{#dto.objectArrayFields}}
+#import "{{{iosBaseTypeSingular}}}.h"
+#import "{{{typeJavaDAO}}}.h"
+{{/dto.objectArrayFields}}
+#import "{{{dto.daoClassName}}}.h"
+
+@implementation {{{dto.daoClassName}}}
+
+
+// Get the shared instance and create it if necessary.
++ ({{{dto.daoClassName}}} *)sharedInstance {
+    
+    static dispatch_once_t onceQueue;
+    static {{{dto.daoClassName}}} *instance = nil;
+    
+    dispatch_once(&onceQueue, ^{ instance = [[self alloc] init]; });
+    return instance;
+}
+
+-(NSDictionary *) writeToDictionary:({{{dto.name}}} *)instance
+{
+NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];	
+		
+	{{#dto.baseFields}}
+		{{#isBoolean}}
+			dict[@"{{{serviceName}}}"] = instance.{{{name}}}.boolValue ? @"true": @"false";
+	    {{/isBoolean}}
+		{{^isBoolean}}
+			dict[@"{{{serviceName}}}"] = instance.{{{name}}};
+		{{/isBoolean}}
+	{{/dto.baseFields}}
+		
+	{{#dto.baseArrayFields}}
+	    {{#isBoolean}})
+			dict[@"{{{serviceName}}}"] = instance.{{{name}}}.boolValue ? @"true": @"false";
+		{{/isBoolean}}
+        {{^isBoolean}}
+        	dict[@"{{{serviceName}}}"] = instance.{{{name}}};
+		{{/isBoolean}}
+	{{/dto.baseArrayFields}}
+	
+	{{#dto.objectFields}}
+	NSDictionary *dict{{{name}}}=[[{{{typeJavaDAO}}} sharedInstance] writeToDictionary:instance.{{{name}}}];
+	dict[@"{{{serviceName}}}"] = dict{{{name}}};
+	{{/dto.objectFields}}
+
+	{{#dto.objectArrayFields}}
+	NSMutableArray *array{{{name}}}=[[NSMutableArray alloc]init];
+	for({{{iosBaseTypeSingular}}} *typeItem in instance.{{{name}}})
+	{
+		NSDictionary *dict{{{name}}}=[[{{{typeJavaDAO}}} sharedInstance] writeToDictionary:typeItem];
+		[array{{{name}}} addObject:dict{{{name}}}];
+	}
+	dict[@"{{{serviceName}}}"] = array{{{name}}};
+
+	{{/dto.objectArrayFields}}
+	return dict;
+}
+
+-({{{dto.name}}} *) readFromDictionary:(NSDictionary *)dict
+{
+	{{{dto.name}}} *instance=[[{{{dto.name}}} alloc]init];
+	if(![dict isKindOfClass:[NSNull class]])
+	    {
+    {{#dto.objectArrayFields}}
+    instance.{{{name}}}=[[NSMutableArray alloc]init];
+    {{/dto.objectArrayFields}}
+
+    {{#dto.baseFields}}
+    if (dict[@"{{{serviceName}}}"] && ![dict[@"{{{serviceName}}}"] isKindOfClass:[NSNull class]]) {
+	 {{#isString}}
+	if([dict[@"{{{serviceName}}}"] isKindOfClass:[NSString class]])
+	{
+		instance.{{{name}}}=dict[@"{{{serviceName}}}"];
+	}
+	else
+	{
+		instance.{{{name}}}=[NSString stringWithFormat:@"%@",dict[@"{{{serviceName}}}"]];
+	}
+	{{/isString}}
+    	{{^isString}}
+		instance.{{{name}}} = dict[@"{{{serviceName}}}"];
+	{{/isString}}
+        }
+    {{/dto.baseFields}}
+
+    {{#dto.baseArrayFields}}
+	NSArray *{{{name}}}Array=dict[@"{{{serviceName}}}"];
+	NSMutableArray *{{{name}}}MutableArray=[[NSMutableArray alloc]init];
+	for({{{iosBaseTypeSingular}}} *item in {{{name}}}Array)
+	{
+		[{{{name}}}MutableArray addObject:item];
+	}
+	instance.{{{name}}}={{{name}}}MutableArray;
+    {{/dto.baseArrayFields}}
+  
+    {{#dto.objectFields}}
+	if (dict[@"{{{serviceName}}}"]) {
+        instance.{{{name}}}=[[{{{typeJavaDAO}}} sharedInstance] readFromDictionary:dict[@"{{{serviceName}}}"]];
+    }
+    {{/dto.objectFields}}
+
+    {{#dto.objectArrayFields}}
+	NSDictionary *{{{name}}}Item = nil;
+	if(![dict[@"{{{serviceName}}}"] isKindOfClass:[NSNull class]])
+	{
+		{{{name}}}Item=dict[@"{{{serviceName}}}"];
+	}
+	
+	if([{{{name}}}Item isKindOfClass:[NSArray class]])
+	{
+		NSArray *{{{name}}}Array=dict[@"{{{serviceName}}}"];
+		NSMutableArray *{{{name}}}MutableArray=[[NSMutableArray alloc]init];
+		for(NSDictionary *data in {{{name}}}Array)
+		{
+			{{{iosBaseTypeSingular}}} *item=[[{{{typeJavaDAO}}} sharedInstance] readFromDictionary:data];
+			[{{{name}}}MutableArray addObject:item];
+		}
+		instance.{{{name}}}={{{name}}}MutableArray;
+	}
+	else if ({{{name}}}Item)
+	{
+		NSMutableArray *{{{name}}}MutableArray=[[NSMutableArray alloc]init];
+		{{{iosBaseTypeSingular}}} *item=[[{{{typeJavaDAO}}} sharedInstance] readFromDictionary:{{{name}}}Item];
+		[{{{name}}}MutableArray addObject:item];
+		instance.{{{name}}}={{{name}}}MutableArray;
+	}
+    {{/dto.objectArrayFields}}
+	}
+	return instance;
+}
+
+
+// Establece valores a partir de un NSArray
+-(NSArray *) readFromDictionaryArray:(NSArray *)dictArray
+{
+	NSMutableArray *mutableArray=[[NSMutableArray alloc]init];
+	for(NSDictionary *dict in dictArray)
+	{
+		[mutableArray addObject:[self readFromDictionary:dict]];
+	}
+	return mutableArray;
+}
+@end
+ 
