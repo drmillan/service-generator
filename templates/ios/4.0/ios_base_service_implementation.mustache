@@ -23,10 +23,6 @@
 
 @implementation Base{{serviceName}}Logic
 
-
-{{#service.messages}}
-
-
 -(id) init
 {
     self = [super init];
@@ -37,6 +33,8 @@
     return self;
 }
 
+
+{{#service.messages}}
 
 /**
 * Method {{method}}: {{description}}
