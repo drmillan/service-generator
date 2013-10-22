@@ -118,5 +118,12 @@ class IOSGenerator
     res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_helper_implementation.mustache').read,parameters)
     File.open(helper_implementation_file,'w'){|file| file.write(res)} unless File.exists?(helper_implementation_file)
 
+
+
+    ############ Copy common folder
+    puts 'Copying common folder'
+    FileUtils.cp_r Dir.glob("templates/ios/"+ios_version+"/static/*"),aOutput
+
+
   end
 end
