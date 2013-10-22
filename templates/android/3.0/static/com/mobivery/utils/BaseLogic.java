@@ -17,7 +17,7 @@ import org.json.JSONObject;
 public class BaseLogic implements FilterInterface
 {
     List<FilterInterface> filters=new ArrayList<FilterInterface>();
-	String preInjectURLParameters(String url,Object request)
+	public String preInjectURLParameters(String url,Object request)
 	{
 	    String returnURL=url;
         for(FilterInterface filter:filters)
@@ -26,7 +26,7 @@ public class BaseLogic implements FilterInterface
         }
         return returnURL;
 	}
-	String postInjectURLParameters(String url,Object request)
+	public String postInjectURLParameters(String url,Object request)
 	{
 	    String returnURL=url;
         for(FilterInterface filter:filters)
@@ -35,21 +35,21 @@ public class BaseLogic implements FilterInterface
         }
         return returnURL;
 	}
-	void preExecute(String logic,String method,DefaultHttpClient client, HttpRequestBase request, CookieStore cookieStore, HttpContext context)
+	public void preExecute(String logic,String method,DefaultHttpClient client, HttpRequestBase request, CookieStore cookieStore, HttpContext context)
 	{
         for(FilterInterface filter:filters)
         {
             filter.preExecute(logic,method,client,request,cookieStore,context);
         }
 	}
-	void postExecute(String logic,String method,DefaultHttpClient client, HttpRequestBase request, HttpResponse response, CookieStore cookieStore)
+	public void postExecute(String logic,String method,DefaultHttpClient client, HttpRequestBase request, HttpResponse response, CookieStore cookieStore)
 	{
         for(FilterInterface filter:filters)
         {
             filter.postExecute(logic,method,client,request,response,cookieStore);
         }
 	}
-	String preprocessResponse(String responseString)
+	public String preprocessResponse(String responseString)
 	{
 	    String resultString=responseString;
         for(FilterInterface filter:filters)
@@ -58,7 +58,7 @@ public class BaseLogic implements FilterInterface
         }
         return resultString;
 	}
-	JSONObject preProcessJSON(JSONObject jsonObject)
+	public JSONObject preProcessJSON(JSONObject jsonObject)
 	{
 	    JSONObject returnObject=jsonObject;
         for(FilterInterface filter:filters)
