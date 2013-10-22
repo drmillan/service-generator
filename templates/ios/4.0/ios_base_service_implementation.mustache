@@ -35,7 +35,7 @@
 	NSString *url=@"{{{url}}}";
 
 	if ([[{{{projectName}}}Helper sharedInstance] respondsToSelector:@selector(preInjectURLParameters:withObject:onService:onMethod:)]) {
-		url=[[{{projectName}}Helper sharedInstance] preInjectURLParameters:url  withObject:{{request.javaInstanceName}} onService:"{{{serviceName}}}" onMethod:"{{{method}}}"];
+		url=[[{{projectName}}Helper sharedInstance] preInjectURLParameters:url  withObject:{{request.javaInstanceName}} onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
 	}	
 {{#request.fields}}
 	NSString *string{{nameUcase}}=[NSString stringWithFormat:@"%@",{{request.javaInstanceName}}.{{name}}];
@@ -51,7 +51,7 @@
 {{/request.fields}}
 
 	if ([[{{{projectName}}}Helper sharedInstance] respondsToSelector:@selector(postInjectURLParameters:withObject:onService:onMethod:)]) {
-		url = [[{{projectName}}Helper sharedInstance] postInjectURLParameters:url  withObject:{{request.javaInstanceName}} onService:"{{{serviceName}}}" onMethod:"{{{method}}}"];
+		url = [[{{projectName}}Helper sharedInstance] postInjectURLParameters:url  withObject:{{request.javaInstanceName}} onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
 	}
 
 	_ModelGenLog(@"URL: %@", url);
