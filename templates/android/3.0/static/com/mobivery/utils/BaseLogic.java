@@ -1,0 +1,78 @@
+/**
+  BaseLogic
+
+  Created by Generator on 19/01/12.
+  Copyright (c) 2012 Mobivery. All rights reserved.
+  Version: ${version}
+*/
+package com.mobivery.utils;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.CookieStore;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HttpContext;
+import org.json.JSONObject;
+
+public class BaseLogic implements FilterInterface
+{
+    List<FilterInterface> filters=new ArrayList<FilterInterface>();
+	String preInjectURLParameters(String url,Object request)
+	{
+	    String returnURL=url;
+        for(FilterInterface filter:filters)
+        {
+            returnURL=preInjectURLParameters(returnURL,request);
+        }
+        return returnURL;
+	}
+	String postInjectURLParameters(String url,Object request)
+	{
+	    String returnURL=url;
+        for(FilterInterface filter:filters)
+        {
+            returnURL=postInjectURLParameters(returnURL,request);
+        }
+        return returnURL;
+	}
+	void preExecute(String logic,String method,DefaultHttpClient client, HttpRequestBase request, CookieStore cookieStore, HttpContext context)
+	{
+        for(FilterInterface filter:filters)
+        {
+            filter.preExecute(logic,method,client,request,cookieStore,context);
+        }
+	}
+	void postExecute(String logic,String method,DefaultHttpClient client, HttpRequestBase request, HttpResponse response, CookieStore cookieStore)
+	{
+        for(FilterInterface filter:filters)
+        {
+            filter.postExecute(logic,method,client,request,response,cookieStore);
+        }
+	}
+	String preprocessResponse(String responseString)
+	{
+	    String resultString=responseString;
+        for(FilterInterface filter:filters)
+        {
+            resultString=filter.preprocessResponse(resultString);
+        }
+        return resultString;
+	}
+	JSONObject preProcessJSON(JSONObject jsonObject)
+	{
+	    JSONObject returnObject=jsonObject;
+        for(FilterInterface filter:filters)
+        {
+            returnObject=filter.preProcessJSON(returnObject);
+        }
+        return returnObject;
+	}
+	public void addFilter(FilterInterface filterInterface)
+	{
+        filters.add(filterInterface);
+	}
+    public void removeFilter(FilterInterface filterInterface)
+    {
+         filters.remove(filterInterface);
+    }
+}

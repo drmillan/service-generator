@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
 
 import com.mobivery.utils.ResponseInfo;
 import com.mobivery.utils.HttpClientHelper;
+import com.mobivery.utils.BaseLogic;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -76,8 +77,14 @@ import org.json.JSONObject;
  * Base class for {{serviceName}} Logic , handles communication with server and creates
  * local domain objects from server response
  */
-public class Base{{{serviceName}}}Logic
+public class Base{{{serviceName}}}Logic  extends BaseLogic
 {
+    public Base{{{serviceName}}}Logic()
+    {
+        addFilter({{{projectName}}}Helper.getInstance());
+    }
+
+
 {{#messages}}
 	private {{{response.name}}} {{{method}}}LastResponse;
 	private Date {{{method}}}LastResponseTime;	
@@ -111,7 +118,7 @@ public class Base{{{serviceName}}}Logic
 		{{{response.name}}} {{{response.javaInstanceName}}};
 		// Obtenemos la URL del mensaje : {{{url}}}
 		String url="{{{url}}}";
-		url={{{projectName}}}Helper.getInstance().preInjectURLParameters(url,{{{request.javaInstanceName}}});
+		url=preInjectURLParameters(url,{{{request.javaInstanceName}}});
 		{{#request.fields}}
 		if({{{request.javaInstanceName}}}.get{{{nameUcase}}}()==null){
 			url=url.replace("${"+"{{{name}}}"+"}","");
@@ -133,7 +140,7 @@ public class Base{{{serviceName}}}Logic
 		url=fixSystemProperties(url);
 
 		url=url.replace("|",URLEncoder.encode("|","UTF-8"));
-		url={{{projectName}}}Helper.getInstance().postInjectURLParameters(url,{{{request.javaInstanceName}}});
+		url=postInjectURLParameters(url,{{{request.javaInstanceName}}});
 		if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
 		    System.out.println(Base{{{serviceName}}}Logic.class.getName()+" SENT:"+url);
 		}
@@ -157,7 +164,7 @@ public class Base{{{serviceName}}}Logic
 		{{/request.fields}}
 			
 		postRequest.setEntity(reqEntity);
-		{{{projectName}}}Helper.getInstance().preExecute("{{{serviceName}}}","{{{method}}}",httpClient,postRequest,cookieStore,localContext);
+		preExecute("{{{serviceName}}}","{{{method}}}",httpClient,postRequest,cookieStore,localContext);
 		startTime=System.currentTimeMillis();
 		HttpResponse response = httpClient.execute(postRequest,localContext);
 		endTime=System.currentTimeMillis();
@@ -170,7 +177,7 @@ public class Base{{{serviceName}}}Logic
 		if(responseInfo!=null){
                     responseInfo.setStatusCode(response.getStatusLine().getStatusCode());
                 }
-        {{{projectName}}}Helper.getInstance().postExecute("{{{serviceName}}}","{{{method}}}",httpClient,postRequest,response,cookieStore);
+        postExecute("{{{serviceName}}}","{{{method}}}",httpClient,postRequest,response,cookieStore);
 		BufferedReader reader = new BufferedReader(
 			new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
 		String sResponse;
@@ -180,7 +187,7 @@ public class Base{{{serviceName}}}Logic
 			s = s.append(sResponse);
 		}
 		result=s.toString();
-		JSONObject jsonObject={{{projectName}}}Helper.getInstance().preProcessJSON(new JSONObject(result));
+		JSONObject jsonObject=preProcessJSON(new JSONObject(result));
 		{{/request.isMultipart}}
 		{{^request.isMultipart}}
 		DefaultHttpClient client = HttpClientHelper.getInstance().getNewHttpClient();
@@ -219,7 +226,7 @@ public class Base{{{serviceName}}}Logic
              log("{{method}}","SENT",jsonObject.toString());
         }
 		{{/isGet}}
-        {{{projectName}}}Helper.getInstance().preExecute("{{{serviceName}}}","{{{method}}}",client,request,cookieStore,localContext);
+        preExecute("{{{serviceName}}}","{{{method}}}",client,request,cookieStore,localContext);
         startTime=System.currentTimeMillis();
 		HttpResponse response = client.execute(request,localContext);
         endTime=System.currentTimeMillis();
@@ -230,18 +237,18 @@ public class Base{{{serviceName}}}Logic
 		if(responseInfo!=null){
                     responseInfo.setStatusCode(response.getStatusLine().getStatusCode());
                 }
-        {{{projectName}}}Helper.getInstance().postExecute("{{{serviceName}}}","{{{method}}}",client,request,response,cookieStore);
+        postExecute("{{{serviceName}}}","{{{method}}}",client,request,response,cookieStore);
 		HttpEntity entity = response.getEntity();
                if (entity != null) {
 			result=convertStreamToString(entity.getContent());
-			result={{{projectName}}}Helper.getInstance().preprocessResponse(result);
+			result=preprocessResponse(result);
 		} else {
                       result = "";
 	       }
 		if("".equals(result)){
-			jsonObject={{{projectName}}}Helper.getInstance().preProcessJSON(new JSONObject());
+			jsonObject=preProcessJSON(new JSONObject());
 		} else {
-			jsonObject={{{projectName}}}Helper.getInstance().preProcessJSON(new JSONObject(result));
+			jsonObject=preProcessJSON(new JSONObject(result));
 		}
 		
         if("true".equalsIgnoreCase(System.getProperty("DEBUG"))){
