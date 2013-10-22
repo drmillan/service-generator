@@ -25,7 +25,7 @@ public class BaseLogic implements FilterInterface
 	    String returnURL=url;
         for(FilterInterface filter:filters)
         {
-            returnURL=preInjectURLParameters(returnURL,request);
+            returnURL=filter.preInjectURLParameters(returnURL,request);
         }
         return returnURL;
 	}
@@ -34,7 +34,7 @@ public class BaseLogic implements FilterInterface
 	    String returnURL=url;
         for(FilterInterface filter:filters)
         {
-            returnURL=postInjectURLParameters(returnURL,request);
+            returnURL=filter.postInjectURLParameters(returnURL,request);
         }
         return returnURL;
 	}
