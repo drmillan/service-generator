@@ -51,7 +51,7 @@
     }
     return returnURL;
 }
-- (NSString *) escapeUrl:(NSString *)url
+- (NSString *) escapeUrl:(NSString *)url onService:(NSString *)serviceName onMethod:(NSString *)methodName
 {
     NSString *returnURL=url;
     for(LogicFilter *filter in self.filters)
@@ -60,7 +60,7 @@
     }
     return returnURL;
 }
-- (NSMutableURLRequest *)manageRequest:(NSMutableURLRequest *)request
+- (NSMutableURLRequest *)manageRequest:(NSMutableURLRequest *)request onService:(NSString *)serviceName onMethod:(NSString *)methodName
 {
     NSMutableURLRequest *returnRequest=request;
     for(LogicFilter *filter in self.filters)
@@ -69,7 +69,7 @@
     }
     return returnRequest;
 }
-- (NSString *) preprocessResponse:(NSString *)responseString
+- (NSString *) preprocessResponse:(NSString *)responseString  onService:(NSString *)serviceName onMethod:(NSString *)methodName
 {
     NSString *returnString=responseString;
     for(LogicFilter *filter in self.filters)
@@ -78,7 +78,7 @@
     }
     return returnString;
 }
-- (NSDictionary *) preprocessResponseAsDictionary:(NSDictionary *)responseDict
+- (NSDictionary *) preprocessResponseAsDictionary:(NSDictionary *)responseDict onService:(NSString *)serviceName onMethod:(NSString *)methodName
 {
     NSDictionary *returnDict=responseDict;
     for(LogicFilter *filter in self.filters)

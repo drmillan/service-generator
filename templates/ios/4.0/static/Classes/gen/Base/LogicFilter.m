@@ -17,19 +17,19 @@
 {
     return url;
 }
-- (NSString *) escapeUrl:(NSString *)url
+- (NSString *) escapeUrl:(NSString *)url onService:(NSString *)serviceName onMethod:(NSString *)methodName
 {
      return url;
 }
-- (NSMutableURLRequest *)manageRequest:(NSMutableURLRequest *)request
+- (NSMutableURLRequest *)manageRequest:(NSMutableURLRequest *)request onService:(NSString *)serviceName onMethod:(NSString *)methodName
 {
     return request;
 }
-- (NSString *) preprocessResponse:(NSString *)responseString
+- (NSString *) preprocessResponse:(NSString *)responseString  onService:(NSString *)serviceName onMethod:(NSString *)methodName
 {
     return responseString;
 }
-- (NSDictionary *) preprocessResponseAsDictionary:(NSDictionary *)responseDict
+- (NSDictionary *) preprocessResponseAsDictionary:(NSDictionary *)responseDict onService:(NSString *)serviceName onMethod:(NSString *)methodName
 {
     return responseDict;
 }
