@@ -56,7 +56,7 @@
     NSString *returnURL=url;
     for(LogicFilter *filter in self.filters)
     {
-        returnURL=[filter escapeUrl:url];
+        returnURL=[filter escapeUrl:url onService:serviceName onMethod:methodName];
     }
     return returnURL;
 }
@@ -65,7 +65,7 @@
     NSMutableURLRequest *returnRequest=request;
     for(LogicFilter *filter in self.filters)
     {
-        returnRequest=[filter manageRequest:request];
+        returnRequest=[filter manageRequest:request onService:serviceName onMethod:methodName];
     }
     return returnRequest;
 }
@@ -74,7 +74,7 @@
     NSString *returnString=responseString;
     for(LogicFilter *filter in self.filters)
     {
-        returnString=[filter preprocessResponse:returnString];
+        returnString=[filter preprocessResponse:returnString onService:serviceName onMethod:methodName];
     }
     return returnString;
 }
@@ -83,7 +83,7 @@
     NSDictionary *returnDict=responseDict;
     for(LogicFilter *filter in self.filters)
     {
-        returnDict=[filter preprocessResponseAsDictionary:returnDict];
+        returnDict=[filter preprocessResponseAsDictionary:returnDict onService:serviceName onMethod:methodName];
     }
     return returnDict;
 }
