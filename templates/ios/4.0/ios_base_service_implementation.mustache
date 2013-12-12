@@ -73,6 +73,8 @@
 
 		url = [self escapeUrl:url  onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
 		url = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
 
 
