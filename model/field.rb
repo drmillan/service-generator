@@ -224,6 +224,8 @@ class Field
 
         "Long"=>"NSNumber","long"=>"NSNumber",
         "Long*"=>"NSNumber","long*"=>"NSNumber",
+
+        "File"=>"NSString"
     }
     if(mappings.has_key?type)
       return mappings[type]
