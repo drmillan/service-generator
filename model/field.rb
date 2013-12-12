@@ -226,7 +226,7 @@ class Field
         "Long"=>"NSNumber","long"=>"NSNumber",
         "Long*"=>"NSNumber","long*"=>"NSNumber",
     }
-    printf(type)
+    print type
     if(mappings.has_key?type)
       return mappings[type]
     end
