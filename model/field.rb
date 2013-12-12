@@ -157,7 +157,7 @@ class Field
         if(mappings.has_key?type)
           return mappings[type]
         end
-     print type
+     print name
     if(type.index('*'))
       return 'List<'<<type[0..-2]<<'>'
     end
