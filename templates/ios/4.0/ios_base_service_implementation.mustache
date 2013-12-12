@@ -175,7 +175,7 @@
 {{#isGet}}
 	[request setHTTPMethod:@"GET"];
 {{/isGet}}
-{{^request.isMultipart}}
+{{/request.isMultipart}}
 	request = [self manageRequest:request  onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
 	
 	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
