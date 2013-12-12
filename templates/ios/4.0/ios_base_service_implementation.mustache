@@ -76,9 +76,10 @@
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
 
 
+// Check multipart
 {{#request.isMultipart}}
 
-    // Multipart
+// Multipart
 
 {{/request.isMultipart}}
 {{^request.isMultipart}}
