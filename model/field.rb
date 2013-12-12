@@ -157,7 +157,7 @@ class Field
         if(mappings.has_key?type)
           return mappings[type]
         end
-    
+     print type
     if(type.index('*'))
       return 'List<'<<type[0..-2]<<'>'
     end
@@ -226,7 +226,6 @@ class Field
         "Long"=>"NSNumber","long"=>"NSNumber",
         "Long*"=>"NSNumber","long*"=>"NSNumber",
     }
-    print type
     if(mappings.has_key?type)
       return mappings[type]
     end
