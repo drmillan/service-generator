@@ -79,10 +79,8 @@
 
 
 
-// Check multipart
 {{#request.isMultipart}}
-
-// Multipart
+    // Multipart
 
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:[NSURL URLWithString:url]]];
 
