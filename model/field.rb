@@ -189,7 +189,7 @@ class Field
             
         "Long"=>"NSNumber","long"=>"NSNumber",
         "Long*"=>"NSArray","long*"=>"NSArray",
-        "File"=>"NSString"
+        "File"=>"NSString","file"=>"NSString"
       }
         if(mappings.has_key?type)
           return mappings[type]
@@ -226,7 +226,7 @@ class Field
         "Long"=>"NSNumber","long"=>"NSNumber",
         "Long*"=>"NSNumber","long*"=>"NSNumber",
 
-        "File"=>"NSString"
+        "File"=>"NSString","file"=>"NSString"
     }
     if(mappings.has_key?type)
       return mappings[type]
