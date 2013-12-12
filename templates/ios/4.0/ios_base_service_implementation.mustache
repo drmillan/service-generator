@@ -75,6 +75,13 @@
 		url = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
 
+
+{{#isMultipart}}
+
+    // Multipart
+
+{{/isMultipart}}
+{{^isMultipart}}
 {{#isPost}}
 	NSMutableArray * content = [NSMutableArray array];
 	for(NSString * key in dict) {
@@ -165,7 +172,7 @@
 {{#isGet}}
 	[request setHTTPMethod:@"GET"];
 {{/isGet}}
-	
+{{^isMultipart}}
 	request = [self manageRequest:request  onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
 	
 	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
