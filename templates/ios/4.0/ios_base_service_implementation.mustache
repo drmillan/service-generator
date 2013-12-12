@@ -12,6 +12,9 @@
 #import "AFHTTPRequestOperation.h"
 #import "MVYDefines.h"
 #import "{{{projectName}}}Helper.h"
+{{#service.hasMultipart}}
+#import "AFHTTPRequestOperationManager.h"
+{{/service.hasMultipart}}
 {{#imports}}
 #import "{{request.name}}.h"
 #import "{{response.name}}.h"
