@@ -55,11 +55,10 @@
 	{
 		string{{{nameUcase}}}= (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
                                                   NULL,
-                                                 (__bridge CFStringRef) {{{request.javaInstanceName}}}.{{{name}}},
+                                                 (__bridge CFStringRef) [NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}],
                                                   NULL,
                                                   CFSTR("!*'();:@&=+$,/?%#[]\" "),
                                                   kCFStringEncodingUTF8));
-        // string{{{nameUcase}}}=[[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         if(!string{{{nameUcase}}})
 		{
 			string{{{nameUcase}}}=[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}];
@@ -255,11 +254,10 @@
 		
 		string{{{nameUcase}}}= (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
                                           NULL,
-                                         (__bridge CFStringRef) {{{request.javaInstanceName}}}.{{{name}}},
+                                         (__bridge CFStringRef) [NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}],
                                           NULL,
                                           CFSTR("!*'();:@&=+$,/?%#[]\" "),
                                           kCFStringEncodingUTF8));
-        // string{{{nameUcase}}}=[[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         if(!string{{{nameUcase}}}) {
 			string{{{nameUcase}}}=[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}];
 		}
