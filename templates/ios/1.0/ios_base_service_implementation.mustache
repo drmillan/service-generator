@@ -53,8 +53,14 @@
 	NSString *string{{{nameUcase}}}=@"";
 	if({{{request.javaInstanceName}}}.{{{name}}})
 	{
-		string{{{nameUcase}}}=[[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-		if(!string{{{nameUcase}}})
+		string{{{nameUcase}}}= (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
+                                                  NULL,
+                                                 (__bridge CFStringRef) {{{request.javaInstanceName}}}.{{{name}}},
+                                                  NULL,
+                                                  CFSTR("!*'();:@&=+$,/?%#[]\" "),
+                                                  kCFStringEncodingUTF8));
+        // string{{{nameUcase}}}=[[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        if(!string{{{nameUcase}}})
 		{
 			string{{{nameUcase}}}=[NSString stringWithFormat:@"%@",{{{request.javaInstanceName}}}.{{{name}}}];
 		}
