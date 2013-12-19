@@ -69,6 +69,7 @@
 
 	NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
 {{#request.fields}}
+    // {{name}} -- {{serviceName}}
 	[dict setValue:[NSString stringWithFormat:@"%@",{{request.javaInstanceName}}.{{name}}] forKey:@"{{serviceName}}"];
 {{/request.fields}}
 	double time = [[NSDate date] timeIntervalSince1970];
