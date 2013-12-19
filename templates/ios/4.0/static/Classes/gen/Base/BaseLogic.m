@@ -91,4 +91,13 @@
 {
     return nil;
 }
+-(NSString *) fixURLParameter:(NSString *)param
+{
+    return(NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(
+                                                      NULL,
+                                                     (__bridge CFStringRef) param,
+                                                      NULL,
+                                                      CFSTR("!*'();:@&=+$,/?%#[]\" "),
+                                                      kCFStringEncodingUTF8));
+}
 @end

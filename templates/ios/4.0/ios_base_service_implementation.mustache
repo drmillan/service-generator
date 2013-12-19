@@ -242,6 +242,10 @@ NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWit
 
 			NSString *stringData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 			stringData =[self preprocessResponse:stringData  onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
+			// Create empty json object if server returned empty string
+			if(!stringData){
+			stringData=@"{}";
+			}
 			data = [stringData dataUsingEncoding:NSUTF8StringEncoding];
 
 		NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:error];
