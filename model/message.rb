@@ -62,25 +62,25 @@ class Message
     isPostJSON() || isPutJSON() || isDeleteJSON()
   end
   def isGet
-    return type=='Get'
+    return type.casecmp('Get')
   end
   def isPost
-    return type=='Post'
+    return type.casecmp('Post')
   end
   def isPostJSON
-    return type=='PostJSON'
+    return type.casecmp('PostJSON')
   end
   def isPut
-    return type=='Put'
+    return type.casecmp('Put')
   end
   def isPutJSON
-    return type=='PutJSON'
+    return type.casecmp('PutJSON')
   end
   def isDelete
-    return type=='Delete'
+    return type.casecmp('Delete')
   end
   def isDeleteJSON
-    return type=='DeleteJSON'
+    return type.casecmp('DeleteJSON')
   end
   def isHttps
     return url.index 'https'
