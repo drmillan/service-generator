@@ -68,6 +68,7 @@
 	_ModelGenLog(@"URL: %@", url);
 
 	NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+	// Before fields
 {{#request.fields}}
     // {{name}} -- {{serviceName}}
 	[dict setValue:[NSString stringWithFormat:@"%@",{{request.javaInstanceName}}.{{name}}] forKey:@"{{serviceName}}"];
