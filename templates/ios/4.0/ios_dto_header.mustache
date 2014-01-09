@@ -8,20 +8,10 @@
 //
 
 #import <Foundation/Foundation.h>
-{{#dto.objectFields}}
-#import "{{{iosBaseTypeSingular}}}.h"
-{{/dto.objectFields}}
-{{#dto.objectArrayFields}}
-#import "{{{iosBaseTypeSingular}}}.h"
-{{/dto.objectArrayFields}}
+#import "base/Base{{{dto.name}}}.h"
 
 
-@interface {{{dto.name}}} : NSObject <NSCopying, NSMutableCopying, NSCoding>
-
-
-{{#dto.fields}}
-@property (nonatomic, strong) {{{typeIOS}}} *{{{name}}};	///< {{{comment}}} - Field name on service:{{serviceName}}.
-{{/dto.fields}}
+@interface {{{dto.name}}} : Base{{{dto.name}}}
 
 
 @end

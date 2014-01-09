@@ -17,19 +17,28 @@ class IOSGenerator
 
     ############ DTOs
     dto_dir=ios_output+'/Classes/gen/Model/DTO'
-    FileUtils.mkdir_p(dto_dir)
+    FileUtils.mkdir_p(dto_dir) unless File.exist?dto_dir
+    FileUtils.mkdir_p(dto_dir+'/base')
     puts 'DTOs'
     puts '-------------'
     protocol.types.each do |type|
       puts "\tCreating DTO ... \t#{type.name}"
       dto_header_file=dto_dir+'/'+type.name+'.h'
       dto_implementation_file=dto_dir+'/'+type.name+'.m'
+      base_dto_header_file=dto_dir+'/base/Base'+type.name+'.h'
+      base_dto_implementation_file=dto_dir+'/base/Base'+type.name+'.m'
       parameters['className']=type.name
       parameters['dto']=type
+      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_base_dto_header.mustache').read,parameters)
+      File.open(base_dto_header_file, 'w') { |file| file.write(res) }
+      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_base_dto_implementation.mustache').read,parameters)
+      File.open(base_dto_implementation_file, 'w') { |file| file.write(res) }
       res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_dto_header.mustache').read,parameters)
-      File.open(dto_header_file, 'w') { |file| file.write(res) }
+      File.open(dto_header_file, 'w') { |file| file.write(res) } unless File.exist?dto_header_file
       res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_dto_implementation.mustache').read,parameters)
-      File.open(dto_implementation_file, 'w') { |file| file.write(res) }
+      File.open(dto_implementation_file, 'w') { |file| file.write(res) } unless File.exist?dto_implementation_file
+
+
     end
 
     ############ DAOs
