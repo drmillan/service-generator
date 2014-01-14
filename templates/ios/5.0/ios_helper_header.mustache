@@ -1,0 +1,23 @@
+//
+//  {{{projectName}}}Helper.h
+//  {{{projectName}}}
+//  Version: {{{version}}}
+//
+//  Created by Mobivery
+//  Copyright (c) 2012 Mobivery. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface {{{projectName}}}Helper : NSObject
+
+// Get the shared instance and create it if necessary.
++ ({{{projectName}}}Helper *)sharedInstance;
+- (NSString *) preInjectURLParameters:(NSString *)url withObject:(NSObject *)obj onService:(NSString *)serviceName onMethod:(NSString *)serviceMethod;
+- (NSString *) postInjectURLParameters:(NSString *)url withObject:(NSObject *)obj onService:(NSString *)serviceName onMethod:(NSString *)serviceMethod;
+- (NSString *) escapeUrl:(NSString *)url onService:(NSString *)serviceName onMethod:(NSString *)serviceMethod;
+- (NSMutableURLRequest *)manageRequest:(NSMutableURLRequest *)request onService:(NSString *)serviceName onMethod:(NSString *)serviceMethod;
+- (NSString *) preprocessResponse:(NSString *)responseString onService:(NSString *)serviceName onMethod:(NSString *)serviceMethod;
+- (NSDictionary *) preprocessResponseAsDictionary:(NSDictionary *)responseDict onService:(NSString *)serviceName onMethod:(NSString *)serviceMethod;
+- (UIView *) loadingViewForTasks;
+@end
