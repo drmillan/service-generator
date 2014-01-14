@@ -1,6 +1,5 @@
 //
 //  BaseLogic.h
-//  PeopleSports
 //
 //  Created by DRM on 22/10/13.
 //  Copyright (c) 2013 Mobivery. All rights reserved.
