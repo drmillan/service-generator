@@ -11,5 +11,62 @@
 
 @implementation {{{dto.name}}}
 
+#pragma mark - NSCopying
+// Creates a non-mutable copy of this DTO Object
+-(id)copyWithZone:(NSZone *)zone {
+
+	Base{{{dto.name}}} *copy=[[[self class] alloc] init];
+    if(copy) {
+		{{#dto.fields}}
+		copy.{{{name}}}=[self.{{{name}}} copyWithZone:zone];
+		{{/dto.fields}}
+	}
+	return copy;
+}
+
+#pragma mark - NSMutableCopying
+// Creates a mutable copy of this DTO Object
+-(id)mutableCopyWithZone:(NSZone *)zone {
+
+	Base{{{dto.name}}} *copy=[[[self class] alloc] init];
+	if(copy) {
+		{{#dto.baseFields}}
+		copy.{{{name}}}=self.{{{name}}};
+		{{/dto.baseFields}}
+		{{#dto.baseArrayFields}}
+		copy.{{{name}}}=[self.{{{name}}} mutableCopyWithZone:zone];
+		{{/dto.baseArrayFields}}
+		{{#dto.objectFields}}
+		copy.{{{name}}}=[self.{{{name}}} mutableCopyWithZone:zone];
+		{{/dto.objectFields}}
+		{{#dto.objectArrayFields}}
+		copy.{{{name}}}=[self.{{{name}}} mutableCopyWithZone:zone];
+		{{/dto.objectArrayFields}}
+	}
+	return copy;
+}
+
+#pragma mark - NSCoding
+
+- (id)initWithCoder:(NSCoder *)decoder {
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+
+	{{#dto.fields}}
+	self.{{{name}}} = [decoder decodeObjectForKey:@"{{{name}}}"];
+	{{/dto.fields}}
+
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)encoder {
+
+	{{#dto.fields}}
+	[encoder encodeObject:self.{{{name}}} forKey:@"{{{name}}}"];
+	{{/dto.fields}}
+}
+
 @end
  
