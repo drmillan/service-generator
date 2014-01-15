@@ -50,7 +50,7 @@ puts 'iOS output:'.cyan << ios_output if ios_output
 puts 'iOS version:'.cyan << ios_version if ios_output
 
 puts '-------------------'
-protocol=XmlReader::read_xml file
+protocol=XmlReader::read_xml file, (ios_version && ios_version.to_f > 4.0)
 # ANDROID Generation
 AndroidGenerator.new.generate(protocol,project_name,package_name,android_version,android_output) if android_output
 # IOS Generation

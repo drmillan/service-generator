@@ -13,6 +13,8 @@ class Field
   @description=nil
   attr_accessor :mimeType
   @mimeType=nil
+  attr_accessor :generateBaseIos
+  @generateBaseIos=nil
 
   def typeIOSDAO
     puts 'pidiendo el dao de ios'
@@ -198,7 +200,11 @@ class Field
     if(type.index('*'))
       return 'NSArray'
     end
-    return type    
+    if generateBaseIos
+      return 'Base'+type;
+    else
+      return type;
+    end
   end
 
 
@@ -235,7 +241,11 @@ class Field
     if(type.index('*'))
       return type[0..-2]
     end
-    return type
+    if generateBaseIos
+      return 'Base'+type;
+    else
+      return type;
+    end
   end
 
 end

@@ -15,7 +15,7 @@ class XmlReader
   #####################
   # Read XML definition
   #####################
-  def XmlReader.read_xml(xmlFile)
+  def XmlReader.read_xml(xmlFile, generateBaseIos)
     puts 'Loading xml'
 
     # Start XML loading
@@ -29,10 +29,10 @@ class XmlReader
     protocol.onTask=contents.root.attributes['onTask']
 
     # Read Types
-    protocol.types=XmlReader.read_types(contents.root)
+    protocol.types=XmlReader.read_types(contents.root, generateBaseIos)
 
     # Read Messages    
-    XmlReader.read_messages(contents.root,protocol)
+    XmlReader.read_messages(contents.root,protocol,generateBaseIos)
 
     puts 'Finished loading xml definition'
     return protocol
@@ -41,7 +41,7 @@ class XmlReader
   ##########################################
   # Read Messages from protocol root node
   ##########################################
-  def XmlReader.read_messages(protocolNode,protocol)
+  def XmlReader.read_messages(protocolNode,protocol, generateBaseIos)
     protocol.services=Hash.new
     protocol.messages=Array.new
     i=0
@@ -55,9 +55,9 @@ class XmlReader
 
 
       # Read Request Type
-      protocol.messages[i].request=XmlReader.read_type(xmlMessage.elements['request'])
+      protocol.messages[i].request=XmlReader.read_type(xmlMessage.elements['request'],generateBaseIos)
       # Read Response Type
-      protocol.messages[i].response=XmlReader.read_type(xmlMessage.elements['response'])
+      protocol.messages[i].response=XmlReader.read_type(xmlMessage.elements['response'],generateBaseIos)
 
 
       # Read common protocol properties
@@ -138,11 +138,11 @@ class XmlReader
   ##########################################
   # Read Types from protocol root node
   ##########################################
-  def XmlReader.read_types(protocolNode)
+  def XmlReader.read_types(protocolNode, generateBaseIos)
     types=Array.new
     i=0
     protocolNode.each_element("//types//type") do |xmlType|
-      types[i]=XmlReader.read_type(xmlType)
+      types[i]=XmlReader.read_type(xmlType, generateBaseIos)
       i=i+1
     end
     return types
@@ -151,7 +151,7 @@ class XmlReader
   ##########################################
   # Read Type definition
   ##########################################
-  def XmlReader.read_type(xmlServiceType)
+  def XmlReader.read_type(xmlServiceType, generateBaseIos)
     serviceType=ServiceType.new
     serviceType.name=xmlServiceType.attributes['name']
     serviceType.type=xmlServiceType.attributes['type']
@@ -159,7 +159,7 @@ class XmlReader
     serviceType.fields=Array.new
     i=0
     xmlServiceType.each_element('field') do |xmlField|
-      serviceType.fields[i]=XmlReader.read_field(xmlField)
+      serviceType.fields[i]=XmlReader.read_field(xmlField, generateBaseIos)
       i=i+1
     end
     return serviceType
@@ -168,13 +168,14 @@ class XmlReader
   ##########################################
   # Read Field
   ##########################################
-  def XmlReader.read_field(xmlField)
+  def XmlReader.read_field(xmlField, generateBaseIos)
     field=Field.new
     field.name=xmlField.attributes['name']
     field.type=xmlField.attributes['type']
     field.mimeType=xmlField.attributes['mimeType']
     field.description=xmlField.attributes['description']
     field.serviceName=xmlField.attributes['serviceName']
+    field.generateBaseIos=generateBaseIos
     if !field.serviceName
       field.serviceName=field.name
     end
