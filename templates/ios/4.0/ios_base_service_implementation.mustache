@@ -209,10 +209,10 @@ NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWit
     	_ModelGenLog(@"%@",[[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding]);
 
     	[request setHTTPMethod:@"GET"];
-    	[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    	[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    	[request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[requestData length]] forHTTPHeaderField:@"Content-Length"];
-    	[request setHTTPBody: requestData];
+    	NSMutableDictionary *allHeaders = [request.allHTTPHeaderFields mutableCopy];
+        NSString *jsonData = [NSString stringWithFormat:@"%@", [[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding]];
+        [allHeaders setObject:jsonData forKey:@"data"];
+        request.allHTTPHeaderFields=allHeaders;
 {{/isGet}}
 
 	request = [self manageRequest:request  onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
