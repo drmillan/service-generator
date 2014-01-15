@@ -111,7 +111,10 @@ NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
     }
     else
     {
-       [{{{name}}}MutableArray addObject:dict[@"{{{serviceName}}}"]];
+       if(dict[@"{{{serviceName}}}"])
+       {
+        [{{{name}}}MutableArray addObject:dict[@"{{{serviceName}}}"]];
+       }
     }
     instance.{{{name}}}={{{name}}}MutableArray;
     {{/dto.baseArrayFields}}
