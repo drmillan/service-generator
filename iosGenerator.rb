@@ -34,9 +34,9 @@ class IOSGenerator
       res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_base_dto_implementation.mustache').read,parameters) if ios_version && ios_version.to_f > 4.0
       File.open(base_dto_implementation_file, 'w') { |file| file.write(res) } if ios_version && ios_version.to_f > 4.0
       res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_dto_header.mustache').read,parameters)
-      File.open(dto_header_file, 'w') { |file| file.write(res) } unless File.exist?dto_header_file
+      File.open(dto_header_file, 'w') { |file| file.write(res) } unless File.exist?dto_header_file && ios_version && ios_version.to_f > 4.0
       res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_dto_implementation.mustache').read,parameters)
-      File.open(dto_implementation_file, 'w') { |file| file.write(res) } unless File.exist?dto_implementation_file
+      File.open(dto_implementation_file, 'w') { |file| file.write(res) } unless File.exist?dto_implementation_file && ios_version && ios_version.to_f > 4.0
 
 
     end
