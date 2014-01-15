@@ -29,6 +29,7 @@ class IOSGenerator
       base_dto_implementation_file=dto_dir+'/Base/Base'+type.name+'.m'
       parameters['className']=type.name
       parameters['dto']=type
+
       res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_base_dto_header.mustache').read,parameters) if ios_version && ios_version.to_f > 4.0
       File.open(base_dto_header_file, 'w') { |file| file.write(res) } if ios_version && ios_version.to_f > 4.0
       res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_base_dto_implementation.mustache').read,parameters) if ios_version && ios_version.to_f > 4.0

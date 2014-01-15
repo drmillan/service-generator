@@ -200,7 +200,19 @@ NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWit
 
 {{/isPutJSON}}
 {{#isGet}}
-	[request setHTTPMethod:@"GET"];
+	NSDictionary *jsonDict=[[{{request.daoClassName}} sharedInstance] writeToDictionary:{{request.javaInstanceName}}];
+
+        NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict
+                                                   options:NSJSONWritingPrettyPrinted
+                                                     error:nil];
+
+    	_ModelGenLog(@"%@",[[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding]);
+
+    	[request setHTTPMethod:@"GET"];
+    	[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    	[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    	[request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[requestData length]] forHTTPHeaderField:@"Content-Length"];
+    	[request setHTTPBody: requestData];
 {{/isGet}}
 
 	request = [self manageRequest:request  onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
