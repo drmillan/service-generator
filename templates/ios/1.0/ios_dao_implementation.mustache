@@ -40,7 +40,9 @@ NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
 			dict[@"{{{name}}}"] = instance.{{{name}}}.boolValue ? @"true": @"false";
 	    {{/isBoolean}}
 		{{^isBoolean}}
+        if (instance.{{{name}}}) {
 			dict[@"{{{name}}}"] = instance.{{{name}}};
+        }
 		{{/isBoolean}}
 	{{/dto.baseFields}}
 		
