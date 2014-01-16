@@ -99,21 +99,24 @@ NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
     {{/dto.baseFields}}
 
     {{#dto.baseArrayFields}}
-    NSArray *{{{name}}}Array;
-    NSMutableArray *{{{name}}}MutableArray=[[NSMutableArray alloc]init];
-    if([dict[@"{{{serviceName}}}"] isKindOfClass:[NSArray class]])
-    {
-       {{{name}}}Array=dict[@"{{{serviceName}}}"];
-        for({{{iosBaseTypeSingular}}} *item in {{{name}}}Array)
-    	{
-    		[{{{name}}}MutableArray addObject:item];
-    	}
-    }
-    else
-    {
-       [{{{name}}}MutableArray addObject:dict[@"{{{serviceName}}}"]];
-    }
-    instance.{{{name}}}={{{name}}}MutableArray;
+        NSArray *{{{name}}}Array;
+        NSMutableArray *{{{name}}}MutableArray=[[NSMutableArray alloc]init];
+        if(dict[@"{{{serviceName}}}"])
+        {
+            if([dict[@"{{{serviceName}}}"] isKindOfClass:[NSArray class]])
+            {
+                {{{name}}}Array=dict[@"{{{serviceName}}}"];
+                for({{{iosBaseTypeSingular}}} *item in {{{name}}}Array)
+        	    {
+        		    [{{{name}}}MutableArray addObject:item];
+        	    }
+            }
+            else
+            {
+                [{{{name}}}MutableArray addObject:dict[@"{{{serviceName}}}"]];
+            }
+        }
+        instance.{{{name}}}={{{name}}}MutableArray;
     {{/dto.baseArrayFields}}
   
     {{#dto.objectFields}}
