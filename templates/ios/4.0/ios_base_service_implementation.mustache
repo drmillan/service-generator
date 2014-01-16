@@ -60,7 +60,31 @@
 	#endif
 {{/inURLbutNotField}}
 {{#request.fields}}
-    url = [url stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}",@"{{name}}"] withString:string{{nameUcase}}];
+	if({{request.javaInstanceName}}.{{name}}==nil){
+        url = [url stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}",@"{{name}}"] withString:@""];
+	}
+	else{
+		if([url rangeOfString:[NSString stringWithFormat:@"${%@}",@"{{name}}"]].location != NSNotFound)
+		{
+		    url = [url stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}",@"{{name}}"] withString:string{{nameUcase}}];
+		}
+		{{#isGet}}
+		else
+		{
+			// Form query strings if present (url?name1=value1&name2=value2)
+			NSString *operator;
+			if ([url rangeOfString:@"?"].location != NSNotFound)
+			{
+				operator = @"&";
+			}
+			else
+			{
+				operator = @"?";
+			}
+			url = [NSString stringWithFormat:@"%@%@{{serviceName}}=%@", url, operator, string{{nameUcase}}];
+		}
+		{{/isGet}}
+	}
 {{/request.fields}}
 
 	url = [self postInjectURLParameters:url  withObject:{{request.javaInstanceName}} onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
