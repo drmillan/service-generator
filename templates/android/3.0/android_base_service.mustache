@@ -196,7 +196,7 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 		{{#isWrite}}
 		List <NameValuePair> parameters = new ArrayList <NameValuePair>(); 
 		{{#request.fields}}
-	 	parameters.add(new BasicNameValuePair("{{{name}}}", 		String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}())));       
+	 	parameters.add(new BasicNameValuePair("{{{serviceName}}}", 		String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}())));       
 		{{/request.fields}}
 		{{^isDelete}}
 		request.setEntity(new UrlEncodedFormEntity(parameters, HTTP.UTF_8));
