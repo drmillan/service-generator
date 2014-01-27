@@ -155,10 +155,10 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 
 		{{#request.fields}}
 		{{#isFile}}
-		reqEntity.addPart("{{{name}}}", new FileBody(new File(String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}())),"{{{mimeType}}}"));
+		reqEntity.addPart("{{{serviceName}}}", new FileBody(new File(String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}())),"{{{mimeType}}}"));
 		{{/isFile}}
 		{{^isFile}}
-	 	reqEntity.addPart("{{{name}}}", 
+	 	reqEntity.addPart("{{{serviceName}}}", 
 			new StringBody(String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}())));
 		{{/isFile}}
 		{{/request.fields}}
