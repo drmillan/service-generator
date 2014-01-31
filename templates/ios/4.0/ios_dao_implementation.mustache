@@ -74,6 +74,10 @@ NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
 -({{{dto.name}}} *) readFromDictionary:(NSDictionary *)dict
 {
 	{{{dto.name}}} *instance=[[{{{dto.name}}} alloc]init];
+    if(![dict isKindOfClass:[NSDictionary class]])
+    {
+        return instance;
+    }
 	if(![dict isKindOfClass:[NSNull class]])
 	    {
     {{#dto.objectArrayFields}}
