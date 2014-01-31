@@ -40,7 +40,9 @@ NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
 			dict[@"{{{serviceName}}}"] = instance.{{{name}}}.boolValue ? @"true": @"false";
 	    {{/isBoolean}}
 		{{^isBoolean}}
+        if (instance.{{{name}}}) {
 			dict[@"{{{serviceName}}}"] = instance.{{{name}}};
+        }
 		{{/isBoolean}}
 	{{/dto.baseFields}}
 		
@@ -49,7 +51,9 @@ NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
 			dict[@"{{{serviceName}}}"] = instance.{{{name}}}.boolValue ? @"true": @"false";
 		{{/isBoolean}}
         {{^isBoolean}}
+        if (instance.{{{name}}}) {
         	dict[@"{{{serviceName}}}"] = instance.{{{name}}};
+        }
 		{{/isBoolean}}
 	{{/dto.baseArrayFields}}
 	

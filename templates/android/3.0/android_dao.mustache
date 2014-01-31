@@ -97,7 +97,7 @@ public final class {{{entity.daoClassName}}}{
 		{{/isBoolean}}		
 		{{#isString}}
 		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null")) {
-		    returnValue.set{{{nameUcase}}}(({{{typeJava}}})value.get(CONSTANT_{{nameFullUcase}}));
+		    returnValue.set{{{nameUcase}}}(value.get(CONSTANT_{{nameFullUcase}}).toString());
 		}
 		{{/isString}}
 		{{/entity.baseFields}}
