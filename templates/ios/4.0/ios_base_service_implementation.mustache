@@ -91,6 +91,7 @@
 
 	_ModelGenLog(@"URL: %@", url);
 
+	{{#isWrite}}
 	NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
 	// Before fields
 {{#request.fields}}
@@ -99,11 +100,10 @@
 {{/request.fields}}
 	double time = [[NSDate date] timeIntervalSince1970];
     [dict setValue:[NSNumber numberWithDouble:time] forKey:@"requestTime"];
-
+	{{/isWrite}}
+		
 		url = [self escapeUrl:url  onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
 		url = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-
-
 
 {{#request.isMultipart}}
     // Multipart

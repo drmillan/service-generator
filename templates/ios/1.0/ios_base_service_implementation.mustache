@@ -85,6 +85,7 @@
   		
 	_ModelGenLog(@"URL: %@", url);  		
   		
+  	{{#isWrite}}
 	NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
 
 	{{#request.fields}}
@@ -93,7 +94,8 @@
 
 	double time=[[NSDate date] timeIntervalSince1970];
 	[dict setValue:[NSNumber numberWithDouble:time] forKey:@"requestTime"];
-    
+    {{/isWrite}}
+
 	NSString *escapedUrl = url;
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:escapedUrl] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
 		
@@ -280,6 +282,8 @@
 	}  		
   		
 	_ModelGenLog(@"URL: %@", url);
+	
+	{{#isWrite}}
   		
 	NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
 	{{#request.fields}}
@@ -288,6 +292,8 @@
 	double time=[[NSDate date] timeIntervalSince1970];
 	[dict setValue:[NSNumber numberWithDouble:time] forKey:@"requestTime"];
         		
+    {{/isWrite}}
+    
 	{{response.name}} *result;
     
 	NSError *error=nil;

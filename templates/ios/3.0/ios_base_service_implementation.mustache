@@ -55,6 +55,8 @@
 	}
 
 	_ModelGenLog(@"URL: %@", url);
+	
+	{{#isWrite}}
 
 	NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
 {{#request.fields}}
@@ -63,6 +65,8 @@
 	double time = [[NSDate date] timeIntervalSince1970];
     [dict setValue:[NSNumber numberWithDouble:time] forKey:@"requestTime"];
 
+	{{/isWrite}}
+	
 	if ([[{{{projectName}}}Helper sharedInstance] respondsToSelector:@selector(escapeUrl:)]) {
 		url = [[{{{projectName}}}Helper sharedInstance] escapeUrl:url];
 	} else {
