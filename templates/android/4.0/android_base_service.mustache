@@ -246,9 +246,9 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
                       result = "";
 	       }
 		if("".equals(result)){
-			jsonObject=preProcessJSON(new JSONObject());
+			jsonObject=preProcessJSON("{{{serviceName}}}","{{{method}}}",new JSONObject());
 		} else {
-			jsonObject=preProcessJSON(new JSONObject(result));
+			jsonObject=preProcessJSON("{{{serviceName}}}","{{{method}}}",new JSONObject(result));
 		}
 		
         if("true".equalsIgnoreCase(System.getProperty("DEBUG"))){
