@@ -1,0 +1,52 @@
+/**
+ *	{{{className}}}
+ *	{{{projectName}}}
+ *
+ * Created by Service-Generator.
+ * Copyright (c) 2012-2014 Mobivery. All rights reserved.
+ * Version: {{{version}}}
+ */
+package {{{packagename}}}.model.dto;
+
+{{#extraImports}}
+{{{import}}}
+{{/extraImports}}
+import android.os.Parcelable;
+import android.os.Parcel;
+import {{{packagename}}}.model.dto.base.{{{projectName}}}DTOBundle;
+
+/**
+ * Extended DTO {{{className}}}
+ * This DTO CAN be extended (will not be overwritten by generator)
+ * @see {{{packagename}}}.model.dto.base.{{{projectName}}}DTOBundle.Base{{{className}}}
+ */
+public final class {{{className}}} extends {{{projectName}}}DTOBundle.Base{{{className}}}
+{
+    /**
+     * Creates DTO with default values
+     */
+	public {{{className}}}() {
+		super();
+	}
+
+    /**
+     * Creates DTO from Parcel Data
+     */
+	public {{{className}}}(Parcel in) {
+		super(in);
+	}
+
+	/**
+	 * Static Parcelable serializer/deserializer
+	 */
+	public static final Parcelable.Creator<{{{className}}}> CREATOR =
+		new Parcelable.Creator<{{{className}}}>() {
+			public {{{className}}} createFromParcel(Parcel in) {
+				return new {{{className}}}(in);
+			}
+			public {{{className}}}[] newArray(int size) {
+				return new {{{className}}}[size];
+			}
+		};
+}
+ 
