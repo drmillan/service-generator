@@ -105,22 +105,41 @@ public final class {{{entity.daoClassName}}}{
 		{{#entity.baseArrayFields}}
 		ArrayList<{{{baseTypeSingular}}}> {{{javaName}}}List=new ArrayList<{{{baseTypeSingular}}}>();
 		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null")) {
-            JSONArray {{{name}}}Array=value.getJSONArray(CONSTANT_{{nameFullUcase}});
-            for(int i=0;i!={{{name}}}Array.length();i++){
+
+			if(value.get(CONSTANT_{{nameFullUcase}}) instanceof JSONArray){
+            	JSONArray {{{name}}}Array=value.getJSONArray(CONSTANT_{{nameFullUcase}});
+            	for(int i=0;i!={{{name}}}Array.length();i++){
+                	    {{#isString}}
+                    	{{{javaName}}}List.add({{{name}}}Array.getString(i));
+                    	{{/isString}}
+						{{#isInteger}}
+                    	{{{javaName}}}List.add(Integer.valueOf((int){{{name}}}Array.getLong(i)));					
+						{{/isInteger}}
+						{{#isFloat}}
+                    	{{{javaName}}}List.add(Float.valueOf((float){{{name}}}Array.getDouble(i)));					
+						{{/isFloat}}
+						{{#isDouble}}
+                    	{{{javaName}}}List.add(Double.valueOf({{{name}}}Array.getDouble(i)));
+						{{/isDouble}}
+						{{#isBoolean}}
+                    	{{{javaName}}}List.add(new Boolean({{{name}}}Array.getBoolean(i)));
+						{{/isBoolean}}
+            	}
+            } else {
                     {{#isString}}
-                    {{{javaName}}}List.add({{{name}}}Array.getString(i));
+                    {{{javaName}}}List.add(value.getString(CONSTANT_{{nameFullUcase}}));
                     {{/isString}}
 					{{#isInteger}}
-                    {{{javaName}}}List.add(Integer.valueOf((int){{{name}}}Array.getLong(i)));					
+                    {{{javaName}}}List.add(Integer.valueOf(value.getLong(CONSTANT_{{nameFullUcase}})));					
 					{{/isInteger}}
 					{{#isFloat}}
-                    {{{javaName}}}List.add(Float.valueOf((float){{{name}}}Array.getDouble(i)));					
+                    {{{javaName}}}List.add(Float.valueOf((float)value.getDouble(CONSTANT_{{nameFullUcase}})));					
 					{{/isFloat}}
 					{{#isDouble}}
-                    {{{javaName}}}List.add(Double.valueOf({{{name}}}Array.getDouble(i)));
+                    {{{javaName}}}List.add(Double.valueOf(value.getDouble(CONSTANT_{{nameFullUcase}})));
 					{{/isDouble}}
 					{{#isBoolean}}
-                    {{{javaName}}}List.add(new Boolean({{{name}}}Array.getBoolean(i)));
+                    {{{javaName}}}List.add(new Boolean(value.getBoolean(CONSTANT_{{nameFullUcase}})));
 					{{/isBoolean}}
             }
 		}
