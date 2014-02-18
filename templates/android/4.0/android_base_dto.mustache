@@ -13,7 +13,9 @@ package {{{packagename}}}.model.dto;
 {{/extraImports}}
 import android.os.Parcelable;
 import android.os.Parcel;
+import org.json.JSONObject;
 import {{{packagename}}}.model.dto.base.{{{projectName}}}DTOBundle;
+import {{{packagename}}}.model.dao.*;
 
 /**
  * Extended DTO {{{className}}}
@@ -35,6 +37,34 @@ public final class {{{className}}} extends {{{projectName}}}DTOBundle.Base{{{cla
 	public {{{className}}}(Parcel in) {
 		super(in);
 	}
+
+	@Override
+    public boolean equals(final Object object) {
+
+        if (this == object) return true;
+        if (!(object instanceof {{{className}}})) return false;
+        final {{{className}}} other = ({{{className}}}) object;
+        try {
+        	JSONObject thisJson = {{{daoName}}}.getInstance().serialize(this);
+        	JSONObject otherJson = {{{daoName}}}.getInstance().serialize(other);        
+        	return thisJson.toString().equals(otherJson.toString());
+        } catch(Exception ex) {
+        	ex.printStackTrace();
+        } 
+		
+		return false;
+    }
+
+    @Override
+    public int hashCode() {
+    	try {
+        	JSONObject thisJson = {{{daoName}}}.getInstance().serialize(this);
+        	return thisJson.toString().hashCode();
+        } catch(Exception ex) {
+        	ex.printStackTrace();
+        } 
+        return super.hashCode();
+    }
 
 	/**
 	 * Static Parcelable serializer/deserializer

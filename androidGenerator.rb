@@ -31,6 +31,7 @@ class AndroidGenerator
       puts "\tCreating DTO ... \t#{type.name}"
       dtoFile=dtoDir+'/'+type.name+'.java'
       parameters['className']=type.name
+      parameters['daoName']=type.daoClassName
       res=Mustache.render(File.open("templates/android/"+aVersion+"/android_base_dto.mustache").read,parameters)
       File.open(dtoFile, 'w') { |file| file.write(res) }  unless File.exist?dtoFile
     end
