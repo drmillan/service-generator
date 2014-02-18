@@ -62,8 +62,8 @@ public final class {{{className}}} extends {{{projectName}}}DTOBundle.Base{{{cla
         	return thisJson.toString().hashCode();
         } catch(Exception ex) {
         	ex.printStackTrace();
+        	return ex.hashCode();
         } 
-        return super.hashCode();
     }
 
 	/**
