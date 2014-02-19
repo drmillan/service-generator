@@ -1,0 +1,220 @@
+/**
+ * Created by Service-Generator.
+ * Copyright (c) 2012-2014 Mobivery. All rights reserved.
+ * Version: {{{version}}}
+ */
+package {{{packagename}}}.model.dto.base;
+import java.util.List;
+import java.util.ArrayList;
+import android.os.Parcel;
+import android.os.Parcelable;
+import java.io.File;
+import {{{packagename}}}.model.dto.*;
+
+public class {{{projectName}}}DTOBundle
+{
+{{#dtos}}
+	/**
+	 * DTO defining class {{{name}}}
+	 */
+	public static class Base{{{name}}} implements Parcelable
+	{
+		public Base{{{name}}}(Parcel in) {
+			readFromParcel(in);
+		}
+	
+		public Base{{{name}}}() {
+		}
+	
+		{{#fields}}
+		//{{{comment}}} Field name on service:{{serviceName}}
+		private {{{typeJava}}} {{{javaName}}}; 
+		{{/fields}}
+		
+		// Setters y Getters
+		
+		{{#fields}}
+		/**
+		 * Setter de la propiedad {{{javaName}}} , {{{comments}}}
+		 * Field name on service:{{serviceName}}
+		 * @param {{{javaName}}} valor a establecer en el set
+		 */
+		public void set{{{nameUcase}}}({{{typeJava}}} {{{javaName}}}){
+			this.{{{javaName}}}={{{javaName}}};
+		}
+		/**
+		 * Getter de la propiedad {{{javaName}}} , {{{comments}}}
+		 * Field name on service:{{serviceName}}
+		 * @returns Valor de la propiedad {{{javaName}}}
+		 */
+		public {{{typeJava}}} get{{{nameUcase}}}(){
+			return {{{javaName}}};
+		}
+		{{/fields}}
+		
+		@Override
+		public int describeContents() {
+			return 0;
+		}
+
+		@Override
+		public void writeToParcel(Parcel dest, int flags) {
+		{{#fileFields}}
+		    if({{{javaName}}}!=null){
+		        dest.writeByte((byte)1);
+		        dest.writeString({{{javaName}}}.getAbsolutePath());
+		    }
+		    else
+		    {
+		        dest.writeByte((byte)0);
+		    }
+		{{/fileFields}}
+		{{#baseFields}}
+			{{#isString}}
+			if({{{javaName}}}!=null){
+			    dest.writeByte((byte)1);
+			    dest.writeString({{{javaName}}});
+			}
+			else{
+			    dest.writeByte((byte)0);
+			}
+			{{/isString}}
+			{{#isLong}}
+			if({{{javaName}}}!=null){
+                dest.writeByte((byte)1);
+			    dest.writeLong({{{javaName}}});
+			}
+			else{
+			    dest.writeByte((byte)0);
+			}
+			{{/isLong}}
+			{{#isInteger}}
+			if({{{javaName}}}!=null){
+                dest.writeByte((byte)1);
+    			dest.writeInt({{{javaName}}});
+			}
+			else{
+			    dest.writeByte((byte)0);
+			}
+			{{/isInteger}}
+			{{#isDouble}}
+			if({{{javaName}}}!=null){
+                dest.writeByte((byte)1);
+                dest.writeDouble({{{javaName}}});
+            }
+			else{
+			    dest.writeByte((byte)0);
+			}
+			{{/isDouble}}
+			{{#isBoolean}}
+			dest.writeByte((byte)(({{{javaName}}} != null && {{{javaName}}})? 1:0));
+			{{/isBoolean}}
+			{{#isFloat}}
+			if({{{javaName}}}!=null){
+                dest.writeByte((byte)1);
+			    dest.writeFloat({{{javaName}}});
+            }
+			else{
+			    dest.writeByte((byte)0);
+			}
+			{{/isFloat}}
+		{{/baseFields}}
+
+{{#baseArrayFields}}
+			if({{{javaName}}}!=null){
+                dest.writeByte((byte)1);
+			    dest.writeList({{{javaName}}});
+            }
+			else{
+			    dest.writeByte((byte)0);
+			}
+{{/baseArrayFields}}
+{{#objectFields}}
+			if({{{javaName}}}!=null){
+                dest.writeByte((byte)1);
+			    dest.writeParcelable({{{javaName}}}, flags);
+            }
+			else{
+			    dest.writeByte((byte)0);
+			}
+{{/objectFields}}
+{{#objectArrayFields}}
+			if({{{javaName}}}!=null){
+                dest.writeByte((byte)1);
+			    dest.writeTypedList({{{javaName}}});
+            }
+			else{
+			    dest.writeByte((byte)0);
+			}
+{{/objectArrayFields}}
+		}
+		
+		public void readFromParcel(Parcel in) {
+
+{{#fileFields}}
+    if(in.readByte()==1) {
+        {{{javaName}}}=new java.io.File(in.readString());
+    }
+{{/fileFields}}
+{{#baseFields}}	
+	{{#isString}}
+	        if(in.readByte()==1){
+			{{{javaName}}} = in.readString();}
+	{{/isString}}
+	{{#isLong}}
+	        if(in.readByte()==1){
+			{{{javaName}}} = in.readLong();}
+	{{/isLong}}
+	{{#isInteger}}
+	        if(in.readByte()==1){
+			{{{javaName}}} = in.readInt();}
+	{{/isInteger}}
+	{{#isDouble}}
+	        if(in.readByte()==1){
+			{{{javaName}}} = in.readDouble();}
+	{{/isDouble}}
+	{{#isBoolean}}
+			{{{javaName}}} = in.readByte() == 1;
+	{{/isBoolean}}
+	{{#isFloat}}
+	        if(in.readByte()==1){
+			{{{javaName}}} = in.readFloat();}
+	{{/isFloat}}
+{{/baseFields}}
+{{#baseArrayFields}}
+            if(in.readByte()==1)
+            {
+			{{{javaName}}} = new ArrayList<{{{baseTypeSingular}}}>(); 
+			in.readList({{{javaName}}}, {{{baseTypeSingular}}}.class.getClassLoader());
+			}
+{{/baseArrayFields}}
+{{#objectFields}}
+            if(in.readByte()==1)
+            {
+			{{{javaName}}} = in.readParcelable({{{baseTypeSingular}}}.class.getClassLoader());
+			}
+{{/objectFields}}
+{{#objectArrayFields}}
+            if(in.readByte()==1)
+            {
+			{{{javaName}}} = new ArrayList<{{{baseTypeSingular}}}>();
+			in.readTypedList({{{javaName}}}, {{{baseTypeSingular}}}.CREATOR);
+			}
+{{/objectArrayFields}}
+		}
+		
+		public static final Parcelable.Creator<Base{{{name}}}> CREATOR =
+			new Parcelable.Creator<Base{{{name}}}>() {
+				public Base{{{name}}} createFromParcel(Parcel in) {
+					return new Base{{{name}}}(in);
+				}
+				public Base{{{name}}}[] newArray(int size) {
+					return new Base{{{name}}}[size];
+				}
+			};
+			
+	}
+{{/dtos}}
+
+
+}
