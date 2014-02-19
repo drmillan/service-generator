@@ -3,3 +3,4 @@ own personal products and for the company in their own propietary developments.
 
 Main contributors to this library are:
 Daniel Rodríguez    soynegativo@gmail.com
+Francisco M. Gómez  kikogo@gmail.com
