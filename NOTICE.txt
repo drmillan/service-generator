@@ -5,4 +5,5 @@ Main contributors to this library are:
 Daniel Rodríguez    soynegativo@gmail.com
 Francisco M. Gómez  kikogo@gmail.com
 Nacho López         nacho@nlopez.io
+Francisco Soto      fran.soto@outlook.com
 
