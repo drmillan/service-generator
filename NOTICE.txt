@@ -1,0 +1,5 @@
+This software has been developed by members of the Mobivery development team, on our free time for use in our
+own personal products and for the company in their own propietary developments.
+
+Main contributors to this library are:
+Daniel Rodríguez    soynegativo@gmail.com
