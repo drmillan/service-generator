@@ -110,7 +110,7 @@
 
     AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:url]];
 
-    AFHTTPRequestOperation *operation = [manager POST:[NSURL URLWithString:url] parameters:dict constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    AFHTTPRequestOperation *operation = [manager POST:url parameters:dict constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
 
         CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)[stringFile pathExtension], NULL);
         CFStringRef MIMEType = UTTypeCopyPreferredTagWithClass (UTI, kUTTagClassMIMEType);
