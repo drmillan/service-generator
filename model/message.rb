@@ -56,7 +56,7 @@ class Message
     type.gsub('JSON','')
   end
   def isWrite
-    isPost() || isPut() || isDelete()
+    isPost() || isPut() || isDelete() || multipart()
   end
   def isWriteJSON
     isPostJSON() || isPutJSON() || isDeleteJSON()
