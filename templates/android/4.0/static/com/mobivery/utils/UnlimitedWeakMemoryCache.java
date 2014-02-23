@@ -31,6 +31,11 @@ public class UnlimitedWeakMemoryCache<T, Q> implements CacheInterface<T, Q> {
     }
 
     @Override
+    public void remove(T request) {
+        weakReferenceMap.remove(request);
+    }
+
+    @Override
     public Collection<T> keys() {
         synchronized (weakReferenceMap) {
             return new HashSet<T>(weakReferenceMap.keySet());

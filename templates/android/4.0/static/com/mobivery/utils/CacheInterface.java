@@ -9,6 +9,7 @@ import java.util.Collection;
 public interface CacheInterface<T, Q> {
     public void put(T request, Q response);
     public Q get(T request);
+    public void remove(T request);
     public Collection<T> keys();
     public void clear();
 }
