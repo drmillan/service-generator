@@ -1,9 +1,6 @@
 /**
-  BaseLogic
-
-  Created by Generator on 19/01/12.
-  Copyright (c) 2012 Mobivery. All rights reserved.
-  Version: ${version}
+* BaseLogic
+* @author Service Generator
 */
 package com.mobivery.utils;
 

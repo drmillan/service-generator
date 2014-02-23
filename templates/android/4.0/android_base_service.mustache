@@ -1,10 +1,8 @@
 /**
-  {{{serviceName}}}Service
-  {{{projectName}}}
-
-Created by Service-Generator.
-  Copyright (c) 2012-2014 Mobivery. All rights reserved.
-  Version: {{{version}}}
+* {{{serviceName}}}Service
+* {{{projectName}}}
+*
+* @author Service Generator
 */
 package {{{packagename}}}.logic.base;
 
@@ -28,6 +26,8 @@ import java.text.SimpleDateFormat;
 import com.mobivery.utils.ResponseInfo;
 import com.mobivery.utils.HttpClientHelper;
 import com.mobivery.utils.BaseLogic;
+import com.mobivery.utils.CacheInterface;
+import com.mobivery.utils.NoCache;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -86,12 +86,10 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 
 
 {{#messages}}
-	private {{{response.name}}} {{{method}}}LastResponse;
-	private Date {{{method}}}LastResponseTime;	
+	private CacheInterface<{{{request.name}}},{{{response.name}}}> {{{method}}}Cache = new NoCache();
 {{/messages}}
 
 {{#messages}}
-
 
 	/**
 	 * Metodo {{{method}}}: {{{description}}}
@@ -166,17 +164,31 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 		postRequest.setEntity(reqEntity);
 		preExecute("{{{serviceName}}}","{{{method}}}",httpClient,postRequest,cookieStore,localContext);
 		startTime=System.currentTimeMillis();
+
+		if ({{{method}}}Cache != null) {
+			{{{request.name}}} cachedResponse = {{{method}}}Cache.get({{{request.name}}});
+			if (cachedResponse != null) {
+				if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+            		System.out.println(Base{{{serviceName}}}Logic.class.getName()+" CACHE: RETURNING CACHED RESULT");
+        		}
+        		return cachedResponse;
+			} else {
+				if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+            		System.out.println(Base{{{serviceName}}}Logic.class.getName()+" CACHE: NO HITS");
+        		}
+			}
+		}
+
 		HttpResponse response = httpClient.execute(postRequest,localContext);
-		endTime=System.currentTimeMillis();
+		endTime = System.currentTimeMillis();
 		if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
             System.out.println(Base{{{serviceName}}}Logic.class.getName()+" FINISH-SENT:"+url+" TIME:"+(endTime-startTime));
         }
 
+		if(responseInfo!=null) {
+        	responseInfo.setStatusCode(response.getStatusLine().getStatusCode());
+        }
 
-
-		if(responseInfo!=null){
-                    responseInfo.setStatusCode(response.getStatusLine().getStatusCode());
-                }
         postExecute("{{{serviceName}}}","{{{method}}}",httpClient,postRequest,response,cookieStore);
 		BufferedReader reader = new BufferedReader(
 			new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
@@ -264,10 +276,12 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 			{{{onReceive}}}({{{request.javaInstanceName}}},{{{response.javaInstanceName}}});
 		{{/onReceive}}
 		
-		{{{method}}}LastResponse = {{{response.javaInstanceName}}};
-		{{{method}}}LastResponseTime = new Date();
-
-
+		if ({{{method}}}Cache != null) {
+			{{{method}}}Cache.put({{{request.javaInstanceName}}}, {{{response.javaInstanceName}}});
+			if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+            	System.out.println(Base{{{serviceName}}}Logic.class.getName()+" STORED RESULT IN CACHE");
+        	}
+		}
 
 		return {{{response.javaInstanceName}}};
 		}
@@ -319,21 +333,18 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 	
 {{#messages}}
 	/**
-	 * Get last cached response from previous {{{methodUpperCase}}} call
-	 * @returns Cached response
+	 * Set the cache system for {{{method}}}
 	 */
-	public {{{response.name}}} get{{{methodUpperCase}}}LastResponse() {
-		return {{{method}}}LastResponse;
+	public void set{{{methodUpperCase}}}Cache(CacheInterface<{{{request.name}}},{{{response.name}}}> cache) {
+		this.{{{method}}}Cache = cache;
 	}
 
 	/**
-	 * Get last cached response date from previous{{{methodUpperCase}}} call
-	 * @returns Last requestTime
-	 */	
-	public Date get{{{methodUpperCase}}}LastResponseTime() {
-		return {{{method}}}LastResponseTime;
-	}	
-
+	 * Returns the cache system for {{{method}}}
+	 */
+	public CacheInterface<{{{request.name}}},{{{response.name}}}> get{{{methodUpperCase}}}Cache {
+		return this.{{{method}}}Cache = cache;
+	}
 
 {{/messages}}
 /**
