@@ -1,47 +1,45 @@
+  package {{{packagename}}}.logic;
+
+  import org.apache.http.HttpResponse;
+  import org.apache.http.client.CookieStore;
+  import org.apache.http.client.methods.HttpRequestBase;
+  import org.apache.http.impl.client.DefaultHttpClient;
+  import org.apache.http.protocol.HttpContext;
+  import org.json.JSONObject;
+
 /**
-  ${projectName}Helper
-
-  Created by Generator on 19/01/12.
-  Copyright (c) 2012-2014 Mobivery. All rights reserved.
-  Version: ${version}
+* Main filter for all services
+* @author Service Generator 
 */
-package {{{packagename}}}.logic;
+public class {{{projectName}}}Helper implements com.mobivery.utils.FilterInterface {
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.CookieStore;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.protocol.HttpContext;
-import org.json.JSONObject;
+  	private static {{{projectName}}}Helper instance=new {{{projectName}}}Helper();
 
-public class {{{projectName}}}Helper implements com.mobivery.utils.FilterInterface
-{
-	private static {{{projectName}}}Helper instance=new {{{projectName}}}Helper();
-	
-	private {{{projectName}}}Helper() {
-	} 
-	public static {{{projectName}}}Helper getInstance() {
-		return instance;
-	}
-	public String preInjectURLParameters(String logic,String method,String url,Object request) {
-		return url;
-	}
-	public String postInjectURLParameters(String logic,String method,String url,Object request) {
-		return url;
-	}
-	public void cacheHit(String logic, String method, Object request, Object response) {
+  	private {{{projectName}}}Helper() {
+  	}
 
-	}
-	public void preExecute(String logic,String method,DefaultHttpClient client, HttpRequestBase request, CookieStore cookieStore, HttpContext context) {
+  	public static {{{projectName}}}Helper getInstance() {
+  		return instance;
+  	}
+  	public String preInjectURLParameters(String logic,String method,String url,Object request) {
+  		return url;
+  	}
+  	public String postInjectURLParameters(String logic,String method,String url,Object request) {
+  		return url;
+  	}
+  	public void cacheHit(String logic, String method, Object request, Object response) {
 
-	}
-	public void postExecute(String logic,String method,DefaultHttpClient client, HttpRequestBase request, HttpResponse response, CookieStore cookieStore) {
+  	}
+  	public void preExecute(String logic,String method,DefaultHttpClient client, HttpRequestBase request, CookieStore cookieStore, HttpContext context) {
 
-	}	
-	public String preprocessResponse(String logic,String method,String responseString) {
-		return responseString;
-	}
-	public JSONObject preProcessJSON(String logic,String method,JSONObject jsonObject){
-	    return jsonObject;
-	}
-}
+  	}
+  	public void postExecute(String logic,String method,DefaultHttpClient client, HttpRequestBase request, HttpResponse response, CookieStore cookieStore) {
+
+  	}	
+  	public String preprocessResponse(String logic,String method,String responseString) {
+  		return responseString;
+  	}
+  	public JSONObject preProcessJSON(String logic,String method,JSONObject jsonObject){
+  		return jsonObject;
+  	}
+  }
