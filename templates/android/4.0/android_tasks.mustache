@@ -184,8 +184,9 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 			}
 			{{/onTask}}
 		} catch (final com.mobivery.logic.ServiceException ex) {
-			if(!isCancelled()){
-			// If error, call onServiceError on UI Thread
+			if(!isCancelled()) {
+				Activity activity = (activityReference!=null)? activityReference.get() : null;
+				// If error, call onServiceError on UI Thread
 				if (activity!=null && listener!=null) {
 					activity.runOnUiThread(new Runnable(){
 						public void run(){
@@ -204,6 +205,7 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 			return null;
 		}
 		if (loadingView!=-1) {
+			Activity activity = (activityReference!=null)? activityReference.get() : null;
 			if(activity!=null){
 				activity.runOnUiThread(new Runnable(){
 					public void run(){
