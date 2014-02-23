@@ -86,7 +86,7 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 
 
 {{#messages}}
-	private CacheInterface<{{{request.name}}},{{{response.name}}}> {{{method}}}Cache = new NoCache();
+	private CacheInterface<{{{request.name}}},{{{response.name}}}> {{{method}}}Cache = new NoCache<{{{request.name}}},{{{response.name}}}>();
 {{/messages}}
 
 {{#messages}}
@@ -111,7 +111,7 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 		localContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
 	
 		{{#onSend}}
-			{{{onSend}}}({{{request.javaInstanceName}}});
+		{{{onSend}}}({{{request.javaInstanceName}}});
 		{{/onSend}}
 		{{{response.name}}} {{{response.javaInstanceName}}};
 		// Obtenemos la URL del mensaje : {{{url}}}
@@ -121,14 +121,12 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 		if({{{request.javaInstanceName}}}.get{{{nameUcase}}}()==null){
 			url=url.replace("${"+"{{{name}}}"+"}","");
 		}
-		else{
-			if(url.contains("${"+"{{{name}}}"+"}"))
-			{
+		else {
+			if(url.contains("${"+"{{{name}}}"+"}")) {
 			    url=url.replace("${"+"{{{name}}}"+"}",URLEncoder.encode(String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}()),"UTF-8"));
 			}
 			{{#isGet}}
-			else
-			{
+			else {
                 url=url+(url.contains("?")?"&":"?")+"{{{serviceName}}}="+String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}());
 			}
 			{{/isGet}}
@@ -165,22 +163,6 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 		preExecute("{{{serviceName}}}","{{{method}}}",httpClient,postRequest,cookieStore,localContext);
 		startTime=System.currentTimeMillis();
 
-		if ({{{method}}}Cache != null) {
-			{{{request.name}}} cachedResponse = {{{method}}}Cache.get({{{request.name}}});
-			if (cachedResponse != null) {
-        		endTime = System.currentTimeMillis();
-				if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
-            		System.out.println(Base{{{serviceName}}}Logic.class.getName()+" CACHE: FOUND HIT, RETURNING CACHED RESULT");
-            		System.out.println(Base{{{serviceName}}}Logic.class.getName()+" FINISH-SENT:"+url+" TIME:"+(endTime-startTime));
-        		}
-        		return cachedResponse;
-			} else {
-				if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
-            		System.out.println(Base{{{serviceName}}}Logic.class.getName()+" CACHE: NO HITS");
-        		}
-			}
-		}
-
 		HttpResponse response = httpClient.execute(postRequest,localContext);
 		endTime = System.currentTimeMillis();
 		if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
@@ -210,7 +192,7 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 		{{#isWrite}}
 		List <NameValuePair> parameters = new ArrayList <NameValuePair>(); 
 		{{#request.fields}}
-	 	parameters.add(new BasicNameValuePair("{{{serviceName}}}", 		String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}())));       
+	 	parameters.add(new BasicNameValuePair("{{{serviceName}}}",String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}())));       
 		{{/request.fields}}
 		{{^isDelete}}
 		request.setEntity(new UrlEncodedFormEntity(parameters, HTTP.UTF_8));
@@ -242,6 +224,24 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 		{{/isGet}}
         preExecute("{{{serviceName}}}","{{{method}}}",client,request,cookieStore,localContext);
         startTime=System.currentTimeMillis();
+
+        // see if we have the result in cache
+        if ({{{method}}}Cache != null) {
+			{{{response.name}}} cachedResponse = {{{method}}}Cache.get({{{request.javaInstanceName}}});
+			if (cachedResponse != null) {
+        		endTime = System.currentTimeMillis();
+				if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+            		System.out.println(Base{{{serviceName}}}Logic.class.getName()+" CACHE: FOUND HIT, RETURNING CACHED RESULT");
+            		System.out.println(Base{{{serviceName}}}Logic.class.getName()+" FINISH-SENT:"+url+" TIME:"+(endTime-startTime));
+        		}
+        		cacheHit("{{{serviceName}}}","{{{method}}}",{{{request.javaInstanceName}}},cachedResponse);
+        		return cachedResponse;
+			} else {
+				if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+            		System.out.println(Base{{{serviceName}}}Logic.class.getName()+" CACHE: NO HITS");
+        		}
+			}
+		}
 		HttpResponse response = client.execute(request,localContext);
         endTime=System.currentTimeMillis();
         if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
@@ -249,16 +249,16 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
         }
 
 		if(responseInfo!=null){
-                    responseInfo.setStatusCode(response.getStatusLine().getStatusCode());
-                }
+        	responseInfo.setStatusCode(response.getStatusLine().getStatusCode());
+        }
         postExecute("{{{serviceName}}}","{{{method}}}",client,request,response,cookieStore);
 		HttpEntity entity = response.getEntity();
-               if (entity != null) {
+        if (entity != null) {
 			result=convertStreamToString(entity.getContent());
 			result=preprocessResponse("{{{serviceName}}}","{{{method}}}",result);
 		} else {
-                      result = "";
-	       }
+        	result = "";
+	    }
 		if("".equals(result)){
 			jsonObject=preProcessJSON("{{{serviceName}}}","{{{method}}}",new JSONObject());
 		} else {
@@ -286,9 +286,7 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 		}
 
 		return {{{response.javaInstanceName}}};
-		}
-		catch(Exception ex)
-		{
+		} catch(Exception ex) {
 			ex.printStackTrace();
 			if("true".equalsIgnoreCase(System.getProperty("LOG"))){
 			    log("{{method}}","ERROR",ex.toString());
@@ -372,12 +370,10 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
                 logWriter.newLine();
                 logWriter.flush();
             }
-            catch(IOException ex)
-            {
-
+            catch(IOException ex) {
+            	ex.printStackTrace();
             }
-            finally
-            {
+            finally {
                 if(logWriter!=null)
                 {
                     try{logWriter.close();}catch(IOException ex){}

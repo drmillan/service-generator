@@ -15,6 +15,7 @@ public interface FilterInterface
 {
 	String preInjectURLParameters(String logic,String method,String url,Object request);
 	String postInjectURLParameters(String logic,String method,String url,Object request);
+    void cacheHit(String logic, String method, Object request, Object response);
 	void preExecute(String logic,String method,DefaultHttpClient client, HttpRequestBase request, CookieStore cookieStore, HttpContext context);
 	void postExecute(String logic,String method,DefaultHttpClient client, HttpRequestBase request, HttpResponse response, CookieStore cookieStore);
 	String preprocessResponse(String logic,String method,String responseString);
