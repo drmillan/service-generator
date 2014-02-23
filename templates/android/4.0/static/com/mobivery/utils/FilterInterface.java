@@ -1,9 +1,6 @@
 /**
-  FilterInterface
-
-  Created by Generator on 19/01/12.
-  Copyright (c) 2012-2014 Mobivery. All rights reserved.
-  Version: ${version}
+* Interface for the custom filters executed as hooks
+* @author Service Generator
 */
 package com.mobivery.utils;
 

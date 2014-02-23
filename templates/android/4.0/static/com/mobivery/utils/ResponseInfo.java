@@ -1,7 +1,6 @@
 package com.mobivery.utils;
 /**
  * ResponseInfo encapsulates the response code for a request, this keeps the response metadata out of the DTOs returned
- * Created by Generator
  * @author Service Generator
  */
 public class ResponseInfo
