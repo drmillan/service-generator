@@ -6,23 +6,24 @@
   Copyright (c) 2012-2014 Mobivery. All rights reserved.
   Version: {{version}}
 */
-package {{{packagename}}}.tasks.{{{message.serviceNameLower}}};
+  package {{{packagename}}}.tasks.{{{message.serviceNameLower}}};
 
-import {{{packagename}}}.R;
-import {{{packagename}}}.model.dto.*; 
-import {{{packagename}}}.logic.*;
+  import {{{packagename}}}.R;
+  import {{{packagename}}}.model.dto.*; 
+  import {{{packagename}}}.logic.*;
 
-import com.mobivery.utils.ResponseInfo;
-import com.mobivery.logic.TaskListener;
+  import com.mobivery.utils.ResponseInfo;
+  import com.mobivery.logic.TaskListener;
 
-import java.lang.reflect.Method;
+  import java.lang.ref.WeakReference;
+  import java.lang.reflect.Method;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
-import android.view.Window;
-import android.widget.TextView;
+  import android.app.Activity;
+  import android.app.Dialog;
+  import android.graphics.drawable.ColorDrawable;
+  import android.os.AsyncTask;
+  import android.view.Window;
+  import android.widget.TextView;
 
 /**
  * Task de {{{message.method}}}
@@ -30,28 +31,27 @@ import android.widget.TextView;
  */
 public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.request.name}}},Integer, {{{message.response.name}}}> implements com.mobivery.logic.ServiceExceptionListener {
 
-    private TaskListener<{{{message.request.name}}},{{{message.response.name}}}> listener;
+	private TaskListener<{{{message.request.name}}},{{{message.response.name}}}> listener;
 
-	private Activity activity;
-        private int loadingView;
-        private int progressText;
-        private int loadingText;
-        private Dialog progressDialog;
+	private WeakReference<Activity> activityReference;
+	private int loadingView;
+	private int progressText;
+	private int loadingText;
+	private Dialog progressDialog;
 
     /**
      * Creates default Task for method {{{message.method}}}
      * @param activity parent Activity
      */
-    public {{{message.methodUpperCase}}}Task(Activity activity){
-		this(activity,-1,-1,-1);
-	}
+    public {{{message.methodUpperCase}}}Task(Activity activity) {
+    	this(activity,-1,-1,-1);
+    }
 
     /**
      * Creates default Task for method {{{message.method}}}
      */
-    public {{{message.methodUpperCase}}}Task()
-    {
-       this(null,-1,-1,-1);
+    public {{{message.methodUpperCase}}}Task() {
+    	this(null,-1,-1,-1);
     }
     /**
      * Creates Task for method {{{message.method}}}
@@ -59,9 +59,8 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
      * @param progressText Resource id for loading dialog message (TextView id)
      * @param loadingText Resource id for loading dialog message (String id)
      */
-	public {{{message.methodUpperCase}}}Task(int loadingView,int progressText, int loadingText)
-    {
-        this(null,loadingView,progressText,loadingText);
+    public {{{message.methodUpperCase}}}Task(int loadingView,int progressText, int loadingText) {
+    	this(null,loadingView,progressText,loadingText);
     }
 	/**
      * Creates Task for method {{{message.method}}}
@@ -70,9 +69,10 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
      * @param progressText Resource id for loading dialog message (TextView id)
      * @param loadingText Resource id for loading dialog message (String id)
      */
-    public {{{message.methodUpperCase}}}Task(Activity activity,int loadingView,int progressText, int loadingText)
-	{
-		this.activity=activity;
+	public {{{message.methodUpperCase}}}Task(Activity activity,int loadingView,int progressText, int loadingText) {
+		if (activity != null) {
+			this.activityReference = new WeakReference<Activity>(activity);		
+		} 
 		this.loadingView=loadingView;
 		this.progressText=progressText;
 		this.loadingText=loadingText;
@@ -81,12 +81,15 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 	 * Executes the async task with request
 	 * @param request Server request DTO
 	 */
-	public void execute({{{message.request.name}}} request)
-	{
-		if(loadingView!=-1)
-		{
-		    if(activity!=null){
-			activity.runOnUiThread(new Thread(new Runnable(){public void run(){initSpinner();}}));
+	public void execute({{{message.request.name}}} request) {
+		if(loadingView!=-1) {
+			Activity activity = (activityReference!=null)? activityReference.get() : null;
+			if(activity!=null){
+				activity.runOnUiThread(new Thread(new Runnable(){
+					public void run() {
+						initSpinner();
+					}
+				}));
 			}
 		}
 		super.execute(request);
@@ -94,110 +97,119 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 	/**
 	 * Start spinner for long operations
 	 */
-	private void initSpinner(){
-        if (activity != null) {
-            progressDialog = new Dialog(activity,android.R.style.Theme_Light_NoTitleBar);
-            progressDialog.setCancelable(false);
-            progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-            progressDialog.setContentView(loadingView);
-            TextView loadingTextView = (TextView)progressDialog.findViewById(progressText);
-            if(loadingTextView != null){
-                loadingTextView.setText(this.loadingText);
-            }
-            progressDialog.show();
-        }
-    }
+	private void initSpinner() {
+		Activity activity = (activityReference!=null)? activityReference.get() : null;
+		if (activity != null) {
+			progressDialog = new Dialog(activity,android.R.style.Theme_Light_NoTitleBar);
+			progressDialog.setCancelable(false);
+			progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+			progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+			progressDialog.setContentView(loadingView);
+			TextView loadingTextView = (TextView)progressDialog.findViewById(progressText);
+			if (loadingTextView != null){
+				loadingTextView.setText(this.loadingText);
+			}
+			progressDialog.show();
+		}
+	}
     /**
      * End spinner
      */
-	private void endSpinner()
-	{
-		if (activity != null) {
-        			if (progressDialog != null) {
-        			try
-        			{
-        				progressDialog.dismiss();
-        				}
-        				catch(java.lang.IllegalArgumentException ex)
-        				{
-        				// Ignore: View not attached to window manager
-        				}
-        			}
-        		}
-	}
+    private void endSpinner() {
+    	Activity activity = (activityReference!=null)? activityReference.get() : null;
+    	if (activity != null) {
+    		if (progressDialog != null) {
+    			try {
+    				progressDialog.dismiss();
+    			} catch(java.lang.IllegalArgumentException ex) {
+        			// Ignore: View not attached to window manager
+    			}
+    		}
+    	}
+    }
 	/**
      * Update async task dialog message
      * @param progress Message to update
      */
 	public void updateProgress(final String progress) {
-    	if (activity != null) {
-    		activity.runOnUiThread(new Runnable() {
-    			public void run() {
-    			    if(progressDialog!=null)
-    			    {
-    			        TextView loadingTextView = (TextView)progressDialog.findViewById(progressText);
-                            if(loadingTextView != null){
-                                loadingTextView.setText({{{message.methodUpperCase}}}Task.this.loadingText);
-                            }
-    			    }
-    			}
-    		});
-    	}
-    }
+		Activity activity = (activityReference!=null)? activityReference.get() : null;
+		if (activity != null) {
+			activity.runOnUiThread(new Runnable() {
+				public void run() {
+					if(progressDialog!=null) {
+						TextView loadingTextView = (TextView)progressDialog.findViewById(progressText);
+						if(loadingTextView != null){
+							loadingTextView.setText({{{message.methodUpperCase}}}Task.this.loadingText);
+						}
+					}
+				}
+			});
+		}
+	}
 
 	@Override
 	public final {{{message.response.name}}} doInBackground({{{message.request.name}}}... params) {
 		// Get Request DTO
 		final {{{message.request.name}}} request=params[0];
 		{{{message.response.name}}} response=null;
-		try{
-{{#preMethod}}
-		{{{preMethod}}}(request);
-{{/preMethod}}
+		try {
+			{{#preMethod}}
+			{{{preMethod}}}(request);
+			{{/preMethod}}
 			// Call Service
-			final ResponseInfo responseInfo=new ResponseInfo();
-			final {{{message.response.name}}} tempResponse=execOnBackground(request,responseInfo);
-			response=tempResponse;
-			if(activity!=null && listener!=null){
-			     activity.runOnUiThread(new Runnable(){public void run(){
-                 	    listener.onServiceResponse(request,tempResponse,responseInfo);
-                    }
-                });
+			final ResponseInfo responseInfo = new ResponseInfo();
+			final {{{message.response.name}}} tempResponse = execOnBackground(request,responseInfo);
+			response = tempResponse;
+
+			Activity activity = (activityReference!=null)? activityReference.get() : null;
+			if(activity!=null && listener!=null && !isCancelled()){
+				activity.runOnUiThread(new Runnable(){
+					public void run() {
+						listener.onServiceResponse(request,tempResponse,responseInfo);
+					}
+				});
 			}
-			if(activity==null && listener!=null)
-			{
-			    listener.onServiceResponse(request,tempResponse,responseInfo);
+			if(activity==null && listener!=null && !isCancelled()) {
+				listener.onServiceResponse(request,tempResponse,responseInfo);
 			}
-{{#onTask}}
+			{{#onTask}}
 			if (activity==null) {
 				throw new com.mobivery.logic.ServiceException(new Exception("Activity to go back to already removed from memory"));
 			} else {
-				activity.runOnUiThread(new Runnable(){public void run(){
-					{{{onTask}}}({{{message.methodUpperCase}}}Task.this,{{{message.methodUpperCase}}}Task.this.activity);}});
+				activity.runOnUiThread(new Runnable(){
+					public void run() {
+						{{{onTask}}}({{{message.methodUpperCase}}}Task.this,{{{message.methodUpperCase}}}Task.this.activityReference.get());
+					}
+				});
 			}
-{{/onTask}}
-		}
-		catch(final com.mobivery.logic.ServiceException ex){
+			{{/onTask}}
+		} catch (final com.mobivery.logic.ServiceException ex) {
 			if(!isCancelled()){
 			// If error, call onServiceError on UI Thread
-			if (activity!=null && listener!=null) {
-				activity.runOnUiThread(new Runnable(){public void run(){
-				    endSpinner();
-				    listener.onServiceError(request,ex);
-				    }});
+				if (activity!=null && listener!=null) {
+					activity.runOnUiThread(new Runnable(){
+						public void run(){
+							endSpinner();
+							listener.onServiceError(request,ex);
+						}
+					});
+				}
+				if(activity==null && listener!=null) {
+					endSpinner();
+					listener.onServiceError(request,ex);
+				}
+				return null;
 			}
-			if(activity==null && listener!=null)
-			{
-			    endSpinner();
-			    listener.onServiceError(request,ex);
-			}
+		} catch (InterruptedException e) { 
 			return null;
-			}
 		}
-		if(loadingView!=-1){
+		if (loadingView!=-1) {
 			if(activity!=null){
-			    activity.runOnUiThread(new Runnable(){public void run(){endSpinner();}});
+				activity.runOnUiThread(new Runnable(){
+					public void run(){
+						endSpinner();
+					}
+				});
 			}
 		}
 		return response;
@@ -208,6 +220,7 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 	 */
 	public void onServiceError(com.mobivery.logic.ServiceException ex)
 	{
+		Activity activity = (activityReference!=null)? activityReference.get() : null;
 		if(!isCancelled() && activity!=null && ex!=null){
 			ex.printStackTrace();
 		}
@@ -218,13 +231,13 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 	 * @param responseInfo Response metadata (to get http header errors)
 	 */
 	public {{{message.response.name}}} execOnBackground({{{message.request.name}}} request, ResponseInfo responseInfo) throws com.mobivery.logic.ServiceException{
-        return {{{message.service}}}Logic.getInstance().{{{message.method}}}(request,responseInfo);
+		return {{{message.service}}}Logic.getInstance().{{{message.method}}}(request,responseInfo);
 	}
 
 	public void execute({{{message.request.name}}} requestDTO,TaskListener<{{{message.request.name}}},{{{message.response.name}}}> listener)
 	{
-         this.listener=listener;
-         this.execute(requestDTO);
+		this.listener=listener;
+		this.execute(requestDTO);
 	}
 }
 
