@@ -199,11 +199,10 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 					endSpinner();
 					listener.onServiceError(request,ex);
 				}
-				return null;
-			}
-		} catch (InterruptedException e) { 
+				
+			} 
 			return null;
-		}
+		} 
 		if (loadingView!=-1) {
 			Activity activity = (activityReference!=null)? activityReference.get() : null;
 			if(activity!=null){

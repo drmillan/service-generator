@@ -26,6 +26,11 @@ public class UnlimitedMemoryCache<T, Q> implements CacheInterface<T, Q> {
     }
 
     @Override
+    public void remove(T request) {
+        map.remove(request);
+    }
+
+    @Override
     public Collection<T> keys() {
         synchronized (map) {
             return new HashSet<T>(map.keySet());
