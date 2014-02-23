@@ -168,8 +168,10 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 		if ({{{method}}}Cache != null) {
 			{{{request.name}}} cachedResponse = {{{method}}}Cache.get({{{request.name}}});
 			if (cachedResponse != null) {
+        		endTime = System.currentTimeMillis();
 				if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
-            		System.out.println(Base{{{serviceName}}}Logic.class.getName()+" CACHE: RETURNING CACHED RESULT");
+            		System.out.println(Base{{{serviceName}}}Logic.class.getName()+" CACHE: FOUND HIT, RETURNING CACHED RESULT");
+            		System.out.println(Base{{{serviceName}}}Logic.class.getName()+" FINISH-SENT:"+url+" TIME:"+(endTime-startTime));
         		}
         		return cachedResponse;
 			} else {
@@ -342,8 +344,8 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 	/**
 	 * Returns the cache system for {{{method}}}
 	 */
-	public CacheInterface<{{{request.name}}},{{{response.name}}}> get{{{methodUpperCase}}}Cache {
-		return this.{{{method}}}Cache = cache;
+	public CacheInterface<{{{request.name}}},{{{response.name}}}> get{{{methodUpperCase}}}Cache() {
+		return this.{{{method}}}Cache;
 	}
 
 {{/messages}}
