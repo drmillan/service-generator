@@ -43,7 +43,7 @@ public class HttpClientHelper {
 	/**
 	 * Returns a new instance of HttpClient (auth ignore)
 	 * @returns DefaultHttpClient returns an HttpClient with ALLOW_ALL_HOSTNAME_VERIFIER
-	 * @see com.mobivery.logic.CustomSSLSocket
+	 * @see com.mobivery.utils.CustomSSLSocketFactory
 	 */
 	public DefaultHttpClient getNewHttpClient() {
 	    try {
