@@ -18,7 +18,7 @@ public class ServiceGeneratorDTOMarshal<Q> implements DataTransferObjectJSONMars
 
     public ServiceGeneratorDTOMarshal(Class dtoClass) {
         String className = dtoClass.getSimpleName();
-        String daoClassName = replaceLast(className, "DTO", "DAO");
+        String daoClassName = replaceLast(className, "DTO", "DAO").replace("model.dto.", "model.dao.");
         try {
             daoClass = Class.forName(daoClassName);
             init(dtoClass, daoClass);
