@@ -10,7 +10,7 @@ import java.util.Map;
  *
  * @author Service Generator
  */
-public abstract class LimitedAgeUnlimitedDiskCache<T, Q> extends UnlimitedDiskCache<T, Q> {
+public class LimitedAgeUnlimitedDiskCache<T, Q> extends UnlimitedDiskCache<T, Q> {
 
     private final long maximumAge;
     private final Map<File, Long> datesMap = Collections.synchronizedMap(new HashMap<File, Long>());

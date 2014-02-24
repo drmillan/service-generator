@@ -12,13 +12,12 @@ import java.io.IOException;
 import java.util.Collection;
 
 /**
- * Abstract class to save contents to disk. As we do not know if the stuff stored is a DTO or how
- * can we serialize/deserialize it, that part is left to the developer to implement, thus the
- * abstraction.
+ * Class to save contents to disk. As we do not know if the stuff stored is a DTO or how
+ * can we serialize/deserialize it, we need the DataTransferObjectJSONMarshallingInterface
  *
  * @author Service Generator
  */
-public abstract class UnlimitedDiskCache<T, Q> implements CacheInterface<T, Q> {
+public class UnlimitedDiskCache<T, Q> implements CacheInterface<T, Q> {
 
     private final File cacheDirectory;
     private final DataTransferObjectJSONMarshallingInterface<Q> dtoMarshaller;
