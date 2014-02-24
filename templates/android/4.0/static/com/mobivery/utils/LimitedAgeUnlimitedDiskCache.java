@@ -15,7 +15,7 @@ public class LimitedAgeUnlimitedDiskCache<T, Q> extends UnlimitedDiskCache<T, Q>
     private final long maximumAge;
     private final Map<File, Long> datesMap = Collections.synchronizedMap(new HashMap<File, Long>());
 
-    public LimitedAgeUnlimitedDiskCache(CacheInterface<T, Q> cache, DataTransferObjectJSONMarshallingInterface<Q> dtoMarshaller, File cacheDirectory, long maximumAge) {
+    public LimitedAgeUnlimitedDiskCache(DataTransferObjectJSONMarshallingInterface<Q> dtoMarshaller, File cacheDirectory, long maximumAge) {
         super(cacheDirectory, dtoMarshaller);
         this.maximumAge = maximumAge;
     }
