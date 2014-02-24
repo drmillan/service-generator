@@ -1,5 +1,8 @@
 package com.mobivery.utils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,35 +21,41 @@ import java.util.Collection;
 public abstract class UnlimitedDiskCache<T, Q> implements CacheInterface<T, Q> {
 
     private final File cacheDirectory;
+    private final DataTransferObjectJSONMarshallingInterface<Q> dtoMarshaller;
 
-    public UnlimitedDiskCache(File cacheDirectory) {
+    public UnlimitedDiskCache(File cacheDirectory, DataTransferObjectJSONMarshallingInterface<Q> dtoMarshaller) {
         if (cacheDirectory == null) {
             throw new IllegalArgumentException("cacheDirectory must be not null");
         }
+        if (dtoMarshaller == null) {
+            throw new IllegalArgumentException("dtoMarshaller must be not null");
+        }
         this.cacheDirectory = cacheDirectory;
+        this.dtoMarshaller = dtoMarshaller;
     }
 
     @Override
     public void put(T request, Q response) {
         File localFile = fileFromKey(request);
-        String contents = serializeObject(response);
+        String contents = dtoMarshaller.serialize(response).toString();
         writeStringToFile(localFile, contents);
     }
-
-    public abstract String serializeObject(Q response);
 
     @Override
     public Q get(T request) {
         File localFile = fileFromKey(request);
         if (localFile.exists()) {
             String objectString = readStringFromFile(localFile);
-            return deserializeObject(objectString);
+            try {
+                return dtoMarshaller.deserialize(new JSONObject(objectString));
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
         } else {
             return null;
         }
     }
-
-    public abstract Q deserializeObject(String serializedString);
 
     @Override
     public void remove(T request) {
