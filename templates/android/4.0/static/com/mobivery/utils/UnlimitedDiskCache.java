@@ -30,6 +30,7 @@ public class UnlimitedDiskCache<T, Q> implements CacheInterface<T, Q> {
             throw new IllegalArgumentException("dtoMarshaller must be not null");
         }
         this.cacheDirectory = cacheDirectory;
+        cacheDirectory.mkdirs();
         this.dtoMarshaller = dtoMarshaller;
     }
 
