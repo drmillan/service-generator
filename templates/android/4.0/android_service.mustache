@@ -1,11 +1,3 @@
-/**
-  {{{serviceName}}} Service
-  {{{projectName}}}
-
-  Created by Generator on 19/01/12.
-  Copyright (c) 2012-2014 Mobivery. All rights reserved.
-  Version: {{{version}}}
-*/
 package {{{packagename}}}.logic;
 
 import {{{packagename}}}.model.dao.*;
@@ -44,17 +36,19 @@ import org.json.JSONObject;
 /**
  * Service doing DAO calls
  * This service complements Logic class ${serviceName}
+ * Your custom code SHOULD be in this file.
+ * @author Service Generator and you!
  */
-public class {{{serviceName}}}Logic extends Base{{{serviceName}}}Logic{
+public class {{{serviceName}}}Logic extends Base{{{serviceName}}}Logic {
 
-    private {{{serviceName}}}Logic() { }
+  private {{{serviceName}}}Logic() { }
 
-    private static class {{{serviceName}}}Holder { 
-          public static final {{{serviceName}}}Logic instance = new {{{serviceName}}}Logic();
-    }
+  private static class {{{serviceName}}}Holder { 
+    public static final {{{serviceName}}}Logic instance = new {{{serviceName}}}Logic();
+  }
 
-    public static {{{serviceName}}}Logic getInstance() {
-            return {{{serviceName}}}Holder.instance;
-    }
+  public static {{{serviceName}}}Logic getInstance() {
+    return {{{serviceName}}}Holder.instance;
+  }
 
 }

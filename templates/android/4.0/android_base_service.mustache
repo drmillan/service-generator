@@ -1,10 +1,8 @@
 /**
-  {{{serviceName}}}Service
-  {{{projectName}}}
-
-Created by Service-Generator.
-  Copyright (c) 2012-2014 Mobivery. All rights reserved.
-  Version: {{{version}}}
+* {{{serviceName}}}Service
+* {{{projectName}}}
+*
+* @author Service Generator
 */
 package {{{packagename}}}.logic.base;
 
@@ -28,6 +26,8 @@ import java.text.SimpleDateFormat;
 import com.mobivery.utils.ResponseInfo;
 import com.mobivery.utils.HttpClientHelper;
 import com.mobivery.utils.BaseLogic;
+import com.mobivery.utils.CacheInterface;
+import com.mobivery.utils.NoCache;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -79,19 +79,17 @@ import org.json.JSONObject;
  */
 public class Base{{{serviceName}}}Logic  extends BaseLogic
 {
-    public Base{{{serviceName}}}Logic()
-    {
-        addFilter({{{projectName}}}Helper.getInstance());
-    }
+	public Base{{{serviceName}}}Logic()
+	{
+		addFilter({{{projectName}}}Helper.getInstance());
+	}
 
 
-{{#messages}}
-	private {{{response.name}}} {{{method}}}LastResponse;
-	private Date {{{method}}}LastResponseTime;	
-{{/messages}}
+	{{#messages}}
+	private CacheInterface<{{{request.name}}},{{{response.name}}}> {{{method}}}Cache = new NoCache<{{{request.name}}},{{{response.name}}}>();
+	{{/messages}}
 
-{{#messages}}
-
+	{{#messages}}
 
 	/**
 	 * Metodo {{{method}}}: {{{description}}}
@@ -100,187 +98,200 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 	 * @param responseInfo Server response metadata
 	 * @throws com.mobivery.logic.ServiceException Network/Data error
 	 */
-	public {{{response.name}}} {{{method}}}({{{request.name}}} {{{request.javaInstanceName}}},ResponseInfo responseInfo) throws com.mobivery.logic.ServiceException
-	{
-	    long startTime;
-	    long endTime;
-		try
-		{
+	public {{{response.name}}} {{{method}}}({{{request.name}}} {{{request.javaInstanceName}}},ResponseInfo responseInfo) throws com.mobivery.logic.ServiceException {
 
+		long startTime;
+		long endTime;
+		try {
+			CookieStore cookieStore = new BasicCookieStore();
+			HttpContext localContext = new BasicHttpContext();
+			localContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
 
-		CookieStore cookieStore = new BasicCookieStore();
-		HttpContext localContext = new BasicHttpContext();
-		localContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
-	
-		{{#onSend}}
+			{{#onSend}}
 			{{{onSend}}}({{{request.javaInstanceName}}});
-		{{/onSend}}
-		{{{response.name}}} {{{response.javaInstanceName}}};
-		// Obtenemos la URL del mensaje : {{{url}}}
-		String url="{{{url}}}";
-		url=preInjectURLParameters("{{{serviceName}}}","{{{method}}}",url,{{{request.javaInstanceName}}});
-		{{#request.fields}}
-		if({{{request.javaInstanceName}}}.get{{{nameUcase}}}()==null){
-			url=url.replace("${"+"{{{name}}}"+"}","");
-		}
-		else{
-			if(url.contains("${"+"{{{name}}}"+"}"))
-			{
-			    url=url.replace("${"+"{{{name}}}"+"}",URLEncoder.encode(String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}()),"UTF-8"));
+			{{/onSend}}
+			{{{response.name}}} {{{response.javaInstanceName}}};
+			// Obtenemos la URL del mensaje : {{{url}}}
+			String url="{{{url}}}";
+			url=preInjectURLParameters("{{{serviceName}}}","{{{method}}}",url,{{{request.javaInstanceName}}});
+			{{#request.fields}}
+			if({{{request.javaInstanceName}}}.get{{{nameUcase}}}()==null){
+				url=url.replace("${"+"{{{name}}}"+"}","");
 			}
+			else {
+				if(url.contains("${"+"{{{name}}}"+"}")) {
+					url=url.replace("${"+"{{{name}}}"+"}",URLEncoder.encode(String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}()),"UTF-8"));
+				}
+				{{#isGet}}
+				else {
+					url=url+(url.contains("?")?"&":"?")+"{{{serviceName}}}="+String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}());
+				}
+				{{/isGet}}
+			}
+			{{/request.fields}}
+
+			url=fixSystemProperties(url);
+
+			url=url.replace("|",URLEncoder.encode("|","UTF-8"));
+			url=postInjectURLParameters("{{{serviceName}}}","{{{method}}}",url,{{{request.javaInstanceName}}});
+			if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+				System.out.println(Base{{{serviceName}}}Logic.class.getName()+" SENT:"+url);
+			}
+			if("true".equalsIgnoreCase(System.getProperty("LOG"))){
+				log("{{method}}","REQUEST-URL",url);
+			}
+			String result;
+			{{#request.isMultipart}}
+			DefaultHttpClient httpClient = HttpClientHelper.getInstance().getNewHttpClient();
+			HttpPost postRequest = new HttpPost(url);			
+			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+			{{#request.fields}}
+			{{#isFile}}
+			reqEntity.addPart("{{{serviceName}}}", new FileBody(new File(String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}())),"{{{mimeType}}}"));
+			{{/isFile}}
+			{{^isFile}}
+			reqEntity.addPart("{{{serviceName}}}", 
+				new StringBody(String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}())));
+			{{/isFile}}
+			{{/request.fields}}
+			
+			postRequest.setEntity(reqEntity);
+			preExecute("{{{serviceName}}}","{{{method}}}",httpClient,postRequest,cookieStore,localContext);
+			startTime=System.currentTimeMillis();
+
+			HttpResponse response = httpClient.execute(postRequest,localContext);
+			endTime = System.currentTimeMillis();
+			if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+				System.out.println(Base{{{serviceName}}}Logic.class.getName()+" FINISH-SENT:"+url+" TIME:"+(endTime-startTime));
+			}
+
+			if(responseInfo!=null) {
+				responseInfo.setStatusCode(response.getStatusLine().getStatusCode());
+			}
+
+			postExecute("{{{serviceName}}}","{{{method}}}",httpClient,postRequest,response,cookieStore);
+			BufferedReader reader = new BufferedReader(
+				new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+			String sResponse;
+			StringBuilder s = new StringBuilder();
+
+			while ((sResponse = reader.readLine()) != null) {
+				s = s.append(sResponse);
+			}
+			result=s.toString();
+			JSONObject jsonObject=preProcessJSON("{{{serviceName}}}","{{{method}}}",new JSONObject(result));
+			{{/request.isMultipart}}
+			{{^request.isMultipart}}
+			DefaultHttpClient client = HttpClientHelper.getInstance().getNewHttpClient();
+			Http{{{simpleType}}} request=new Http{{{simpleType}}}(url);
+
+			{{#isWrite}}
+			List <NameValuePair> parameters = new ArrayList <NameValuePair>(); 
+			{{#request.fields}}
+			parameters.add(new BasicNameValuePair("{{{serviceName}}}",String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}())));       
+			{{/request.fields}}
+			{{^isDelete}}
+			request.setEntity(new UrlEncodedFormEntity(parameters, HTTP.UTF_8));
+			{{/isDelete}}
+			JSONObject jsonObject ={{{request.daoClassName}}}.getInstance().serialize({{{request.javaInstanceName}}});		
+			{{/isWrite}}
+			{{#isWriteJSON}}
+			JSONObject jsonObject ={{{request.daoClassName}}}.getInstance().serialize({{{request.javaInstanceName}}});
+			StringEntity requestEntity = new StringEntity(jsonObject.toString(), HTTP.UTF_8);
+			if("true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+				System.out.println(Base{{{serviceName}}}Logic.class.getName()+" SENT (application/json):"+jsonObject.toString());
+			}
+			if("true".equalsIgnoreCase(System.getProperty("LOG"))){
+				log("{{method}}","SEND",jsonObject.toString());
+			}
+
+			requestEntity.setContentType("application/json");
+			request.setEntity(requestEntity);
+			{{/isWriteJSON}}
 			{{#isGet}}
-			else
-			{
-                url=url+(url.contains("?")?"&":"?")+"{{{serviceName}}}="+String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}());
+			JSONObject jsonObject ={{{request.daoClassName}}}.getInstance().serialize({{{request.javaInstanceName}}});
+			request.addHeader("data",jsonObject.toString());
+			if("true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+				System.out.println(Base{{{serviceName}}}Logic.class.getName()+" SENT (application/json):"+jsonObject.toString());
+			}
+			if("true".equalsIgnoreCase(System.getProperty("LOG"))){
+				log("{{method}}","SENT",jsonObject.toString());
 			}
 			{{/isGet}}
-		}
-		{{/request.fields}}
-		
-		url=fixSystemProperties(url);
+			preExecute("{{{serviceName}}}","{{{method}}}",client,request,cookieStore,localContext);
+			startTime=System.currentTimeMillis();
 
-		url=url.replace("|",URLEncoder.encode("|","UTF-8"));
-		url=postInjectURLParameters("{{{serviceName}}}","{{{method}}}",url,{{{request.javaInstanceName}}});
-		if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
-		    System.out.println(Base{{{serviceName}}}Logic.class.getName()+" SENT:"+url);
-		}
-		if("true".equalsIgnoreCase(System.getProperty("LOG"))){
-            log("{{method}}","REQUEST-URL",url);
-		}
-		String result;
-		{{#request.isMultipart}}
-		DefaultHttpClient httpClient = HttpClientHelper.getInstance().getNewHttpClient();
-		HttpPost postRequest = new HttpPost(url);			
-		MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+       		// see if we have the result in cache
+			if ({{{method}}}Cache != null) {
+				{{{response.name}}} cachedResponse = {{{method}}}Cache.get({{{request.javaInstanceName}}});
+				if (cachedResponse != null) {
+					endTime = System.currentTimeMillis();
+					if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+						System.out.println(Base{{{serviceName}}}Logic.class.getName()+" CACHE: FOUND HIT, RETURNING CACHED RESULT");
+						System.out.println(Base{{{serviceName}}}Logic.class.getName()+" FINISH-SENT:"+url+" TIME:"+(endTime-startTime));
+					}
+					cacheHit("{{{serviceName}}}","{{{method}}}",{{{request.javaInstanceName}}},cachedResponse);
+					return cachedResponse;
+				} else {
+					if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+						System.out.println(Base{{{serviceName}}}Logic.class.getName()+" CACHE: NO HITS");
+					}
+				}
+			}
+			HttpResponse response = client.execute(request,localContext);
+			endTime=System.currentTimeMillis();
+			if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+				System.out.println(Base{{{serviceName}}}Logic.class.getName()+" FINISH-SENT:"+url+" TIME:"+(endTime-startTime));
+			}
 
-		{{#request.fields}}
-		{{#isFile}}
-		reqEntity.addPart("{{{serviceName}}}", new FileBody(new File(String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}())),"{{{mimeType}}}"));
-		{{/isFile}}
-		{{^isFile}}
-	 	reqEntity.addPart("{{{serviceName}}}", 
-			new StringBody(String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}())));
-		{{/isFile}}
-		{{/request.fields}}
-			
-		postRequest.setEntity(reqEntity);
-		preExecute("{{{serviceName}}}","{{{method}}}",httpClient,postRequest,cookieStore,localContext);
-		startTime=System.currentTimeMillis();
-		HttpResponse response = httpClient.execute(postRequest,localContext);
-		endTime=System.currentTimeMillis();
-		if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
-            System.out.println(Base{{{serviceName}}}Logic.class.getName()+" FINISH-SENT:"+url+" TIME:"+(endTime-startTime));
-        }
+			if(responseInfo!=null){
+				responseInfo.setStatusCode(response.getStatusLine().getStatusCode());
+			}
+			postExecute("{{{serviceName}}}","{{{method}}}",client,request,response,cookieStore);
+			HttpEntity entity = response.getEntity();
+			if (entity != null) {
+				result=convertStreamToString(entity.getContent());
+				result=preprocessResponse("{{{serviceName}}}","{{{method}}}",result);
+			} else {
+				result = "";
+			}
+			if("".equals(result)){
+				jsonObject=preProcessJSON("{{{serviceName}}}","{{{method}}}",new JSONObject());
+			} else {
+				jsonObject=preProcessJSON("{{{serviceName}}}","{{{method}}}",new JSONObject(result));
+			}
 
+			if("true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+				System.out.println(Base{{{serviceName}}}Logic.class.getName()+" RECEIVED:"+result);
+			}
+			if("true".equalsIgnoreCase(System.getProperty("LOG"))){
+				log("{{method}}","RECEIVE",jsonObject.toString());
+			}
+			{{/request.isMultipart}}
 
-
-		if(responseInfo!=null){
-                    responseInfo.setStatusCode(response.getStatusLine().getStatusCode());
-                }
-        postExecute("{{{serviceName}}}","{{{method}}}",httpClient,postRequest,response,cookieStore);
-		BufferedReader reader = new BufferedReader(
-			new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-		String sResponse;
-		StringBuilder s = new StringBuilder();
-
-		while ((sResponse = reader.readLine()) != null) {
-			s = s.append(sResponse);
-		}
-		result=s.toString();
-		JSONObject jsonObject=preProcessJSON("{{{serviceName}}}","{{{method}}}",new JSONObject(result));
-		{{/request.isMultipart}}
-		{{^request.isMultipart}}
-		DefaultHttpClient client = HttpClientHelper.getInstance().getNewHttpClient();
-		Http{{{simpleType}}} request=new Http{{{simpleType}}}(url);
-
-		{{#isWrite}}
-		List <NameValuePair> parameters = new ArrayList <NameValuePair>(); 
-		{{#request.fields}}
-	 	parameters.add(new BasicNameValuePair("{{{serviceName}}}", 		String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}())));       
-		{{/request.fields}}
-		{{^isDelete}}
-		request.setEntity(new UrlEncodedFormEntity(parameters, HTTP.UTF_8));
-		{{/isDelete}}
-		JSONObject jsonObject ={{{request.daoClassName}}}.getInstance().serialize({{{request.javaInstanceName}}});		
-		{{/isWrite}}
-		{{#isWriteJSON}}
-		JSONObject jsonObject ={{{request.daoClassName}}}.getInstance().serialize({{{request.javaInstanceName}}});
-		StringEntity requestEntity = new StringEntity(jsonObject.toString(), HTTP.UTF_8);
-		if("true".equalsIgnoreCase(System.getProperty("DEBUG"))){
-        	System.out.println(Base{{{serviceName}}}Logic.class.getName()+" SENT (application/json):"+jsonObject.toString());
-        }
-        if("true".equalsIgnoreCase(System.getProperty("LOG"))){
-             log("{{method}}","SEND",jsonObject.toString());
-        }
-
-        requestEntity.setContentType("application/json");
-		request.setEntity(requestEntity);
-		{{/isWriteJSON}}
-		{{#isGet}}
-		JSONObject jsonObject ={{{request.daoClassName}}}.getInstance().serialize({{{request.javaInstanceName}}});
-		request.addHeader("data",jsonObject.toString());
-		if("true".equalsIgnoreCase(System.getProperty("DEBUG"))){
-		    System.out.println(Base{{{serviceName}}}Logic.class.getName()+" SENT (application/json):"+jsonObject.toString());
-        }
-        if("true".equalsIgnoreCase(System.getProperty("LOG"))){
-             log("{{method}}","SENT",jsonObject.toString());
-        }
-		{{/isGet}}
-        preExecute("{{{serviceName}}}","{{{method}}}",client,request,cookieStore,localContext);
-        startTime=System.currentTimeMillis();
-		HttpResponse response = client.execute(request,localContext);
-        endTime=System.currentTimeMillis();
-        if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
-            System.out.println(Base{{{serviceName}}}Logic.class.getName()+" FINISH-SENT:"+url+" TIME:"+(endTime-startTime));
-        }
-
-		if(responseInfo!=null){
-                    responseInfo.setStatusCode(response.getStatusLine().getStatusCode());
-                }
-        postExecute("{{{serviceName}}}","{{{method}}}",client,request,response,cookieStore);
-		HttpEntity entity = response.getEntity();
-               if (entity != null) {
-			result=convertStreamToString(entity.getContent());
-			result=preprocessResponse("{{{serviceName}}}","{{{method}}}",result);
-		} else {
-                      result = "";
-	       }
-		if("".equals(result)){
-			jsonObject=preProcessJSON("{{{serviceName}}}","{{{method}}}",new JSONObject());
-		} else {
-			jsonObject=preProcessJSON("{{{serviceName}}}","{{{method}}}",new JSONObject(result));
-		}
-		
-        if("true".equalsIgnoreCase(System.getProperty("DEBUG"))){
-	    	System.out.println(Base{{{serviceName}}}Logic.class.getName()+" RECEIVED:"+result);
-		}
-        if("true".equalsIgnoreCase(System.getProperty("LOG"))){
-             log("{{method}}","RECEIVE",jsonObject.toString());
-        }
-		{{/request.isMultipart}}
-		
-		{{{response.javaInstanceName}}}={{{response.daoClassName}}}.getInstance().create(jsonObject);
-		{{#onReceive}}
+			{{{response.javaInstanceName}}}={{{response.daoClassName}}}.getInstance().create(jsonObject);
+			{{#onReceive}}
 			{{{onReceive}}}({{{request.javaInstanceName}}},{{{response.javaInstanceName}}});
-		{{/onReceive}}
-		
-		{{{method}}}LastResponse = {{{response.javaInstanceName}}};
-		{{{method}}}LastResponseTime = new Date();
+			{{/onReceive}}
 
+			if ({{{method}}}Cache != null) {
+				{{{method}}}Cache.put({{{request.javaInstanceName}}}, {{{response.javaInstanceName}}});
+				if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+					System.out.println(Base{{{serviceName}}}Logic.class.getName()+" STORED RESULT IN CACHE");
+				}
+			}
 
-
-		return {{{response.javaInstanceName}}};
-		}
-		catch(Exception ex)
-		{
+			return {{{response.javaInstanceName}}};
+		} catch(Exception ex) {
 			ex.printStackTrace();
 			if("true".equalsIgnoreCase(System.getProperty("LOG"))){
-			    log("{{method}}","ERROR",ex.toString());
+				log("{{method}}","ERROR",ex.toString());
 			}
 			throw new com.mobivery.logic.ServiceException(ex);
 		}
 	}
-{{/messages}}	
+	{{/messages}}	
 	
 	/**
 	 * Reads stream contents as a String
@@ -293,9 +304,9 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 		StringBuilder sb = new StringBuilder();
 
 		String line = null;
-			while ((line = reader.readLine()) != null) {
-				sb.append(line + "\n");
-			}
+		while ((line = reader.readLine()) != null) {
+			sb.append(line + "\n");
+		}
 		return sb.toString();
 	}
 	
@@ -304,10 +315,8 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 	 * @param url Source url
 	 * @returns URL Fixed url whith parameters replaced with System properties
 	 */
-	private  String fixSystemProperties(String url)
-	{
-		while(url.contains("${"))
-		{
+	private  String fixSystemProperties(String url) {
+		while(url.contains("${")) {
 			int start=url.indexOf("${")+2;
 			int end=url.indexOf("}",start);
 			String key=url.substring(start,end);
@@ -317,60 +326,52 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 		return url;
 	}
 	
-{{#messages}}
+	{{#messages}}
 	/**
-	 * Get last cached response from previous {{{methodUpperCase}}} call
-	 * @returns Cached response
+	 * Set the cache system for {{{method}}}
 	 */
-	public {{{response.name}}} get{{{methodUpperCase}}}LastResponse() {
-		return {{{method}}}LastResponse;
+	public void set{{{methodUpperCase}}}Cache(CacheInterface<{{{request.name}}},{{{response.name}}}> cache) {
+		this.{{{method}}}Cache = cache;
 	}
 
 	/**
-	 * Get last cached response date from previous{{{methodUpperCase}}} call
-	 * @returns Last requestTime
-	 */	
-	public Date get{{{methodUpperCase}}}LastResponseTime() {
-		return {{{method}}}LastResponseTime;
-	}	
+	 * Returns the cache system for {{{method}}}
+	 */
+	public CacheInterface<{{{request.name}}},{{{response.name}}}> get{{{methodUpperCase}}}Cache() {
+		return this.{{{method}}}Cache;
+	}
 
-
-{{/messages}}
+	{{/messages}}
 /**
      * Write to Log
      * @param method Method called
      * @param level Log message tag
      * @param data Data to write
      */
-    private void log(String method,String level,String data)
-    {
-        String rootFolderPath=System.getProperty("LOG.folder");
-        File rootFolder=new File(rootFolderPath);
-        if(rootFolderPath!=null && rootFolder.exists() && rootFolder.isDirectory())
-        {
-            BufferedWriter logWriter=null;
-            try
-            {
-                logWriter=new BufferedWriter(new FileWriter(rootFolderPath+"/log.txt",true));
-                SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                logWriter.write(sdf.format(new Date())+" "+method+" "+level);
-                logWriter.newLine();
-                logWriter.write(data);
-                logWriter.newLine();
-                logWriter.flush();
-            }
-            catch(IOException ex)
-            {
+private void log(String method,String level,String data) {
+	
+	String rootFolderPath=System.getProperty("LOG.folder");
+	File rootFolder=new File(rootFolderPath);
+	if(rootFolderPath!=null && rootFolder.exists() && rootFolder.isDirectory()) {
+		BufferedWriter logWriter=null;
+		try {
+			logWriter=new BufferedWriter(new FileWriter(rootFolderPath+"/log.txt",true));
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			logWriter.write(sdf.format(new Date())+" "+method+" "+level);
+			logWriter.newLine();
+			logWriter.write(data);
+			logWriter.newLine();
+			logWriter.flush();
+		}
+		catch(IOException ex) {
+			ex.printStackTrace();
+		}
+		finally {
+			if(logWriter!=null) {
+				try{logWriter.close();}catch(IOException ex){}
+			}
+		}
+	}
 
-            }
-            finally
-            {
-                if(logWriter!=null)
-                {
-                    try{logWriter.close();}catch(IOException ex){}
-                }
-            }
-        }
-
-    }
+}
 }

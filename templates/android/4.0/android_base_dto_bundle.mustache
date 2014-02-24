@@ -1,9 +1,5 @@
-/**
- * Created by Service-Generator.
- * Copyright (c) 2012-2014 Mobivery. All rights reserved.
- * Version: {{{version}}}
- */
 package {{{packagename}}}.model.dto.base;
+
 import java.util.List;
 import java.util.ArrayList;
 import android.os.Parcel;
@@ -11,14 +7,17 @@ import android.os.Parcelable;
 import java.io.File;
 import {{{packagename}}}.model.dto.*;
 
-public class {{{projectName}}}DTOBundle
-{
+/**
+ * All the DTOs in a single file
+ * This file will be overwritten with each generation so place the code in the inherited classes
+ * @author Service Generator
+ */
+public class {{{projectName}}}DTOBundle {
 {{#dtos}}
 	/**
 	 * DTO defining class {{{name}}}
 	 */
-	public static class Base{{{name}}} implements Parcelable
-	{
+	public static class Base{{{name}}} implements Parcelable {
 		public Base{{{name}}}(Parcel in) {
 			readFromParcel(in);
 		}

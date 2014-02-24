@@ -1,11 +1,3 @@
-/**
-  {{serviceName}}
-  {{projectName}}
-
-  Created by Generator
-  Copyright (c) 2012-2014 Mobivery. All rights reserved.
-  Version: {{version}}
-*/
   package {{{packagename}}}.tasks.{{{message.serviceNameLower}}};
 
   import {{{packagename}}}.R;
@@ -27,7 +19,7 @@
 
 /**
  * Task de {{{message.method}}}
- *
+ * @author Service Generator
  */
 public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.request.name}}},Integer, {{{message.response.name}}}> implements com.mobivery.logic.ServiceExceptionListener {
 
@@ -199,11 +191,10 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 					endSpinner();
 					listener.onServiceError(request,ex);
 				}
-				return null;
-			}
-		} catch (InterruptedException e) { 
+				
+			} 
 			return null;
-		}
+		} 
 		if (loadingView!=-1) {
 			Activity activity = (activityReference!=null)? activityReference.get() : null;
 			if(activity!=null){
