@@ -110,26 +110,20 @@
 {{#request.isMultipart}}
     // Multipart
 
-    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:[NSURL URLWithString:url]]];
-
-    AFHTTPRequestOperation *operation = [manager POST:[NSURL URLWithString:url] parameters:dict constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-
-        CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)[stringFile pathExtension], NULL);
-        CFStringRef MIMEType = UTTypeCopyPreferredTagWithClass (UTI, kUTTagClassMIMEType);
-        CFRelease(UTI);
-
-
-        [formData appendPartWithFileData:[[NSFileManager defaultManager] contentsAtPath:stringFile] name:@"{{name}}" fileName:[stringFile lastPathComponent] mimeType:(__bridge NSString *)MIMEType];
-
-    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSError *error;
-        SendImageResponseDTO *dto=[self sendImageDTOFromOperation:operation withError:&error];
-        onSuccess(operation.response.statusCode,dto);
-
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        onError(error);
-    }];
-
+	[request setHTTPMethod:@"POST"];
+ 
+    NSString *boundary = @"---------------------------14737809831466499882746641449";
+    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
+    [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
+    NSMutableData *postbody = [NSMutableData data];
+{{#request.fields}}
+    [postbody appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [postbody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"file\"; filename=\"%@\"\r\n", [string{{nameUcase}} lastPathComponent]] dataUsingEncoding:NSUTF8StringEncoding]];
+    [postbody appendData:[[NSString stringWithFormat:@"Content-Type: application/octet-stream\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+    [postbody appendData:[[NSData alloc] initWithContentsOfFile:string{{nameUcase}}]];
+    [postbody appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+{{/request.fields}}
+    [request setHTTPBody:postbody];
 
 {{/request.isMultipart}}
 {{^request.isMultipart}}
@@ -240,6 +234,7 @@ NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWit
         [allHeaders setObject:jsonData forKey:@"data"];
         request.allHTTPHeaderFields=allHeaders;
 {{/isGet}}
+{{/request.isMultipart}}
 
 	request = [self manageRequest:request  onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
 	
@@ -272,7 +267,6 @@ NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWit
 			onError(error);
 		}
 	}];
-{{/request.isMultipart}}
 	[operation start];
 }
 
