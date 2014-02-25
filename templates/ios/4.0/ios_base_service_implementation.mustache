@@ -128,6 +128,7 @@
     [request setHTTPBody:postbody];
 
 {{/request.isMultipart}}
+{{^request.isMultipart}}
 {{#isPost}}
 	NSMutableArray * content = [NSMutableArray array];
 	for(NSString * key in dict) {
@@ -230,6 +231,7 @@
         [allHeaders setObject:jsonData forKey:@"data"];
         request.allHTTPHeaderFields=allHeaders;
 {{/isGet}}
+{{/request.isMultipart}}
 
 	request = [self manageRequest:request  onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
 	
