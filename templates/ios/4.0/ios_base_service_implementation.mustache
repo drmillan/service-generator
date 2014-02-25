@@ -106,7 +106,7 @@
 		url = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 		
 
-NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
+	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
 
 
 {{#request.isMultipart}}
@@ -118,11 +118,13 @@ NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWit
     NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
     [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
     NSMutableData *postbody = [NSMutableData data];
+{{#request.fields}}
     [postbody appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
     [postbody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"file\"; filename=\"%@\"\r\n", [string{{nameUcase}} lastPathComponent]] dataUsingEncoding:NSUTF8StringEncoding]];
     [postbody appendData:[[NSString stringWithFormat:@"Content-Type: application/octet-stream\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
     [postbody appendData:[[NSData alloc] initWithContentsOfFile:string{{nameUcase}}]];
     [postbody appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+{{/request.fields}}
     [request setHTTPBody:postbody];
 
 {{/request.isMultipart}}
