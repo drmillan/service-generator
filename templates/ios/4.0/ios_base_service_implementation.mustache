@@ -117,7 +117,7 @@
         CFRelease(UTI);
 
 
-        [formData appendPartWithFileData:[[NSFileManager defaultManager] contentsAtPath:stringFile] name:stringFile fileName:[stringFile lastPathComponent] mimeType:(__bridge NSString *)MIMEType];
+        [formData appendPartWithFileData:[[NSFileManager defaultManager] contentsAtPath:stringFile] name:@"{{name}}" fileName:[stringFile lastPathComponent] mimeType:(__bridge NSString *)MIMEType];
 
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSError *error;
