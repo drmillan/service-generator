@@ -57,5 +57,6 @@ public class LimitedAgeMemoryCache<T, Q> implements CacheInterface<T, Q> {
     @Override
     public void clear() {
         cache.clear();
+        datesMap.clear();
     }
 }
