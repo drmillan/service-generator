@@ -23,13 +23,12 @@
     return self;
 }
 
-+ (instancetype)cacheWithCache:(id <Cache>)caching {
-    return [[self alloc] initWithCache:caching];
++ (instancetype)cacheWithCache:(id <Cache>)caching maximumAgeInSeconds:(NSTimeInterval)maximumAge {
+    return [[self alloc] initWithCache:caching maximumAgeInSeconds:maximumAge];
 }
 
-
-- (void)setObject:(id)value forKey:(id)key {
-    [_caching setObject:value forKey:key];
+- (void)setValue:(id)value forKey:(id)key {
+    [_caching setValue:value forKey:key];
     [_datesMap setObject:[NSDate date] forKey:key];
 }
 

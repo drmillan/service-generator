@@ -8,7 +8,7 @@
 
 @implementation NoCache
 
-- (void)setObject:(id)value forKey:(id)key {
+- (void)setValue:(id)value forKey:(id)key {
 
 }
 

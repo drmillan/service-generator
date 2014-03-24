@@ -22,7 +22,7 @@
     return self;
 }
 
-- (void)setObject:(id)value forKey:(id)key {
+- (void)setValue:(id)value forKey:(id)key {
     [_cache setValue:value forKey:key];
     @synchronized (_keys) {
         [_keys addObject:key];

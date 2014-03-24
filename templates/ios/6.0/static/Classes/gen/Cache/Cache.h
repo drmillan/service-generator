@@ -10,7 +10,7 @@
 
 @protocol Cache <NSObject>
 // Put object into cache
-- (void)setObject:(id)value forKey:(id)key;
+- (void)setValue:(id)value forKey:(id)key;
 
 // Retrieve object from cache
 - (id)valueForKey:(id)key;
