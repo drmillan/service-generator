@@ -243,12 +243,13 @@ NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWit
 		if (cachedResponse && onSuccess) {
 			cachedResponse = [self preprocessCacheHitForRequest:{{request.javaInstanceName}} withCachedResponse:cachedResponse onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
 			if (cachedResponse) {
-				NSLog(@"Returning Cache Hit!");
+				_ModelGenLog(@"Returning Cache Hit!");
 				onSuccess(200, cachedResponse);
 				return;
 			}
 		}
 	}
+	_ModelGenLog(@"No cache present or invalidated - performing normal call");
 	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 	if ([operation respondsToSelector:@selector(setSecurityPolicy:)]) {
 		AFSecurityPolicy *securityPolicy = [[AFSecurityPolicy alloc] init];

@@ -47,6 +47,10 @@
 	return responseDict;
 }
 
+- (id)preprocessCacheHitForRequest:(id)request withCachedResponse:(id)cachedResponse onService:(NSString *)serviceName onMethod:(NSString *)methodName {
+    return cachedResponse;
+}
+
 - (UIView *) loadingViewForTasks {
 
 	// Una vista de carga por defecto
