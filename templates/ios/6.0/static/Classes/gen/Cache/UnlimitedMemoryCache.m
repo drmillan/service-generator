@@ -8,46 +8,40 @@
 @implementation UnlimitedMemoryCache {
 
 @private
-    NSCache *_cache;
-    NSMutableArray *_keys;
-
+    NSMutableDictionary *_cache;
 }
 
 - (id)init {
     self = [super init];
     if (self) {
-        _cache = [NSCache new];
-        _keys = [NSMutableArray new];
+        _cache = [NSMutableDictionary new];
     }
     return self;
 }
 
-- (void)setValue:(id)value forKey:(id)key {
-    [_cache setValue:value forKey:key];
-    @synchronized (_keys) {
-        [_keys addObject:key];
+- (void)setObject:(id)value forKey:(id)key {
+    @synchronized (_cache) {
+        [_cache setObject:value forKey:key];
     }
 }
 
-- (id)valueForKey:(id)key {
+- (id)objectForKey:(id)key {
     return [_cache objectForKey:key];
 }
 
 - (void)removeObjectForKey:(id)key {
-    [_cache removeObjectForKey:key];
-    @synchronized (_keys) {
-        [_keys removeObject:key];
+    @synchronized (_cache) {
+        [_cache removeObjectForKey:key];
     }
 }
 
 - (NSArray *)allKeys {
-    return [NSArray arrayWithArray:_keys];
+    return [_cache allKeys];
 }
 
 - (void)removeAllObjects {
-    [_cache removeAllObjects];
-    @synchronized (_keys) {
-        [_keys removeAllObjects];
+    @synchronized (_cache) {
+        [_cache removeAllObjects];
     }
 }
 

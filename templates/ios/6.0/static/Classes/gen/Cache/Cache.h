@@ -1,6 +1,5 @@
 //
 //  Cache.h
-//  EMT
 //
 //  Created by Service-Generator
 //  Copyright (c) 2014 Mobivery. All rights reserved.
@@ -10,10 +9,10 @@
 
 @protocol Cache <NSObject>
 // Put object into cache
-- (void)setValue:(id)value forKey:(id)key;
+- (void)setObject:(id)value forKey:(id)key;
 
 // Retrieve object from cache
-- (id)valueForKey:(id)key;
+- (id)objectForKey:(id)key;
 
 // Remove object from cache
 - (void)removeObjectForKey:(id)key;

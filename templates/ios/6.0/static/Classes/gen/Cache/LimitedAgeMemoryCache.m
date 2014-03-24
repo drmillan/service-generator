@@ -27,12 +27,12 @@
     return [[self alloc] initWithCache:caching maximumAgeInSeconds:maximumAge];
 }
 
-- (void)setValue:(id)value forKey:(id)key {
-    [_caching setValue:value forKey:key];
+- (void)setObject:(id)value forKey:(id)key {
+    [_caching setObject:value forKey:key];
     [_datesMap setObject:[NSDate date] forKey:key];
 }
 
-- (id)valueForKey:(id)key {
+- (id)objectForKey:(id)key {
     NSDate *date = [_datesMap valueForKey:key];
     NSDate *now = [NSDate date];
     if (date) {
@@ -42,7 +42,7 @@
             [_caching removeObjectForKey:key];
         }
     }
-    return [_caching valueForKey:key];
+    return [_caching objectForKey:key];
 }
 
 - (void)removeObjectForKey:(id)key {

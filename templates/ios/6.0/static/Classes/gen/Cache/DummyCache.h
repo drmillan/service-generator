@@ -6,5 +6,5 @@
 #import <Foundation/Foundation.h>
 #import "Cache.h"
 
-@interface NoCache : NSObject<Cache>
+@interface DummyCache : NSObject<Cache>
 @end

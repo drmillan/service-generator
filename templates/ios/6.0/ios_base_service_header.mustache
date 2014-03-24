@@ -33,7 +33,7 @@
 @interface Base{{{serviceName}}}Logic : BaseLogic
 
 {{#service.messages}}
-@property (nonatomic, assign) id<Cache> cache{{methodUpperCase}};
+@property (nonatomic, strong) id<Cache> cache{{methodUpperCase}};
 {{/service.messages}}
 
 {{#service.messages}}
