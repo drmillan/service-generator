@@ -236,15 +236,17 @@ NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWit
 {{/isGet}}
 {{/request.isMultipart}}
 
-	request = [self manageRequest:request  onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
+	request = [self manageRequest:request onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
 	
 	if (_cache{{methodUpperCase}}) {
 		{{response.name}} *cachedResponse = [_cache{{methodUpperCase}} objectForKey:{{request.javaInstanceName}}];
 		if (cachedResponse && onSuccess) {
-			// TODO: add the caching hook in here
-			// 200 = OK, maybe add the result value retrieval in here just in case?
-			onSuccess(200, cachedResponse);
-			return;
+			cachedResponse = [self preprocessCacheHitForRequest:{{request.javaInstanceName}} withCachedResponse:cachedResponse onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
+			if (cachedResponse) {
+				NSLog(@"Returning Cache Hit!");
+				onSuccess(200, cachedResponse);
+				return;
+			}
 		}
 	}
 	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];

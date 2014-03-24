@@ -1,8 +1,8 @@
 //
 //  BaseLogic.h
 //
-//  Created by DRM on 22/10/13.
-//  Copyright (c) 2013 Mobivery. All rights reserved.
+//  Created by Service-Generator
+//  Copyright (c) 2014 Mobivery. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
