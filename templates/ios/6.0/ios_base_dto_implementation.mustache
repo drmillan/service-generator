@@ -68,5 +68,36 @@
 	{{/dto.fields}}
 }
 
+#pragma mark - Equality
+
+- (BOOL)isEqualToBase{{{dto.name}}}:(Base{{{dto.name}}} *)other {
+	if (!other) {
+		return NO;
+	}
+	BOOL equals = YES;
+{{#dto.fields}}
+    equals = equals && [self.{{{name}}} isEqual: [other {{{name}}}]];
+{{/dto.fields}}
+	return equals;
+}
+
+- (BOOL)isEqual:(id)anObject {
+	if (self == anObject) {
+		return YES;
+	}
+	if (![anObject isKindOfClass:[Base{{{dto.name}}} class]]) {
+		return NO;
+	}
+	return [self isEqualToBase{{{dto.name}}}:(Base{{{dto.name}}} *)anObject];
+}
+
+- (NSUInteger)hash {
+	NSUInteger theHash = 0;
+{{#dto.fields}}
+    theHash = theHash ^ [self.{{{name}}} hash];
+{{/dto.fields}}
+	return theHash;
+}
+
 @end
  

@@ -17,10 +17,8 @@
 	if (!other) {
 		return NO;
 	}
-	BOOL equals = YES;
-{{#dto.fields}}
-    equals = equals && [self.{{{name}}} isEqual: [other {{{name}}}]];
-{{/dto.fields}}
+	BOOL equals = [super isEqualToBase{{{dto.name}}}:(Base{{{dto.name}}} *)other];
+    // Add here the custom equality check stuff if needed
     return equals;
 }
 
@@ -35,10 +33,8 @@
 }
 
 - (NSUInteger)hash {
-    NSUInteger theHash = 0;
-{{#dto.fields}}
-    theHash = theHash ^ [self.{{{name}}} hash];
-{{/dto.fields}}
+    NSUInteger theHash = [super hash];
+    // Add here the custom attributes hash additions if needed
 	return theHash;
 }
 
