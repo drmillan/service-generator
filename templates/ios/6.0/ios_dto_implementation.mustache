@@ -11,32 +11,5 @@
 
 @implementation {{{dto.name}}}
 
-#pragma mark - Equality
-
-- (BOOL)isEqualTo{{{dto.name}}}:({{{dto.name}}} *)other {
-	if (!other) {
-		return NO;
-	}
-	BOOL equals = [super isEqualToBase{{{dto.name}}}:(Base{{{dto.name}}} *)other];
-    // Add here the custom equality check stuff if needed
-    return equals;
-}
-
-- (BOOL)isEqual:(id)anObject {
-	if (self == anObject) {
-		return YES;
-	}
-	if (![anObject isKindOfClass:[{{{dto.name}}} class]]) {
-		return NO;
-	}
-	return [self isEqualTo{{{dto.name}}}:({{{dto.name}}} *)anObject];
-}
-
-- (NSUInteger)hash {
-    NSUInteger theHash = [super hash];
-    // Add here the custom attributes hash additions if needed
-	return theHash;
-}
-
 @end
  
