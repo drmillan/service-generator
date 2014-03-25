@@ -17,7 +17,7 @@ class Protocol
   attr_accessor :messages
   @messages=nil
   attr_accessor :types
-  @messages=nil
+  @types=nil
   attr_accessor :services
   @services=nil
 end
