@@ -27,8 +27,8 @@ public class {{{projectName}}}Helper implements com.mobivery.utils.FilterInterfa
   	public String postInjectURLParameters(String logic,String method,String url,Object request) {
   		return url;
   	}
-  	public void cacheHit(String logic, String method, Object request, Object response) {
-
+  	public Object cacheHit(String logic, String method, Object request, Object response) {
+        return response;
   	}
   	public void preExecute(String logic,String method,DefaultHttpClient client, HttpRequestBase request, CookieStore cookieStore, HttpContext context) {
 

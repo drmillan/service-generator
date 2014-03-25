@@ -231,8 +231,7 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 						System.out.println(Base{{{serviceName}}}Logic.class.getName()+" CACHE: FOUND HIT, RETURNING CACHED RESULT");
 						System.out.println(Base{{{serviceName}}}Logic.class.getName()+" FINISH-SENT:"+url+" TIME:"+(endTime-startTime));
 					}
-					cacheHit("{{{serviceName}}}","{{{method}}}",{{{request.javaInstanceName}}},cachedResponse);
-					return cachedResponse;
+					return cacheHit("{{{serviceName}}}","{{{method}}}",{{{request.javaInstanceName}}},cachedResponse);
 				} else {
 					if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
 						System.out.println(Base{{{serviceName}}}Logic.class.getName()+" CACHE: NO HITS");

@@ -37,12 +37,13 @@ public class BaseLogic implements FilterInterface
     }
 
     @Override
-    public void cacheHit(String logic, String method, Object request, Object response) {
+    public Object cacheHit(String logic, String method, Object request, Object response) {
 
         for(FilterInterface filter:filters)
         {
-            filter.cacheHit(logic,method,request,response);
+            response = filter.cacheHit(logic,method,request,response);
         }
+        return response;
     }
 
     public void preExecute(String logic,String method,DefaultHttpClient client, HttpRequestBase request, CookieStore cookieStore, HttpContext context)
