@@ -128,7 +128,7 @@
 {{/request.isMultipart}}
 {{^request.isMultipart}}
 
-NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
+NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60.0];
 
 
 
@@ -239,11 +239,6 @@ NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWit
 	request = [self manageRequest:request  onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
 	
 	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-	if ([operation respondsToSelector:@selector(setSecurityPolicy:)]) {
-		AFSecurityPolicy *securityPolicy = [[AFSecurityPolicy alloc] init];
-		securityPolicy.allowInvalidCertificates = YES;
-		operation.securityPolicy = securityPolicy;
-	}
   	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
 
 		NSError *error;
