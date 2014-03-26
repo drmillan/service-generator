@@ -1,4 +1,4 @@
-package com.mobivery.utils;
+package {{{staticPackage}}}.utils;
 /**
  * ResponseInfo encapsulates the response code for a request, this keeps the response metadata out of the DTOs returned
  * @author Service Generator

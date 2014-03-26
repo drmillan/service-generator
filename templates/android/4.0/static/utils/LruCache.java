@@ -1,4 +1,4 @@
-package com.mobivery.utils;
+package {{{staticPackage}}}.utils;
 
 /*
  * Copyright (C) 2011 The Android Open Source Project

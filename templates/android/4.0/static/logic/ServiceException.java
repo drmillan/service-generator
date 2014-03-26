@@ -1,4 +1,4 @@
-package com.mobivery.logic;
+package {{{staticPackage}}}.logic;
 /**
  *
  * Service exception:

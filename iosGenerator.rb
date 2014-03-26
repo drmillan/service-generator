@@ -1,7 +1,7 @@
 require 'mustache'
 
 class IOSGenerator
-  def generate(protocol,project_name,package_name,ios_version,ios_output)
+  def generate(protocol, project_name, package_name, ios_version, ios_output, static_package)
     #puts protocol.inspect
 
     puts '-------------------'
@@ -17,7 +17,7 @@ class IOSGenerator
 
     ############ DTOs
     dto_dir=ios_output+'/Classes/gen/Model/DTO'
-    FileUtils.mkdir_p(dto_dir) unless File.exist?dto_dir
+    FileUtils.mkdir_p(dto_dir) unless File.exist? dto_dir
     FileUtils.mkdir_p(dto_dir+'/Base') if ios_version && ios_version.to_f > 4.0
     puts 'DTOs'
     puts '-------------'
@@ -30,14 +30,14 @@ class IOSGenerator
       parameters['className']=type.name
       parameters['dto']=type
 
-      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_base_dto_header.mustache').read,parameters) if ios_version && ios_version.to_f > 4.0
+      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_base_dto_header.mustache').read, parameters) if ios_version && ios_version.to_f > 4.0
       File.open(base_dto_header_file, 'w') { |file| file.write(res) } if ios_version && ios_version.to_f > 4.0
-      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_base_dto_implementation.mustache').read,parameters) if ios_version && ios_version.to_f > 4.0
+      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_base_dto_implementation.mustache').read, parameters) if ios_version && ios_version.to_f > 4.0
       File.open(base_dto_implementation_file, 'w') { |file| file.write(res) } if ios_version && ios_version.to_f > 4.0
-      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_dto_header.mustache').read,parameters)
-      File.open(dto_header_file, 'w') { |file| file.write(res) } unless (File.exist?dto_header_file) && ios_version && ios_version.to_f > 4.0
-      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_dto_implementation.mustache').read,parameters)
-      File.open(dto_implementation_file, 'w') { |file| file.write(res) } unless (File.exist?dto_implementation_file) && ios_version && ios_version.to_f > 4.0
+      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_dto_header.mustache').read, parameters)
+      File.open(dto_header_file, 'w') { |file| file.write(res) } unless (File.exist? dto_header_file) && ios_version && ios_version.to_f > 4.0
+      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_dto_implementation.mustache').read, parameters)
+      File.open(dto_implementation_file, 'w') { |file| file.write(res) } unless (File.exist? dto_implementation_file) && ios_version && ios_version.to_f > 4.0
 
 
     end
@@ -53,9 +53,9 @@ class IOSGenerator
       dao_implementation_file=dto_dir+'/'+type.daoClassName+'.m'
       parameters['className']=type.daoClassName
       parameters['dto']=type
-      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_dao_header.mustache').read,parameters)
+      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_dao_header.mustache').read, parameters)
       File.open(dao_header_file, 'w') { |file| file.write(res) }
-      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_dao_implementation.mustache').read,parameters)
+      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_dao_implementation.mustache').read, parameters)
       File.open(dao_implementation_file, 'w') { |file| file.write(res) }
     end
 
@@ -85,14 +85,14 @@ class IOSGenerator
 
       parameters['service']=service
       parameters['serviceName']=serviceKey;
-      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_base_service_header.mustache').read,parameters)
-      File.open(base_service_header_file,'w'){|file| file.write(res)}
-      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_base_service_implementation.mustache').read,parameters)
-      File.open(base_service_implementation_file,'w'){|file| file.write(res)}
-      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_service_header.mustache').read,parameters)
-      File.open(service_header_file,'w'){|file| file.write(res)} unless File.exist?(service_header_file)
-      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_service_implementation.mustache').read,parameters)
-      File.open(service_implementation_file,'w'){|file| file.write(res)} unless File.exists?(service_implementation_file)
+      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_base_service_header.mustache').read, parameters)
+      File.open(base_service_header_file, 'w') { |file| file.write(res) }
+      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_base_service_implementation.mustache').read, parameters)
+      File.open(base_service_implementation_file, 'w') { |file| file.write(res) }
+      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_service_header.mustache').read, parameters)
+      File.open(service_header_file, 'w') { |file| file.write(res) } unless File.exist?(service_header_file)
+      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_service_implementation.mustache').read, parameters)
+      File.open(service_implementation_file, 'w') { |file| file.write(res) } unless File.exists?(service_implementation_file)
     end
 
     ########### TASKS
@@ -109,10 +109,10 @@ class IOSGenerator
 
       task_header_file=tasks_dir+'/'+message.methodUpperCase+'Task.h'
       task_implementation_file=tasks_dir+'/'+message.methodUpperCase+'Task.m'
-      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_task_header.mustache').read,parameters)
-      File.open(task_header_file,'w'){|file| file.write(res)}
-      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_task_implementation.mustache').read,parameters)
-      File.open(task_implementation_file,'w'){|file| file.write(res)}
+      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_task_header.mustache').read, parameters)
+      File.open(task_header_file, 'w') { |file| file.write(res) }
+      res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_task_implementation.mustache').read, parameters)
+      File.open(task_implementation_file, 'w') { |file| file.write(res) }
     end
 
     ########### HELPERS
@@ -123,17 +123,15 @@ class IOSGenerator
     puts "\tCreating Helper ... \t#{project_name}Helper"
     helper_header_file=helper_dir+'/'+project_name+'Helper.h'
     helper_implementation_file=helper_dir+'/'+project_name+'Helper.m'
-    res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_helper_header.mustache').read,parameters)
-    File.open(helper_header_file,'w'){|file| file.write(res)}  unless File.exists?(helper_header_file)
-    res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_helper_implementation.mustache').read,parameters)
-    File.open(helper_implementation_file,'w'){|file| file.write(res)} unless File.exists?(helper_implementation_file)
-
+    res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_helper_header.mustache').read, parameters)
+    File.open(helper_header_file, 'w') { |file| file.write(res) } unless File.exists?(helper_header_file)
+    res=Mustache.render(File.open('templates/ios/'+ios_version+'/ios_helper_implementation.mustache').read, parameters)
+    File.open(helper_implementation_file, 'w') { |file| file.write(res) } unless File.exists?(helper_implementation_file)
 
 
     ############ Copy common folder
     puts 'Copying common folder'
-    FileUtils.cp_r Dir.glob("templates/ios/"+ios_version+"/static/*"),ios_output
-
+    FileUtils.cp_r Dir.glob("templates/ios/"+ios_version+"/static/*"), ios_output
 
   end
 end

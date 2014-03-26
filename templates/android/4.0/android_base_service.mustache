@@ -23,11 +23,11 @@ import java.io.File;
 import java.io.BufferedWriter;
 import java.text.SimpleDateFormat;
 
-import com.mobivery.utils.ResponseInfo;
-import com.mobivery.utils.HttpClientHelper;
-import com.mobivery.utils.BaseLogic;
-import com.mobivery.utils.CacheInterface;
-import com.mobivery.utils.NoCache;
+import {{{staticPackage}}}.utils.ResponseInfo;
+import {{{staticPackage}}}.utils.HttpClientHelper;
+import {{{staticPackage}}}.utils.BaseLogic;
+import {{{staticPackage}}}.utils.CacheInterface;
+import {{{staticPackage}}}.utils.NoCache;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -96,9 +96,9 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 	 * @param {{{request.javaInstanceName}}} Service Request
 	 * @returns {{{response.name}}} Service Response
 	 * @param responseInfo Server response metadata
-	 * @throws com.mobivery.logic.ServiceException Network/Data error
+	 * @throws {{{staticPackage}}}.logic.ServiceException Network/Data error
 	 */
-	public {{{response.name}}} {{{method}}}({{{request.name}}} {{{request.javaInstanceName}}},ResponseInfo responseInfo) throws com.mobivery.logic.ServiceException {
+	public {{{response.name}}} {{{method}}}({{{request.name}}} {{{request.javaInstanceName}}},ResponseInfo responseInfo) throws {{{staticPackage}}}.logic.ServiceException {
 
 		long startTime;
 		long endTime;
@@ -287,7 +287,7 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 			if("true".equalsIgnoreCase(System.getProperty("LOG"))){
 				log("{{method}}","ERROR",ex.toString());
 			}
-			throw new com.mobivery.logic.ServiceException(ex);
+			throw new {{{staticPackage}}}.logic.ServiceException(ex);
 		}
 	}
 	{{/messages}}	

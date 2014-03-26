@@ -1,4 +1,4 @@
-package com.mobivery.utils;
+package {{{staticPackage}}}.utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -2,7 +2,7 @@
 * BaseLogic
 * @author Service Generator
 */
-package com.mobivery.utils;
+package {{{staticPackage}}}.utils;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.CookieStore;

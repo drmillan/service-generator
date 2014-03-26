@@ -4,8 +4,8 @@
   import {{{packagename}}}.model.dto.*; 
   import {{{packagename}}}.logic.*;
 
-  import com.mobivery.utils.ResponseInfo;
-  import com.mobivery.logic.TaskListener;
+  import {{{staticPackage}}}.utils.ResponseInfo;
+  import {{{staticPackage}}}.logic.TaskListener;
 
   import java.lang.ref.WeakReference;
   import java.lang.reflect.Method;
@@ -21,7 +21,7 @@
  * Task de {{{message.method}}}
  * @author Service Generator
  */
-public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.request.name}}},Integer, {{{message.response.name}}}> implements com.mobivery.logic.ServiceExceptionListener {
+public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.request.name}}},Integer, {{{message.response.name}}}> implements {{{staticPackage}}}.logic.ServiceExceptionListener {
 
 	private TaskListener<{{{message.request.name}}},{{{message.response.name}}}> listener;
 
@@ -166,7 +166,7 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 			}
 			{{#onTask}}
 			if (activity==null) {
-				throw new com.mobivery.logic.ServiceException(new Exception("Activity to go back to already removed from memory"));
+				throw new {{{staticPackage}}}.logic.ServiceException(new Exception("Activity to go back to already removed from memory"));
 			} else {
 				activity.runOnUiThread(new Runnable(){
 					public void run() {
@@ -175,7 +175,7 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 				});
 			}
 			{{/onTask}}
-		} catch (final com.mobivery.logic.ServiceException ex) {
+		} catch (final {{{staticPackage}}}.logic.ServiceException ex) {
 			if(!isCancelled()) {
 				Activity activity = (activityReference!=null)? activityReference.get() : null;
 				// If error, call onServiceError on UI Thread
@@ -211,7 +211,7 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 	 * Callback for service communication error
 	 * @param ex ServiceException
 	 */
-	public void onServiceError(com.mobivery.logic.ServiceException ex)
+	public void onServiceError({{{staticPackage}}}.logic.ServiceException ex)
 	{
 		Activity activity = (activityReference!=null)? activityReference.get() : null;
 		if(!isCancelled() && activity!=null && ex!=null){
@@ -223,7 +223,7 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 	 * @param request RequestDTO
 	 * @param responseInfo Response metadata (to get http header errors)
 	 */
-	public {{{message.response.name}}} execOnBackground({{{message.request.name}}} request, ResponseInfo responseInfo) throws com.mobivery.logic.ServiceException{
+	public {{{message.response.name}}} execOnBackground({{{message.request.name}}} request, ResponseInfo responseInfo) throws {{{staticPackage}}}.logic.ServiceException{
 		return {{{message.service}}}Logic.getInstance().{{{message.method}}}(request,responseInfo);
 	}
 

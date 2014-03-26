@@ -1,6 +1,6 @@
-package com.mobivery.logic;
+package {{{staticPackage}}}.logic;
 
-import com.mobivery.utils.ResponseInfo;
+import {{{staticPackage}}}.utils.ResponseInfo;
 
 /**
  * Generated class, do not touch

@@ -1,4 +1,4 @@
-package com.mobivery.utils;
+package {{{staticPackage}}}.utils;
 
 import java.lang.ref.WeakReference;
 import java.util.Collection;
