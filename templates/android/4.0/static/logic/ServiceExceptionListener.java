@@ -4,9 +4,9 @@ package {{{staticPackage}}}.logic;
  *
  * ServiceExceptionListener:
  * Interface for ServiceException listeners on Generated Service Classes
- * @author Service-Generator
+ * @author Service Generator
  *
- * Generated Class
+ * Generated Class - DO NOT MODIFY
  */
 
 public interface ServiceExceptionListener {

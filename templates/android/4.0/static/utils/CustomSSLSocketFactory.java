@@ -20,6 +20,8 @@ import org.apache.http.conn.ssl.SSLSocketFactory;
 /**
  * Factory for SSL global auth accept
  * @author Service Generator
+ *
+ * Generated Class - DO NOT MODIFY
  */
 public class CustomSSLSocketFactory extends SSLSocketFactory {
     SSLContext sslContext = SSLContext.getInstance("TLS");

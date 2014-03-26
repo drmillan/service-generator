@@ -9,6 +9,8 @@ import java.lang.reflect.Method;
  * Marshaller that could be used by any Service Generator generated DTO
  *
  * @author Service Generator
+ *
+ * Generated Class - DO NOT MODIFY
  */
 public class ServiceGeneratorDTOMarshal<Q> implements DataTransferObjectJSONMarshallingInterface<Q> {
 

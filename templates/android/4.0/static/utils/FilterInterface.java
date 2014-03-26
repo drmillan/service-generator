@@ -1,7 +1,3 @@
-/**
-* Interface for the custom filters executed as hooks
-* @author Service Generator
-*/
 package {{{staticPackage}}}.utils;
 
 import org.apache.http.HttpResponse;
@@ -11,6 +7,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
 import org.json.JSONObject;
 
+/**
+* Interface for the custom filters executed as hooks
+* @author Service Generator
+*
+* Generated Class - DO NOT MODIFY
+*/
 public interface FilterInterface
 {
 	String preInjectURLParameters(String logic,String method,String url,Object request);

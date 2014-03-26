@@ -1,11 +1,11 @@
 package {{{staticPackage}}}.logic;
+
 /**
- *
  * Service exception:
  * Exception thrown when network errors on generated services
- * @author Service-Generator
+ * @author Service Generator
  *
- * Generated Class
+ * Generated Class - DO NOT MODIFY
  */
 public class ServiceException extends Exception {
 

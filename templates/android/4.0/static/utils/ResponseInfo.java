@@ -1,7 +1,10 @@
 package {{{staticPackage}}}.utils;
+
 /**
  * ResponseInfo encapsulates the response code for a request, this keeps the response metadata out of the DTOs returned
  * @author Service Generator
+ *
+ * Generated Class - DO NOT MODIFY
  */
 public class ResponseInfo
 {

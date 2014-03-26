@@ -8,6 +8,8 @@ import java.util.HashSet;
  * A new implementation could be done using the support libraries.
  *
  * @author Service Generator
+ *
+ * Generated Class - DO NOT MODIFY
  */
 public class LruMemoryCache<T, Q> implements CacheInterface<T, Q> {
 

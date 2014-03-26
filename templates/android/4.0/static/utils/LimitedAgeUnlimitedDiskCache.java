@@ -9,6 +9,8 @@ import java.util.Map;
  * Unlimited disk cache that adds an expiration date to the hits
  *
  * @author Service Generator
+ *
+ * Generated Class - DO NOT MODIFY
  */
 public class LimitedAgeUnlimitedDiskCache<T, Q> extends UnlimitedDiskCache<T, Q> {
 

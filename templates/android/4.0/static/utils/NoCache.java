@@ -5,6 +5,8 @@ import java.util.Collection;
 /**
 * Caching system that does nothing at all, for compatibility purposes or deactivating caching
 * @author Service Generator
+*
+* Generated Class - DO NOT MODIFY
 */
 
 public class NoCache<T, Q> implements CacheInterface<T, Q> {

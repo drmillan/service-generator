@@ -9,6 +9,8 @@ import java.util.Map;
  * Wrapper for other memory caches that adds an expiration date to the hits
  *
  * @author Service Generator
+ *
+ * Generated Class - DO NOT MODIFY
  */
 public class LimitedAgeMemoryCache<T, Q> implements CacheInterface<T, Q> {
 

@@ -4,7 +4,9 @@ import {{{staticPackage}}}.utils.ResponseInfo;
 
 /**
  * Generated class, do not touch
- * Created by Mobivery
+ * Created by Service Generator
+ *
+ * Generated Class - DO NOT MODIFY
  */
 public interface TaskListener<T,Q> {
     /**

@@ -10,6 +10,8 @@ import java.util.Map;
  * Memory cache of strong references with unlimited size
  *
  * @author Service Generator
+ *
+ * Generated Class - DO NOT MODIFY
  */
 public class UnlimitedMemoryCache<T, Q> implements CacheInterface<T, Q> {
 

@@ -16,6 +16,8 @@ import java.util.Collection;
  * can we serialize/deserialize it, we need the DataTransferObjectJSONMarshallingInterface
  *
  * @author Service Generator
+ *
+ * Generated Class - DO NOT MODIFY
  */
 public class UnlimitedDiskCache<T, Q> implements CacheInterface<T, Q> {
 

@@ -10,6 +10,8 @@ import java.util.Map;
 /**
  * Memory cache of weak references with unlimited size
  * @author Service Generator
+ *
+ * Generated Class - DO NOT MODIFY
  */
 public class UnlimitedWeakMemoryCache<T, Q> implements CacheInterface<T, Q> {
 

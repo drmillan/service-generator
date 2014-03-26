@@ -1,7 +1,3 @@
-/**
-* BaseLogic
-* @author Service Generator
-*/
 package {{{staticPackage}}}.utils;
 
 import org.apache.http.HttpResponse;
@@ -14,6 +10,12 @@ import java.util.List;
 import java.util.ArrayList;
 
 
+/**
+* BaseLogic
+* @author Service Generator
+*
+* Generated Class - DO NOT MODIFY
+*/
 public class BaseLogic implements FilterInterface
 {
     List<FilterInterface> filters=new ArrayList<FilterInterface>();

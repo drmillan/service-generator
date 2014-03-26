@@ -20,6 +20,8 @@ import org.apache.http.protocol.HTTP;
 /**
  * HttpClient Factory class, creates HttpClient instances ignoring certificates
  * @author Service Generator
+ *
+ * Generated Class - DO NOT MODIFY
  */
 public class HttpClientHelper {
     public final static String SYSTEM_TIMEOUT="Service_Timeout";
