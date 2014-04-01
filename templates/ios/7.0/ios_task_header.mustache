@@ -1,0 +1,22 @@
+//
+//  {{message.methodUpperCase}}Task.h
+//  {{projectName}}
+//  Version: {{version}}
+//
+//  Created by Mobivery
+//  Copyright (c) 2012 Mobivery. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "{{message.request.name}}.h"
+#import "{{message.response.name}}.h"
+#import "{{message.service}}Logic.h"
+
+
+@interface {{message.methodUpperCase}}Task : NSObject
+
++ (void) {{message.method}}TaskForRequest:({{message.request.name}} *)request completed:(void(^)(NSInteger statusCode,{{message.response.name}} *response))completedBlock error:(void(^)(NSError *error))errorBlock;
+
++ (void) {{message.method}}TaskForRequest:({{message.request.name}} *)request showLoadingView:(BOOL)showLoadingView completed:(void(^)(NSInteger statusCode,{{message.response.name}} *response))completedBlock error:(void(^)(NSError *error))errorBlock;
+
+@end
