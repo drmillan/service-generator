@@ -1,0 +1,238 @@
+  package {{{packagename}}}.tasks.{{{message.serviceNameLower}}};
+
+  import {{{packagename}}}.R;
+  import {{{packagename}}}.model.dto.*; 
+  import {{{packagename}}}.logic.*;
+
+  import {{{staticPackage}}}.utils.ResponseInfo;
+  import {{{staticPackage}}}.logic.TaskListener;
+
+  import java.lang.ref.WeakReference;
+  import java.lang.reflect.Method;
+
+  import android.app.Activity;
+  import android.app.Dialog;
+  import android.graphics.drawable.ColorDrawable;
+  import android.os.AsyncTask;
+  import android.view.Window;
+  import android.widget.TextView;
+
+/**
+ * {{{message.method}}} AsyncTask
+ * @author Service Generator
+ *
+ * Generated Class - DO NOT MODIFY
+ */
+public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.request.name}}},Integer, {{{message.response.name}}}> implements {{{staticPackage}}}.logic.ServiceExceptionListener {
+
+	private TaskListener<{{{message.request.name}}},{{{message.response.name}}}> listener;
+
+	private WeakReference<Activity> activityReference;
+	private int loadingView;
+	private int progressText;
+	private int loadingText;
+	private Dialog progressDialog;
+
+    /**
+     * Creates default Task for method {{{message.method}}}
+     * @param activity parent Activity
+     */
+    public {{{message.methodUpperCase}}}Task(Activity activity) {
+    	this(activity,-1,-1,-1);
+    }
+
+    /**
+     * Creates default Task for method {{{message.method}}}
+     */
+    public {{{message.methodUpperCase}}}Task() {
+    	this(null,-1,-1,-1);
+    }
+    /**
+     * Creates Task for method {{{message.method}}}
+     * @param loadingView View resource to show while task is running
+     * @param progressText Resource id for loading dialog message (TextView id)
+     * @param loadingText Resource id for loading dialog message (String id)
+     */
+    public {{{message.methodUpperCase}}}Task(int loadingView,int progressText, int loadingText) {
+    	this(null,loadingView,progressText,loadingText);
+    }
+	/**
+     * Creates Task for method {{{message.method}}}
+     * @param activity parent Activity to get Resources from
+     * @param loadingView View resource to show while task is running
+     * @param progressText Resource id for loading dialog message (TextView id)
+     * @param loadingText Resource id for loading dialog message (String id)
+     */
+	public {{{message.methodUpperCase}}}Task(Activity activity,int loadingView,int progressText, int loadingText) {
+		if (activity != null) {
+			this.activityReference = new WeakReference<Activity>(activity);		
+		} 
+		this.loadingView=loadingView;
+		this.progressText=progressText;
+		this.loadingText=loadingText;
+	}
+	/**
+	 * Executes the async task with request
+	 * @param request Server request DTO
+	 */
+	public void execute({{{message.request.name}}} request) {
+		if(loadingView!=-1) {
+			Activity activity = (activityReference!=null)? activityReference.get() : null;
+			if(activity!=null){
+				activity.runOnUiThread(new Thread(new Runnable(){
+					public void run() {
+						initSpinner();
+					}
+				}));
+			}
+		}
+		super.execute(request);
+	}
+	/**
+	 * Start spinner for long operations
+	 */
+	private void initSpinner() {
+		Activity activity = (activityReference!=null)? activityReference.get() : null;
+		if (activity != null) {
+			progressDialog = new Dialog(activity,android.R.style.Theme_Light_NoTitleBar);
+			progressDialog.setCancelable(false);
+			progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+			progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+			progressDialog.setContentView(loadingView);
+			TextView loadingTextView = (TextView)progressDialog.findViewById(progressText);
+			if (loadingTextView != null){
+				loadingTextView.setText(this.loadingText);
+			}
+			progressDialog.show();
+		}
+	}
+    /**
+     * End spinner
+     */
+    private void endSpinner() {
+    	Activity activity = (activityReference!=null)? activityReference.get() : null;
+    	if (activity != null) {
+    		if (progressDialog != null) {
+    			try {
+    				progressDialog.dismiss();
+    			} catch(java.lang.IllegalArgumentException ex) {
+        			// Ignore: View not attached to window manager
+    			}
+    		}
+    	}
+    }
+	/**
+     * Update async task dialog message
+     * @param progress Message to update
+     */
+	public void updateProgress(final String progress) {
+		Activity activity = (activityReference!=null)? activityReference.get() : null;
+		if (activity != null) {
+			activity.runOnUiThread(new Runnable() {
+				public void run() {
+					if(progressDialog!=null) {
+						TextView loadingTextView = (TextView)progressDialog.findViewById(progressText);
+						if(loadingTextView != null){
+							loadingTextView.setText({{{message.methodUpperCase}}}Task.this.loadingText);
+						}
+					}
+				}
+			});
+		}
+	}
+
+	@Override
+	public final {{{message.response.name}}} doInBackground({{{message.request.name}}}... params) {
+		// Get Request DTO
+		final {{{message.request.name}}} request=params[0];
+		{{{message.response.name}}} response=null;
+		try {
+			{{#preMethod}}
+			{{{preMethod}}}(request);
+			{{/preMethod}}
+			// Call Service
+			final ResponseInfo responseInfo = new ResponseInfo();
+			final {{{message.response.name}}} tempResponse = execOnBackground(request,responseInfo);
+			response = tempResponse;
+
+			Activity activity = (activityReference!=null)? activityReference.get() : null;
+			if(activity!=null && listener!=null && !isCancelled()){
+				activity.runOnUiThread(new Runnable(){
+					public void run() {
+						listener.onServiceResponse(request,tempResponse,responseInfo);
+					}
+				});
+			}
+			if(activity==null && listener!=null && !isCancelled()) {
+				listener.onServiceResponse(request,tempResponse,responseInfo);
+			}
+			{{#onTask}}
+			if (activity==null) {
+				throw new {{{staticPackage}}}.logic.ServiceException(new Exception("Activity to go back to already removed from memory"));
+			} else {
+				activity.runOnUiThread(new Runnable(){
+					public void run() {
+						{{{onTask}}}({{{message.methodUpperCase}}}Task.this,{{{message.methodUpperCase}}}Task.this.activityReference.get());
+					}
+				});
+			}
+			{{/onTask}}
+		} catch (final {{{staticPackage}}}.logic.ServiceException ex) {
+			if(!isCancelled()) {
+				Activity activity = (activityReference!=null)? activityReference.get() : null;
+				// If error, call onServiceError on UI Thread
+				if (activity!=null && listener!=null) {
+					activity.runOnUiThread(new Runnable(){
+						public void run(){
+							endSpinner();
+							listener.onServiceError(request,ex);
+						}
+					});
+				}
+				if(activity==null && listener!=null) {
+					endSpinner();
+					listener.onServiceError(request,ex);
+				}
+				
+			} 
+			return null;
+		} 
+		if (loadingView!=-1) {
+			Activity activity = (activityReference!=null)? activityReference.get() : null;
+			if(activity!=null){
+				activity.runOnUiThread(new Runnable(){
+					public void run(){
+						endSpinner();
+					}
+				});
+			}
+		}
+		return response;
+	}
+	/**
+	 * Callback for service communication error
+	 * @param ex ServiceException
+	 */
+	public void onServiceError({{{staticPackage}}}.logic.ServiceException ex)
+	{
+		Activity activity = (activityReference!=null)? activityReference.get() : null;
+		if(!isCancelled() && activity!=null && ex!=null){
+			ex.printStackTrace();
+		}
+	}
+	/**
+	 * Execute task on background
+	 * @param request RequestDTO
+	 * @param responseInfo Response metadata (to get http header errors)
+	 */
+	public {{{message.response.name}}} execOnBackground({{{message.request.name}}} request, ResponseInfo responseInfo) throws {{{staticPackage}}}.logic.ServiceException{
+		return {{{message.service}}}Logic.getInstance().{{{message.method}}}(request,responseInfo);
+	}
+
+	public void execute({{{message.request.name}}} requestDTO,TaskListener<{{{message.request.name}}},{{{message.response.name}}}> listener)
+	{
+		this.listener=listener;
+		this.execute(requestDTO);
+	}
+}
+

@@ -1,0 +1,204 @@
+package {{{packagename}}}.model.dao;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.util.List;
+import java.util.ArrayList;
+import java.io.*;
+import {{{packagename}}}.model.dto.*;
+
+/**
+ * DAO for entity {{{entity.daoClassName}}}, Singleton
+ * @author Service Generator
+ *
+ * Generated Class - DO NOT MODIFY
+ */
+public final class {{{entity.daoClassName}}}{
+
+	// XML field constants
+	{{#entity.baseFields}}
+	private static final String CONSTANT_{{{nameFullUcase}}}="{{{serviceName}}}";
+	{{/entity.baseFields}}
+	{{#entity.baseArrayFields}}
+	private static final String CONSTANT_{{{nameFullUcase}}}="{{{serviceName}}}";
+	{{/entity.baseArrayFields}}
+	{{#entity.objectFields}}
+	private static final String CONSTANT_{{{nameFullUcase}}}="{{{serviceName}}}";
+	{{/entity.objectFields}}
+	{{#entity.objectArrayFields}}
+	private static final String CONSTANT_{{{nameFullUcase}}}="{{{serviceName}}}";
+	{{/entity.objectArrayFields}}
+	
+	private static {{{entity.daoClassName}}} instance=new {{{entity.daoClassName}}}();
+
+	private {{{entity.daoClassName}}}(){
+		
+	}
+	/**
+	 * Gets DAO instance
+	 * @returns instance
+	 */
+	public static {{{entity.daoClassName}}} getInstance(){
+		return instance;
+	}
+	
+	/**
+	 * Build an {{{entity.name}}} from JSON
+	 */
+	public {{{entity.name}}} create(JSONObject value) throws JSONException{
+		{{{entity.name}}} returnValue=new {{{entity.name}}}();
+		
+		{{#entity.baseFields}}
+		{{#isLong}}
+		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null")) {
+			returnValue.set{{{nameUcase}}}(Long.parseLong(String.valueOf(value.get(CONSTANT_{{nameFullUcase}}))));
+		}
+		{{/isLong}}
+		{{#isInteger}}
+		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null")) {
+			if(value.get(CONSTANT_{{nameFullUcase}}).getClass()==String.class){
+				returnValue.set{{{nameUcase}}}(Integer.parseInt((String)value.get(CONSTANT_{{nameFullUcase}})));
+			}
+			else{
+				returnValue.set{{{nameUcase}}}(({{{typeJava}}})value.get(CONSTANT_{{nameFullUcase}}));
+			}
+		}	
+		{{/isInteger}}
+		{{#isFloat}}
+		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null")) {
+			if(value.get(CONSTANT_{{nameFullUcase}}).getClass()==String.class){
+				returnValue.set{{{nameUcase}}}(Float.parseFloat((String)value.get(CONSTANT_{{nameFullUcase}})));
+			}
+			else{
+				returnValue.set{{{nameUcase}}}(({{{typeJava}}})value.get(CONSTANT_{{nameFullUcase}}));
+			}
+		}	
+		{{/isFloat}}
+		{{#isDouble}}
+		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null")) {
+			returnValue.set{{{nameUcase}}}(Double.valueOf(String.valueOf(value.get(CONSTANT_{{nameFullUcase}}))));			
+		}	
+		{{/isDouble}}
+		{{#isBoolean}}
+		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null")) {
+			if(value.get(CONSTANT_{{nameFullUcase}}).getClass()==String.class){
+				returnValue.set{{{nameUcase}}}(Boolean.parseBoolean((String)value.get(CONSTANT_{{nameFullUcase}})));
+			}
+			else{
+				returnValue.set{{{nameUcase}}}(({{{typeJava}}})value.get(CONSTANT_{{nameFullUcase}}));
+			}
+		}	
+		{{/isBoolean}}		
+		{{#isString}}
+		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null")) {
+			returnValue.set{{{nameUcase}}}(value.get(CONSTANT_{{nameFullUcase}}).toString());
+		}
+		{{/isString}}
+		{{/entity.baseFields}}
+		
+		{{#entity.baseArrayFields}}
+		ArrayList<{{{baseTypeSingular}}}> {{{javaName}}}List=new ArrayList<{{{baseTypeSingular}}}>();
+		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null")) {
+
+			if(value.get(CONSTANT_{{nameFullUcase}}) instanceof JSONArray){
+				JSONArray {{{name}}}Array=value.getJSONArray(CONSTANT_{{nameFullUcase}});
+				for(int i=0;i!={{{name}}}Array.length();i++){
+					{{#isString}}
+					{{{javaName}}}List.add({{{name}}}Array.getString(i));
+					{{/isString}}
+					{{#isInteger}}
+					{{{javaName}}}List.add(Integer.valueOf((int){{{name}}}Array.getLong(i)));					
+					{{/isInteger}}
+					{{#isFloat}}
+					{{{javaName}}}List.add(Float.valueOf((float){{{name}}}Array.getDouble(i)));					
+					{{/isFloat}}
+					{{#isDouble}}
+					{{{javaName}}}List.add(Double.valueOf({{{name}}}Array.getDouble(i)));
+					{{/isDouble}}
+					{{#isBoolean}}
+					{{{javaName}}}List.add(new Boolean({{{name}}}Array.getBoolean(i)));
+					{{/isBoolean}}
+				}
+			} else {
+				{{#isString}}
+				{{{javaName}}}List.add(value.getString(CONSTANT_{{nameFullUcase}}));
+				{{/isString}}
+				{{#isInteger}}
+				{{{javaName}}}List.add(Integer.valueOf(value.getLong(CONSTANT_{{nameFullUcase}})));					
+				{{/isInteger}}
+				{{#isFloat}}
+				{{{javaName}}}List.add(Float.valueOf((float)value.getDouble(CONSTANT_{{nameFullUcase}})));					
+				{{/isFloat}}
+				{{#isDouble}}
+				{{{javaName}}}List.add(Double.valueOf(value.getDouble(CONSTANT_{{nameFullUcase}})));
+				{{/isDouble}}
+				{{#isBoolean}}
+				{{{javaName}}}List.add(new Boolean(value.getBoolean(CONSTANT_{{nameFullUcase}})));
+				{{/isBoolean}}
+			}
+		}
+		returnValue.set{{{nameUcase}}}({{{javaName}}}List);
+		{{/entity.baseArrayFields}}
+		
+		{{#entity.objectFields}}
+		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null")) {
+			{{{typeJava}}} {{{javaName}}}={{{typeJavaDAO}}}.getInstance().create((JSONObject)value.get(CONSTANT_{{nameFullUcase}}));
+			returnValue.set{{{nameUcase}}}({{{javaName}}});
+		}
+		{{/entity.objectFields}}
+		
+		{{#entity.objectArrayFields}}
+		ArrayList<{{{baseTypeSingular}}}> {{{javaName}}}List=new ArrayList<{{{baseTypeSingular}}}>();
+		if(value.has(CONSTANT_{{nameFullUcase}}) && !value.get(CONSTANT_{{nameFullUcase}}).toString().equals("null")) {
+			if(value.get(CONSTANT_{{nameFullUcase}}) instanceof JSONArray){
+				JSONArray {{{javaName}}}Array=(JSONArray)value.get(CONSTANT_{{nameFullUcase}});
+				for(int i=0;i!={{{javaName}}}Array.length();i++){
+					JSONObject obj=(JSONObject){{{javaName}}}Array.get(i);
+					{{{javaName}}}List.add({{{typeJavaDAO}}}.getInstance().create(obj));
+				}
+			}
+			else{
+				{{{javaName}}}List.add({{{typeJavaDAO}}}.getInstance().create((JSONObject)value.get(CONSTANT_{{nameFullUcase}})));
+			}
+		}
+		returnValue.set{{{nameUcase}}}({{{javaName}}}List);
+		{{/entity.objectArrayFields}}
+
+		return returnValue;
+	}
+	
+	/**
+	 * Build JSON (JSONObject) from a DTO object
+	 */
+	public JSONObject serialize({{{entity.name}}} object) throws JSONException {		
+		JSONObject returnValue = new JSONObject();
+		
+		{{#entity.baseFields}}
+		if(object.get{{{nameUcase}}}()!=null){
+			returnValue.put(CONSTANT_{{nameFullUcase}}, (object.get{{{nameUcase}}}() == null)? JSONObject.NULL : object.get{{{nameUcase}}}());
+		}
+		{{/entity.baseFields}}
+		{{#entity.baseArrayFields}}
+		if(object.get{{{nameUcase}}}()!=null){
+			returnValue.put(CONSTANT_{{nameFullUcase}},new JSONArray(object.get{{{nameUcase}}}()));
+		}	
+		{{/entity.baseArrayFields}}
+		{{#entity.objectFields}}
+		if(object.get{{{nameUcase}}}()!=null){
+			returnValue.put(CONSTANT_{{nameFullUcase}},{{{typeJavaDAO}}}.getInstance().serialize(object.get{{{nameUcase}}}()));
+		}
+		{{/entity.objectFields}}
+		{{#entity.objectArrayFields}}
+		if(object.get{{{nameUcase}}}()!=null){
+			JSONArray {{{name}}}Array = new JSONArray();
+			for ({{{baseTypeSingular}}} {{{javaName}}}Object : object.get{{{nameUcase}}}()) {
+				{{{name}}}Array.put({{{typeJavaDAO}}}.getInstance().serialize({{{javaName}}}Object));
+			}
+			returnValue.put(CONSTANT_{{nameFullUcase}},{{{name}}}Array);
+		}
+		{{/entity.objectArrayFields}}
+
+		return returnValue;
+	}
+}

@@ -1,0 +1,54 @@
+package {{{packagename}}}.logic;
+
+import {{{packagename}}}.model.dao.*;
+import {{{packagename}}}.model.dto.*; 
+import {{{packagename}}}.logic.*;
+import {{{packagename}}}.logic.base.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URLEncoder;
+
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+{{#service.hasDelete}}
+import org.apache.http.client.methods.HttpDelete;
+{{/service.hasDelete}}
+{{#service.hasGet}}
+import org.apache.http.client.methods.HttpGet;
+{{/service.hasGet}}
+{{#service.hasPost}}
+import org.apache.http.client.methods.HttpPost;
+{{/service.hasPost}}
+{{#service.hasPut}}
+import org.apache.http.client.methods.HttpPut;
+{{/service.hasPut}}
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
+/**
+ * Service doing DAO calls
+ * This service complements Logic class {{{serviceName}}}
+ * Your custom code SHOULD be in this file. This class won't be overwritten.
+ * @author Service Generator
+ */
+public class {{{serviceName}}}Logic extends Base{{{serviceName}}}Logic {
+
+  private {{{serviceName}}}Logic() { }
+
+  private static class {{{serviceName}}}Holder { 
+    public static final {{{serviceName}}}Logic instance = new {{{serviceName}}}Logic();
+  }
+
+  public static {{{serviceName}}}Logic getInstance() {
+    return {{{serviceName}}}Holder.instance;
+  }
+
+}
