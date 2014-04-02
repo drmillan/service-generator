@@ -168,7 +168,7 @@ Si definimos "CHECK_SSL_CERTIFICATE":
 
 Se utilizará el modo "AFNETWORKING_PIN_SSL_CERTIFICATES" que comparará el certificado del servidor con la lista de confianza del dispositivo.
 
-En este caso disponemos del método del siguiente método del Helper:
+En este caso disponemos del siguiente método del Helper:
 
 	(AFSecurityPolicy *) preprocessSecurityPolicy:(AFSecurityPolicy *)securityPolicy onService:(NSString *)serviceName onMethod:(NSString *)methodName;
 
@@ -180,7 +180,7 @@ Este método servirá para especificar el tipo de AFSecurityPolicy de esta forma
 En caso de que no esté definido "CHECK_SSL_CERTIFICATE", el modo por defecto será "AFNETWORKING_ALLOW_INVALID_SSL_CERTIFICATES" y nuestra aplicación aceptará cualquier certificado del servidor. Esto es equivalente a no utilizar "https" (como si fuera "http").
 
 ### Android:
-Tenemos disponible un método del Helper para utilizar una clase propia en nuestro proyecto del tipo DefaultHttpClient que nos permitirá realizar las operaciones necesarias para realizar la validación del certificado SSL del servidor:
+Tenemos disponible un método del Helper para utilizar una clase propia en nuestro proyecto del tipo DefaultHttpClient que nos permitirá realizar las operaciones necesarias para ejecutar la validación del certificado SSL del servidor:
 
   	public DefaultHttpClient preprocessHttpClient(String logic,String method,DefaultHttpClient httpClient);
   	
