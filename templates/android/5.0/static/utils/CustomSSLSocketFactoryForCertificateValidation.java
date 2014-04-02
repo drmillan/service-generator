@@ -1,4 +1,4 @@
-package com.mobivery.utils;
+package {{{staticPackage}}}.utils;
 
 import java.io.IOException;
 import java.net.Socket;
