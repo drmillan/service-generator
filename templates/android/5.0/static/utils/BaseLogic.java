@@ -85,7 +85,7 @@ public class BaseLogic implements FilterInterface
         DefaultHttpClient resultHttpClient=httpClient;
         for(FilterInterface filter:filters)
         {
-            resultHttpClient=filter.preprocessResponse(logic,method,resultHttpClient);
+            resultHttpClient=filter.preprocessHttpClient(logic,method,resultHttpClient);
         }
         return resultHttpClient;
     }
