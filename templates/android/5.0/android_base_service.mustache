@@ -183,7 +183,7 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 			{{/request.isMultipart}}
 			{{^request.isMultipart}}
 			DefaultHttpClient client = HttpClientHelper.getInstance().getNewHttpClient();
-			httpClient=preprocessHttpClient("{{{serviceName}}}","{{{method}}}",httpClient);
+			client=preprocessHttpClient("{{{serviceName}}}","{{{method}}}",client);
 			Http{{{simpleType}}} request=new Http{{{simpleType}}}(url);
 
 			{{#isWrite}}
