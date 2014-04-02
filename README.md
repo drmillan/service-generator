@@ -156,3 +156,35 @@ Si la propiedad LOG existe y tiene valor "true", la capa de servicios generará 
 
 ####LOG.folder
 Si la propiedad LOG.folder existe y contiene una ruta existente y dicha ruta hace referencia a un directorio, la aplicación generará en dicha ruta el fichero log.txt con el contenido resultado de la interacción con el servidor
+
+
+## Validación del certificado SSL del servidor
+Desde la versión 7.0 en iOS y 5.0 en Android, en el generador se puede especificar si utilizar validación del certificado SSL del servidor o aceptar cualquier certificado.
+
+### iOS:
+Si definimos "CHECK_SSL_CERTIFICATE":
+
+	#define CHECK_SSL_CERTIFICATE 1
+
+Se utilizará el modo "AFNETWORKING_PIN_SSL_CERTIFICATES" que comparará el certificado del servidor con la lista de confianza del dispositivo.
+
+En este caso disponemos del siguiente método del Helper:
+
+	(AFSecurityPolicy *) preprocessSecurityPolicy:(AFSecurityPolicy *)securityPolicy onService:(NSString *)serviceName onMethod:(NSString *)methodName;
+
+Este método servirá para especificar el tipo de AFSecurityPolicy de esta forma:
+	
+	AFSecurityPolicy *securityPolicy = [[AFSecurityPolicy alloc] init];
+    securityPolicy.SSLPinningMode = AFSSLPinningModeNone;
+
+En caso de que no esté definido "CHECK_SSL_CERTIFICATE", el modo por defecto será "AFNETWORKING_ALLOW_INVALID_SSL_CERTIFICATES" y nuestra aplicación aceptará cualquier certificado del servidor. Esto es equivalente a no utilizar "https" (como si fuera "http").
+
+### Android:
+Tenemos disponible un método del Helper para utilizar una clase propia en nuestro proyecto del tipo DefaultHttpClient que nos permitirá realizar las operaciones necesarias para ejecutar la validación del certificado SSL del servidor:
+
+  	public DefaultHttpClient preprocessHttpClient(String logic,String method,DefaultHttpClient httpClient);
+  	
+En el generador se incluyen clases estáticas que implementan esta funcionalidad (CustomSSLSocketFactory.java y CustomTrustManager.java) de manera que solamente tenemos que crearnos una instancia de ese objeto DefaultHttpClient (con el getter "getNewSSLValidationHttpClient") y devolverla en "preprocessHttpClient":
+
+    DefaultHttpClient responseHttpClient = HttpClientHelper.getInstance().getNewSSLValidationHttpClient();
+	return responseHttpClient;

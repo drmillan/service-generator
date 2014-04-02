@@ -1,0 +1,376 @@
+package {{{packagename}}}.logic.base;
+
+
+import {{{packagename}}}.model.dao.*;
+import {{{packagename}}}.model.dto.*; 
+import {{{packagename}}}.logic.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URLEncoder;
+import java.util.Date;
+import java.util.List;
+import java.util.ArrayList;
+import java.io.FileWriter;
+import java.io.File;
+import java.io.BufferedWriter;
+import java.text.SimpleDateFormat;
+
+import {{{staticPackage}}}.utils.ResponseInfo;
+import {{{staticPackage}}}.utils.HttpClientHelper;
+import {{{staticPackage}}}.utils.BaseLogic;
+import {{{staticPackage}}}.utils.CacheInterface;
+import {{{staticPackage}}}.utils.NoCache;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.CookieStore;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.protocol.ClientContext;
+{{#service.hasDelete}}
+import org.apache.http.client.methods.HttpDelete;
+{{/service.hasDelete}}
+{{#service.hasGet}}
+import org.apache.http.client.methods.HttpGet;
+{{/service.hasGet}}
+{{#service.hasPost}}
+import org.apache.http.client.methods.HttpPost;
+{{/service.hasPost}}
+{{#service.hasPut}}
+import org.apache.http.client.methods.HttpPut;
+{{/service.hasPut}}
+{{#service.hasMultipart}}
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.client.methods.HttpPost;
+import java.io.File;
+import java.io.FileInputStream;
+import org.apache.commons.io.IOUtils;
+{{/service.hasMultipart}}
+import org.apache.http.entity.StringEntity;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HttpContext;
+
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
+/**
+ * Base class for {{serviceName}} Logic , handles communication with server and creates
+ * local domain objects from server response
+ * @author Service Generator
+ *
+ * Generated Class - DO NOT MODIFY
+ */
+
+public class Base{{{serviceName}}}Logic  extends BaseLogic
+{
+	public Base{{{serviceName}}}Logic()
+	{
+		addFilter({{{projectName}}}Helper.getInstance());
+	}
+
+
+	{{#messages}}
+	private CacheInterface<{{{request.name}}},{{{response.name}}}> {{{method}}}Cache = new NoCache<{{{request.name}}},{{{response.name}}}>();
+	{{/messages}}
+
+	{{#messages}}
+
+	/**
+	 * Metodo {{{method}}}: {{{description}}}
+	 * @param {{{request.javaInstanceName}}} Service Request
+	 * @returns {{{response.name}}} Service Response
+	 * @param responseInfo Server response metadata
+	 * @throws {{{staticPackage}}}.logic.ServiceException Network/Data error
+	 */
+	public {{{response.name}}} {{{method}}}({{{request.name}}} {{{request.javaInstanceName}}},ResponseInfo responseInfo) throws {{{staticPackage}}}.logic.ServiceException {
+
+		long startTime;
+		long endTime;
+		try {
+			CookieStore cookieStore = new BasicCookieStore();
+			HttpContext localContext = new BasicHttpContext();
+			localContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
+
+			{{#onSend}}
+			{{{onSend}}}({{{request.javaInstanceName}}});
+			{{/onSend}}
+			{{{response.name}}} {{{response.javaInstanceName}}};
+			// Obtenemos la URL del mensaje : {{{url}}}
+			String url="{{{url}}}";
+			url=preInjectURLParameters("{{{serviceName}}}","{{{method}}}",url,{{{request.javaInstanceName}}});
+			{{#request.fields}}
+			if({{{request.javaInstanceName}}}.get{{{nameUcase}}}()==null){
+				url=url.replace("${"+"{{{name}}}"+"}","");
+			}
+			else {
+				if(url.contains("${"+"{{{name}}}"+"}")) {
+					url=url.replace("${"+"{{{name}}}"+"}",URLEncoder.encode(String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}()),"UTF-8"));
+				}
+				{{#isGet}}
+				else {
+					url=url+(url.contains("?")?"&":"?")+"{{{serviceName}}}="+String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}());
+				}
+				{{/isGet}}
+			}
+			{{/request.fields}}
+
+			url=fixSystemProperties(url);
+
+			url=url.replace("|",URLEncoder.encode("|","UTF-8"));
+			url=postInjectURLParameters("{{{serviceName}}}","{{{method}}}",url,{{{request.javaInstanceName}}});
+			if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+				System.out.println(Base{{{serviceName}}}Logic.class.getName()+" SENT:"+url);
+			}
+			if("true".equalsIgnoreCase(System.getProperty("LOG"))){
+				log("{{method}}","REQUEST-URL",url);
+			}
+			String result;
+			{{#request.isMultipart}}
+			DefaultHttpClient httpClient = HttpClientHelper.getInstance().getNewHttpClient();
+			httpClient=preprocessHttpClient("{{{serviceName}}}","{{{method}}}",httpClient);
+			HttpPost postRequest = new HttpPost(url);			
+			MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+			{{#request.fields}}
+			{{#isFile}}
+			reqEntity.addPart("{{{serviceName}}}", new FileBody(new File(String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}())),"{{{mimeType}}}"));
+			{{/isFile}}
+			{{^isFile}}
+			reqEntity.addPart("{{{serviceName}}}", 
+				new StringBody(String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}())));
+			{{/isFile}}
+			{{/request.fields}}
+			
+			postRequest.setEntity(reqEntity);
+			preExecute("{{{serviceName}}}","{{{method}}}",httpClient,postRequest,cookieStore,localContext);
+			startTime=System.currentTimeMillis();
+
+			HttpResponse response = httpClient.execute(postRequest,localContext);
+			endTime = System.currentTimeMillis();
+			if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+				System.out.println(Base{{{serviceName}}}Logic.class.getName()+" FINISH-SENT:"+url+" TIME:"+(endTime-startTime));
+			}
+
+			if(responseInfo!=null) {
+				responseInfo.setStatusCode(response.getStatusLine().getStatusCode());
+			}
+
+			postExecute("{{{serviceName}}}","{{{method}}}",httpClient,postRequest,response,cookieStore);
+			BufferedReader reader = new BufferedReader(
+				new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+			String sResponse;
+			StringBuilder s = new StringBuilder();
+
+			while ((sResponse = reader.readLine()) != null) {
+				s = s.append(sResponse);
+			}
+			result=s.toString();
+			JSONObject jsonObject=preProcessJSON("{{{serviceName}}}","{{{method}}}",new JSONObject(result));
+			{{/request.isMultipart}}
+			{{^request.isMultipart}}
+			DefaultHttpClient client = HttpClientHelper.getInstance().getNewHttpClient();
+			client=preprocessHttpClient("{{{serviceName}}}","{{{method}}}",client);
+			Http{{{simpleType}}} request=new Http{{{simpleType}}}(url);
+
+			{{#isWrite}}
+			List <NameValuePair> parameters = new ArrayList <NameValuePair>(); 
+			{{#request.fields}}
+			parameters.add(new BasicNameValuePair("{{{serviceName}}}",String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}())));       
+			{{/request.fields}}
+			{{^isDelete}}
+			request.setEntity(new UrlEncodedFormEntity(parameters, HTTP.UTF_8));
+			{{/isDelete}}
+			JSONObject jsonObject ={{{request.daoClassName}}}.getInstance().serialize({{{request.javaInstanceName}}});		
+			{{/isWrite}}
+			{{#isWriteJSON}}
+			JSONObject jsonObject ={{{request.daoClassName}}}.getInstance().serialize({{{request.javaInstanceName}}});
+			StringEntity requestEntity = new StringEntity(jsonObject.toString(), HTTP.UTF_8);
+			if("true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+				System.out.println(Base{{{serviceName}}}Logic.class.getName()+" SENT (application/json):"+jsonObject.toString());
+			}
+			if("true".equalsIgnoreCase(System.getProperty("LOG"))){
+				log("{{method}}","SEND",jsonObject.toString());
+			}
+
+			requestEntity.setContentType("application/json");
+			request.setEntity(requestEntity);
+			{{/isWriteJSON}}
+			{{#isGet}}
+			JSONObject jsonObject ={{{request.daoClassName}}}.getInstance().serialize({{{request.javaInstanceName}}});
+			request.addHeader("data",jsonObject.toString());
+			if("true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+				System.out.println(Base{{{serviceName}}}Logic.class.getName()+" SENT (application/json):"+jsonObject.toString());
+			}
+			if("true".equalsIgnoreCase(System.getProperty("LOG"))){
+				log("{{method}}","SENT",jsonObject.toString());
+			}
+			{{/isGet}}
+			preExecute("{{{serviceName}}}","{{{method}}}",client,request,cookieStore,localContext);
+			startTime=System.currentTimeMillis();
+
+       		// see if we have the result in cache
+			if ({{{method}}}Cache != null) {
+				{{{response.name}}} cachedResponse = {{{method}}}Cache.get({{{request.javaInstanceName}}});
+				if (cachedResponse != null) {
+					endTime = System.currentTimeMillis();
+					if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+						System.out.println(Base{{{serviceName}}}Logic.class.getName()+" CACHE: FOUND HIT, RETURNING CACHED RESULT");
+						System.out.println(Base{{{serviceName}}}Logic.class.getName()+" FINISH-SENT:"+url+" TIME:"+(endTime-startTime));
+					}
+					return ({{{response.name}}})cacheHit("{{{serviceName}}}","{{{method}}}",{{{request.javaInstanceName}}},cachedResponse);
+				} else {
+					if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+						System.out.println(Base{{{serviceName}}}Logic.class.getName()+" CACHE: NO HITS");
+					}
+				}
+			}
+			HttpResponse response = client.execute(request,localContext);
+			endTime=System.currentTimeMillis();
+			if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+				System.out.println(Base{{{serviceName}}}Logic.class.getName()+" FINISH-SENT:"+url+" TIME:"+(endTime-startTime));
+			}
+
+			if(responseInfo!=null){
+				responseInfo.setStatusCode(response.getStatusLine().getStatusCode());
+			}
+			postExecute("{{{serviceName}}}","{{{method}}}",client,request,response,cookieStore);
+			HttpEntity entity = response.getEntity();
+			if (entity != null) {
+				result=convertStreamToString(entity.getContent());
+				result=preprocessResponse("{{{serviceName}}}","{{{method}}}",result);
+			} else {
+				result = "";
+			}
+			if("".equals(result)){
+				jsonObject=preProcessJSON("{{{serviceName}}}","{{{method}}}",new JSONObject());
+			} else {
+				jsonObject=preProcessJSON("{{{serviceName}}}","{{{method}}}",new JSONObject(result));
+			}
+
+			if("true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+				System.out.println(Base{{{serviceName}}}Logic.class.getName()+" RECEIVED:"+result);
+			}
+			if("true".equalsIgnoreCase(System.getProperty("LOG"))){
+				log("{{method}}","RECEIVE",jsonObject.toString());
+			}
+			{{/request.isMultipart}}
+
+			{{{response.javaInstanceName}}}={{{response.daoClassName}}}.getInstance().create(jsonObject);
+			{{#onReceive}}
+			{{{onReceive}}}({{{request.javaInstanceName}}},{{{response.javaInstanceName}}});
+			{{/onReceive}}
+
+			if ({{{method}}}Cache != null) {
+				{{{method}}}Cache.put({{{request.javaInstanceName}}}, {{{response.javaInstanceName}}});
+				if(System.getProperty("DEBUG")==null || "true".equalsIgnoreCase(System.getProperty("DEBUG"))){
+					System.out.println(Base{{{serviceName}}}Logic.class.getName()+" STORED RESULT IN CACHE");
+				}
+			}
+
+			return {{{response.javaInstanceName}}};
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			if("true".equalsIgnoreCase(System.getProperty("LOG"))){
+				log("{{method}}","ERROR",ex.toString());
+			}
+			throw new {{{staticPackage}}}.logic.ServiceException(ex);
+		}
+	}
+	{{/messages}}	
+	
+	/**
+	 * Reads stream contents as a String
+	 * @param is InputStream to read from
+	 * @return String representation of Input Stream
+	 * @throws IOException
+	 */
+	private String convertStreamToString(InputStream is) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+		StringBuilder sb = new StringBuilder();
+
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+			sb.append(line + "\n");
+		}
+		return sb.toString();
+	}
+	
+	/**
+	 * Adds System properties to request url
+	 * @param url Source url
+	 * @returns URL Fixed url whith parameters replaced with System properties
+	 */
+	private  String fixSystemProperties(String url) {
+		while(url.contains("${")) {
+			int start=url.indexOf("${")+2;
+			int end=url.indexOf("}",start);
+			String key=url.substring(start,end);
+			String value=System.getProperty(key,"");
+			url=url.replace("${"+key+"}",value);
+		}
+		return url;
+	}
+	
+	{{#messages}}
+	/**
+	 * Set the cache system for {{{method}}}
+	 */
+	public void set{{{methodUpperCase}}}Cache(CacheInterface<{{{request.name}}},{{{response.name}}}> cache) {
+		this.{{{method}}}Cache = cache;
+	}
+
+	/**
+	 * Returns the cache system for {{{method}}}
+	 */
+	public CacheInterface<{{{request.name}}},{{{response.name}}}> get{{{methodUpperCase}}}Cache() {
+		return this.{{{method}}}Cache;
+	}
+
+	{{/messages}}
+/**
+     * Write to Log
+     * @param method Method called
+     * @param level Log message tag
+     * @param data Data to write
+     */
+private void log(String method,String level,String data) {
+	
+	String rootFolderPath=System.getProperty("LOG.folder");
+	File rootFolder=new File(rootFolderPath);
+	if(rootFolderPath!=null && rootFolder.exists() && rootFolder.isDirectory()) {
+		BufferedWriter logWriter=null;
+		try {
+			logWriter=new BufferedWriter(new FileWriter(rootFolderPath+"/log.txt",true));
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			logWriter.write(sdf.format(new Date())+" "+method+" "+level);
+			logWriter.newLine();
+			logWriter.write(data);
+			logWriter.newLine();
+			logWriter.flush();
+		}
+		catch(IOException ex) {
+			ex.printStackTrace();
+		}
+		finally {
+			if(logWriter!=null) {
+				try{logWriter.close();}catch(IOException ex){}
+			}
+		}
+	}
+
+}
+}

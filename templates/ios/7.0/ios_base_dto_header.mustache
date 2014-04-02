@@ -1,0 +1,28 @@
+//
+//  Base{{{dto.name}}}.h
+//  {{{projectName}}}
+//  Version: {{{version}}}
+//
+//  Created by Mobivery
+//  Copyright (c) 2012 Mobivery. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+{{#dto.objectFields}}
+@class {{{iosBaseTypeSingular}}};
+{{/dto.objectFields}}
+{{#dto.objectArrayFields}}
+#import "{{{iosBaseTypeSingular}}}.h"
+{{/dto.objectArrayFields}}
+
+
+@interface Base{{{dto.name}}} : NSObject <NSCopying, NSMutableCopying, NSCoding>
+
+
+{{#dto.fields}}
+@property (nonatomic, strong) {{{typeIOS}}} *{{{name}}};	///< {{{comment}}} - Field name on service:{{serviceName}}.
+{{/dto.fields}}
+
+- (BOOL)isEqualToBase{{{dto.name}}}:(Base{{{dto.name}}} *)other;
+
+@end

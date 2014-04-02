@@ -1,0 +1,73 @@
+package {{{packagename}}}.model.dto;
+
+{{#extraImports}}
+{{{import}}}
+{{/extraImports}}
+import android.os.Parcelable;
+import android.os.Parcel;
+import org.json.JSONObject;
+import {{{packagename}}}.model.dto.base.{{{projectName}}}DTOBundle;
+import {{{packagename}}}.model.dao.*;
+
+/**
+ * Extended DTO {{{className}}}
+ * This DTO CAN be extended (will not be overwritten by generator)
+ * @see {{{packagename}}}.model.dto.base.{{{projectName}}}DTOBundle.Base{{{className}}}
+ * @author Service Generator
+ */
+public final class {{{className}}} extends {{{projectName}}}DTOBundle.Base{{{className}}} {
+    /**
+     * Creates DTO with default values
+     */
+    public {{{className}}}() {
+      super();
+  }
+
+    /**
+     * Creates DTO from Parcel Data
+     */
+    public {{{className}}}(Parcel in) {
+      super(in);
+  }
+
+  @Override
+  public boolean equals(final Object object) {
+
+    if (this == object) return true;
+    if (!(object instanceof {{{className}}})) return false;
+    final {{{className}}} other = ({{{className}}}) object;
+    try {
+       JSONObject thisJson = {{{daoName}}}.getInstance().serialize(this);
+       JSONObject otherJson = {{{daoName}}}.getInstance().serialize(other);        
+       return thisJson.toString().equals(otherJson.toString());
+   } catch(Exception ex) {
+       ex.printStackTrace();
+   } 
+   
+   return false;
+}
+
+@Override
+public int hashCode() {
+   try {
+       JSONObject thisJson = {{{daoName}}}.getInstance().serialize(this);
+       return thisJson.toString().hashCode();
+   } catch(Exception ex) {
+       ex.printStackTrace();
+       return ex.hashCode();
+   } 
+}
+
+	/**
+	 * Static Parcelable serializer/deserializer
+	 */
+	public static final Parcelable.Creator<{{{className}}}> CREATOR =
+  new Parcelable.Creator<{{{className}}}>() {
+     public {{{className}}} createFromParcel(Parcel in) {
+        return new {{{className}}}(in);
+    }
+    public {{{className}}}[] newArray(int size) {
+        return new {{{className}}}[size];
+    }
+};
+}
