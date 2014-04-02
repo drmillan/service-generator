@@ -159,7 +159,7 @@ Si la propiedad LOG.folder existe y contiene una ruta existente y dicha ruta hac
 
 
 ## Validación del certificado SSL del servidor
-Desde la versión 7.0 del generador se puede especificar si utilizar validación del certificado SSL del servidor o aceptar cualquier certificado.
+Desde la versión 7.0 en iOS y 5.0 en Android, en el generador se puede especificar si utilizar validación del certificado SSL del servidor o aceptar cualquier certificado.
 
 ### iOS:
 Si definimos "CHECK_SSL_CERTIFICATE":
@@ -184,7 +184,7 @@ Tenemos disponible un método del Helper para utilizar una clase propia en nuest
 
   	public DefaultHttpClient preprocessHttpClient(String logic,String method,DefaultHttpClient httpClient);
   	
-En el generador se incluyen clases estáticas que implementan esta funcionalidad (HttpClientSSLValidationHelper.java, CustomSSLSocketFactory.java y CustomTrustManager.java) de manera que solamente tenemos que crearnos una instancia de ese objeto DefaultHttpClient y devolverla en "preprocessHttpClient":
+En el generador se incluyen clases estáticas que implementan esta funcionalidad (CustomSSLSocketFactory.java y CustomTrustManager.java) de manera que solamente tenemos que crearnos una instancia de ese objeto DefaultHttpClient (con el getter "getNewSSLValidationHttpClient") y devolverla en "preprocessHttpClient":
 
-	DefaultHttpClient responseHttpClient = 	HttpClientSSLValidationHelper.getInstance().getNewHttpClient();
-        return responseHttpClient;
+    DefaultHttpClient responseHttpClient = HttpClientHelper.getInstance().getNewSSLValidationHttpClient();
+	return responseHttpClient;

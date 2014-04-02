@@ -75,4 +75,33 @@ public class HttpClientHelper {
 	        return new DefaultHttpClient();
 	    }
 	}
+	
+	/**
+	 * Returns a new instance of HttpClient with SSL certificate validation (auth ignore)
+     */
+	public DefaultHttpClient getNewSSLValidationHttpClient() {
+	    try {
+            // Create a SSLSocketFactory with NO additional keyStores (only the default one)
+            SSLSocketFactory sf = new CustomSSLSocketFactoryForCertificateValidation(null);
+
+            BasicHttpParams params = new BasicHttpParams();
+
+	        HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
+	        HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
+
+            int timeout=Integer.parseInt(System.getProperty(SYSTEM_TIMEOUT,DEFAULT_TIMEOUT));
+            HttpConnectionParams.setConnectionTimeout(params, timeout);
+            HttpConnectionParams.setSoTimeout(params, timeout);
+
+	        SchemeRegistry registry = new SchemeRegistry();
+	        registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+	        registry.register(new Scheme("https", sf, 443));
+
+	        ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
+
+	        return new DefaultHttpClient(ccm, params);
+	    } catch (Exception e) {
+	        return new DefaultHttpClient();
+	    }
+	}
 }
