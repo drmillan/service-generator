@@ -125,7 +125,7 @@ public final class {{{entity.daoClassName}}}{
 				{{{javaName}}}List.add(value.getString(CONSTANT_{{nameFullUcase}}));
 				{{/isString}}
 				{{#isInteger}}
-				{{{javaName}}}List.add(Integer.valueOf(value.getLong(CONSTANT_{{nameFullUcase}})));					
+				{{{javaName}}}List.add(Integer.valueOf((int)value.getLong(CONSTANT_{{nameFullUcase}})));					
 				{{/isInteger}}
 				{{#isFloat}}
 				{{{javaName}}}List.add(Float.valueOf((float)value.getDouble(CONSTANT_{{nameFullUcase}})));					
