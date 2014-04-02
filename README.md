@@ -184,4 +184,7 @@ Tenemos disponible un método del Helper para utilizar una clase propia en nuest
 
   	public DefaultHttpClient preprocessHttpClient(String logic,String method,DefaultHttpClient httpClient);
   	
-En un futuro se incluirán clases estáticas que implementen esta funcionalidad de manera que solamente tengamos que crearnos una instancia de ese objeto DefaultHttpClient.
+En el generador se incluyen clases estáticas que implementan esta funcionalidad (HttpClientSSLValidationHelper.java, CustomSSLSocketFactory.java y CustomTrustManager.java) de manera que solamente tenemos que crearnos una instancia de ese objeto DefaultHttpClient y devolverla en "preprocessHttpClient":
+
+	DefaultHttpClient responseHttpClient = 	HttpClientSSLValidationHelper.getInstance().getNewHttpClient();
+        return responseHttpClient;
