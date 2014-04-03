@@ -62,6 +62,10 @@ class Field
   def isDouble
     return baseTypeSingular()=="Double"
   end
+  
+  def isNumber
+    return isInteger || isLong || isFloat || isDouble
+  end
 
   def isFile
     return type=="file" || type=="File"
