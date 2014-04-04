@@ -51,7 +51,34 @@
 	url=[self preInjectURLParameters:url  withObject:{{request.javaInstanceName}} onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
 
 {{#request.fields}}
-	NSString *string{{nameUcase}}=[NSString stringWithFormat:@"%@",{{request.javaInstanceName}}.{{name}}];
+	{{#isGet}}
+		{{#isBaseArray}}
+			NSString *string{{nameUcase}}=@"";
+		    for ({{iosBaseTypeSingular}} *param in {{request.javaInstanceName}}.{{name}}) {
+		        if ([string{{nameUcase}} isEqual:@""]) {
+					{{#isNumber}}
+						string{{nameUcase}} = [NSString stringWithFormat:@"{{serviceName}}=%@", [param stringValue]];
+					{{/isNumber}}
+		            {{#isString}}
+						string{{nameUcase}} = [NSString stringWithFormat:@"{{serviceName}}=%@", param];
+					{{/isString}}
+		        } else {
+					{{#isNumber}}
+						string{{nameUcase}} = [NSString stringWithFormat:@"%@&{{serviceName}}=%@", string{{nameUcase}}, [param stringValue]];
+					{{/isNumber}}
+		            {{#isString}}
+						string{{nameUcase}} = [NSString stringWithFormat:@"%@&{{serviceName}}=%@", string{{nameUcase}}, param];
+					{{/isString}}
+		        }
+		    }
+		{{/isBaseArray}}
+		{{^isBaseArray}}
+			NSString *string{{nameUcase}}=[NSString stringWithFormat:@"%@",{{request.javaInstanceName}}.{{name}}];
+		{{/isBaseArray}}
+	{{/isGet}}
+	{{^isGet}}
+		NSString *string{{nameUcase}}=[NSString stringWithFormat:@"%@",{{request.javaInstanceName}}.{{name}}];
+	{{/isGet}}
 {{/request.fields}}
 
 {{#inURLbutNotField}}
@@ -81,7 +108,12 @@
 			{
 				operator = @"?";
 			}
-			url = [NSString stringWithFormat:@"%@%@{{serviceName}}=%@", url, operator, string{{nameUcase}}];
+			{{#isBaseArray}}
+				url = [NSString stringWithFormat:@"%@%@%@", url, operator, string{{nameUcase}}];
+			{{/isBaseArray}}
+			{{^isBaseArray}}
+				url = [NSString stringWithFormat:@"%@%@{{serviceName}}=%@", url, operator, string{{nameUcase}}];
+			{{/isBaseArray}}
 		}
 		{{/isGet}}
 	}

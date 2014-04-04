@@ -62,6 +62,10 @@ class Field
   def isDouble
     return baseTypeSingular()=="Double"
   end
+  
+  def isNumber
+    return isInteger || isLong || isFloat || isDouble
+  end
 
   def isFile
     return type=="file" || type=="File"
@@ -215,7 +219,7 @@ class Field
         "Double*"=>"NSNumber","double*"=>"NSNumber",
 
         "String"=>"NSString","string"=>"NSString",
-        "String*"=>"NSNumber","string*"=>"NSNumber",
+        "String*"=>"NSString","string*"=>"NSString",
 
         "Boolean"=>"NSNumber","boolean"=>"NSNumber",
         "Boolean*"=>"NSNumber","boolean*"=>"NSNumber",
