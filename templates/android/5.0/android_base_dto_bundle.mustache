@@ -52,6 +52,31 @@ public class {{{projectName}}}DTOBundle {
 			return {{{javaName}}};
 		}
 		{{/fields}}
+
+        // Equality stuff
+
+		@Override
+		public boolean equals(final Object object) {
+			if (this == object) return true;
+			if (!(object instanceof Base{{{name}}})) return false;
+			final Base{{{name}}} other = (Base{{{name}}}) object;
+			boolean equality = true;
+			{{#fields}}
+			equality = equality && get{{{nameUcase}}}().equals(other.get{{{nameUcase}}}());
+			{{/fields}}
+			return equality;
+		}
+
+		@Override
+		public int hashCode() {
+			int result = 0;
+            {{#fields}}
+			result = result ^ get{{{nameUcase}}}().hashCode();
+            {{/fields}}
+			return result;
+		}
+
+    	// Parcelable stuff
 		
 		@Override
 		public int describeContents() {

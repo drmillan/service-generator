@@ -18,7 +18,7 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 
 /**
- * HttpClient Factory class, creates HttpClient instances ignoring certificates
+ * HttpClient factory class
  * @author Service Generator
  *
  * Generated Class - DO NOT MODIFY
@@ -45,7 +45,7 @@ public class HttpClientHelper {
 	/**
 	 * Returns a new instance of HttpClient (auth ignore)
 	 * @returns DefaultHttpClient returns an HttpClient with ALLOW_ALL_HOSTNAME_VERIFIER
-	 * @see com.mobivery.utils.CustomSSLSocketFactory
+	 * @see {{{staticPackage}}}.utils.CustomSSLSocketFactory
 	 */
 	public DefaultHttpClient getNewHttpClient() {
 	    try {

@@ -1,8 +1,4 @@
-package com.mobivery.utils;
-
-/**
- * Created by mobivery on 26/03/14.
- */
+package {{{staticPackage}}}.utils;
 
 import android.util.Log;
 
