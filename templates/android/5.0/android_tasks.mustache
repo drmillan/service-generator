@@ -14,6 +14,7 @@
   import android.app.Dialog;
   import android.graphics.drawable.ColorDrawable;
   import android.os.AsyncTask;
+  import android.os.Build;
   import android.view.Window;
   import android.widget.TextView;
 
@@ -86,8 +87,15 @@ public class {{{message.methodUpperCase}}}Task extends AsyncTask<{{{message.requ
 				}));
 			}
 		}
-		super.execute(request);
-	}
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.DONUT) {
+			throw new UnsupportedOperationException("This class can only be used on API 4 and newer.");
+		}
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+			super.execute(request);
+		} else {
+			super.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, request);
+		}
+    }
 	/**
 	 * Start spinner for long operations
 	 */
