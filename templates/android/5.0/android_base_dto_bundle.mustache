@@ -55,39 +55,34 @@ public class {{{projectName}}}DTOBundle {
 
         // Equality stuff
 
-		@Override
-        public boolean equals(final Object object) {
-            if (this == object) return true;
+	@Override
+	public boolean equals(final Object object) {
+		if (this == object) return true;
         	if (!(object instanceof Base{{{name}}})) return false;
-            final Base{{{name}}} other = (Base{{{name}}}) object;
+		final Base{{{name}}} other = (Base{{{name}}}) object;
         	boolean equality = true;
         	{{#fields}}
-        	if(get{{{nameUcase}}}()==null)
-        	{
-        	    if(other.get{{nameUcase}}()!=null)
-        	    {
-        		    return false;
-                }
-            }
-        	else
-        	{
-        	    equality = equality && get{{{nameUcase}}}().equals(other.get{{{nameUcase}}}());
-            }
+		if (get{{{nameUcase}}}()==null) {
+			if(other.get{{nameUcase}}()!=null) {
+				return false;
+			}
+		} else {
+			equality = equality && get{{{nameUcase}}}().equals(other.get{{{nameUcase}}}());
+		}
         	{{/fields}}
-            return equality;
-        }
+		return equality;
+	}
 
-        @Override
-        public int hashCode() {
-            int result = 0;
-            {{#fields}}
-            if(get{{{nameUcase}}}()!=null)
-            {
+	@Override
+	public int hashCode() {
+		int result = 0;
+		{{#fields}}
+		if (get{{{nameUcase}}}()!=null) {
         	    result = result ^ get{{{nameUcase}}}().hashCode();
-        	}
-            {{/fields}}
-        	return result;
-        }
+		}
+		{{/fields}}
+		return result;
+	}
 
     	// Parcelable stuff
 		
