@@ -128,7 +128,7 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
                         }
                     {{/isBaseArray}}
                     {{^isBaseArray}}
-                        url=url+(url.contains("?")?"&":"?")+"{{{serviceName}}}="+String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}());
+                        url=url+(url.contains("?")?"&":"?")+"{{{serviceName}}}="+URLEncoder.encode(String.valueOf({{{request.javaInstanceName}}}.get{{{nameUcase}}}()));
                     {{/isBaseArray}}
 				}
 				{{/isGet}}
