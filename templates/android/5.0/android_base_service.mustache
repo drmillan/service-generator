@@ -49,6 +49,7 @@ import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.util.EntityUtils;
 import java.io.File;
 import java.io.FileInputStream;
 import org.apache.commons.io.IOUtils;
@@ -257,7 +258,7 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 			postExecute("{{{serviceName}}}","{{{method}}}",client,request,response,cookieStore);
 			HttpEntity entity = response.getEntity();
 			if (entity != null) {
-				result=convertStreamToString(entity.getContent());
+				result=EntityUtils.toString(entity);
 				result=preprocessResponse("{{{serviceName}}}","{{{method}}}",result);
 			} else {
 				result = "";
@@ -298,23 +299,6 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 		}
 	}
 	{{/messages}}	
-	
-	/**
-	 * Reads stream contents as a String
-	 * @param is InputStream to read from
-	 * @return String representation of Input Stream
-	 * @throws IOException
-	 */
-	private String convertStreamToString(InputStream is) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-		StringBuilder sb = new StringBuilder();
-
-		String line = null;
-		while ((line = reader.readLine()) != null) {
-			sb.append(line + "\n");
-		}
-		return sb.toString();
-	}
 	
 	/**
 	 * Adds System properties to request url
