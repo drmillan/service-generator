@@ -257,7 +257,7 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 			postExecute("{{{serviceName}}}","{{{method}}}",client,request,response,cookieStore);
 			HttpEntity entity = response.getEntity();
 			if (entity != null) {
-				result=EntityUtils.toString(entity);
+				result=EntityUtils.toString(entity,"UTF-8");
 				result=preprocessResponse("{{{serviceName}}}","{{{method}}}",result);
 			} else {
 				result = "";
