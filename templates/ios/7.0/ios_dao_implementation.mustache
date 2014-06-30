@@ -33,7 +33,7 @@
 
 -(NSDictionary *) writeToDictionary:({{{dto.name}}} *)instance
 {
-NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];	
+	NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];	
 		
 	{{#dto.baseFields}}
 		{{#isBoolean}}
@@ -58,18 +58,18 @@ NSMutableDictionary *dict=[[NSMutableDictionary alloc]init];
 	{{/dto.baseArrayFields}}
 	
 	{{#dto.objectFields}}
-	NSDictionary *dict{{{name}}}=[[{{{typeJavaDAO}}} sharedInstance] writeToDictionary:instance.{{{name}}}];
-	dict[@"{{{serviceName}}}"] = dict{{{name}}};
+	NSDictionary *dict{{{nameUcase}}}=[[{{{typeJavaDAO}}} sharedInstance] writeToDictionary:instance.{{{name}}}];
+	dict[@"{{{serviceName}}}"] = dict{{{nameUcase}}};
 	{{/dto.objectFields}}
 
 	{{#dto.objectArrayFields}}
-	NSMutableArray *array{{{name}}}=[[NSMutableArray alloc]init];
+	NSMutableArray *array{{{nameUcase}}}=[[NSMutableArray alloc]init];
 	for({{{iosBaseTypeSingular}}} *typeItem in instance.{{{name}}})
 	{
-		NSDictionary *dict{{{name}}}=[[{{{typeJavaDAO}}} sharedInstance] writeToDictionary:typeItem];
-		[array{{{name}}} addObject:dict{{{name}}}];
+		NSDictionary *dict{{{nameUcase}}}=[[{{{typeJavaDAO}}} sharedInstance] writeToDictionary:typeItem];
+		[array{{{nameUcase}}} addObject:dict{{{nameUcase}}}];
 	}
-	dict[@"{{{serviceName}}}"] = array{{{name}}};
+	dict[@"{{{serviceName}}}"] = array{{{nameUcase}}};
 
 	{{/dto.objectArrayFields}}
 	return dict;
