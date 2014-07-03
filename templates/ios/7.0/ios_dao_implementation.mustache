@@ -140,10 +140,11 @@
 		{{{name}}}Item=dict[@"{{{serviceName}}}"];
 	}
 	
+	NSMutableArray *{{{name}}}MutableArray=[[NSMutableArray alloc]init];
+
 	if([{{{name}}}Item isKindOfClass:[NSArray class]])
 	{
 		NSArray *{{{name}}}Array=dict[@"{{{serviceName}}}"];
-		NSMutableArray *{{{name}}}MutableArray=[[NSMutableArray alloc]init];
 		for(NSDictionary *data in {{{name}}}Array)
 		{
 			{{{iosBaseTypeSingular}}} *item=[[{{{typeJavaDAO}}} sharedInstance] readFromDictionary:data];
@@ -153,11 +154,14 @@
 	}
 	else if ({{{name}}}Item)
 	{
-		NSMutableArray *{{{name}}}MutableArray=[[NSMutableArray alloc]init];
+		
 		{{{iosBaseTypeSingular}}} *item=[[{{{typeJavaDAO}}} sharedInstance] readFromDictionary:{{{name}}}Item];
 		[{{{name}}}MutableArray addObject:item];
-		instance.{{{name}}}={{{name}}}MutableArray;
+		
 	}
+
+	instance.{{{name}}}={{{name}}}MutableArray;
+
     {{/dto.objectArrayFields}}
 	}
 	return instance;
