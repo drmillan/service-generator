@@ -186,7 +186,13 @@ public class Base{{{serviceName}}}Logic  extends BaseLogic
 				s = s.append(sResponse);
 			}
 			result=s.toString();
-			JSONObject jsonObject=preProcessJSON("{{{serviceName}}}","{{{method}}}",new JSONObject(result));
+			JSONObject jsonObject; 
+			if("".equals(result)){
+				jsonObject=preProcessJSON("{{{serviceName}}}","{{{method}}}",new JSONObject());
+			} else {
+				jsonObject=preProcessJSON("{{{serviceName}}}","{{{method}}}",new JSONObject(result));
+			}
+
 			{{/request.isMultipart}}
 			{{^request.isMultipart}}
 			DefaultHttpClient client = HttpClientHelper.getInstance().getNewHttpClient();
