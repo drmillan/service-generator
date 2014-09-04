@@ -1,0 +1,162 @@
+package {{{packagename}}}.tasks.{{{message.serviceNameLower}}};
+
+import android.os.AsyncTask;
+import android.os.Build;
+
+import {{{staticPackage}}}.utils.ResponseInfo;
+import {{{staticPackage}}}.logic.TaskListener;
+import {{{staticPackage}}}.logic.OnLoadingListener;
+
+import {{{packagename}}}.logic.{{{message.service}}}Logic;
+import {{{packagename}}}.model.dto.{{{message.request.name}}};
+import {{{packagename}}}.model.dto.{{{message.response.name}}};
+
+/**
+ * {{{message.method}}} AsyncTask
+ *
+ * @author Service Generator
+ * 
+ * Generated Class - DO NOT MODIFY
+ */
+public class {{{message.methodUpperCase}}}Task {
+
+    private OnLoadingListener onLoadingListener;
+    private TaskListener<{{{message.request.name}}},{{{message.response.name}}}> taskListener;
+    private {{{message.methodUpperCase}}}InnerTask innerTask;
+
+    private {{{message.methodUpperCase}}}Task() {
+    }
+
+    public static {{{message.methodUpperCase}}}Task build() {
+        return new {{{message.methodUpperCase}}}Task();
+    }
+
+    public {{{message.methodUpperCase}}}Task loadingListener(OnLoadingListener listener) {
+        this.onLoadingListener = listener;
+        return this;
+    }
+
+    public {{{message.methodUpperCase}}}InnerTask getInnerTask() {
+        return innerTask;
+    }
+
+    public void execute({{{message.request.name}}} request) {
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.DONUT) {
+            throw new UnsupportedOperationException("This class can only be used on API 4 and newer.");
+        }
+        innerTask = new {{{message.methodUpperCase}}}InnerTask(taskListener, onLoadingListener);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+            innerTask.execute(request);
+        } else {
+            innerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, request);
+        }
+    }
+
+    public void execute({{{message.request.name}}} request, TaskListener<{{{message.request.name}}}, {{{message.response.name}}}> listener) {
+        this.taskListener = listener;
+        this.execute(request);
+    }
+
+    public class {{{message.methodUpperCase}}}InnerTaskResponse {
+        private ResponseInfo responseInfo;
+        private {{{message.request.name}}} request;
+        private {{{message.response.name}}} response;
+        private Exception exception;
+
+        public {{{message.methodUpperCase}}}InnerTaskResponse({{{message.request.name}}} request) {
+            this.request = request;
+        }
+
+        public ResponseInfo getResponseInfo() {
+            return responseInfo;
+        }
+
+        public void setResponseInfo(ResponseInfo responseInfo) {
+            this.responseInfo = responseInfo;
+        }
+
+        public {{{message.request.name}}} getRequest() {
+            return request;
+        }
+
+        public void setRequest({{{message.request.name}}} request) {
+            this.request = request;
+        }
+
+        public {{{message.response.name}}} getResponse() {
+            return response;
+        }
+
+        public void setResponse({{{message.response.name}}} response) {
+            this.response = response;
+        }
+
+        public Exception getException() {
+            return exception;
+        }
+
+        public void setException(Exception exception) {
+            this.exception = exception;
+        }
+    }
+
+    public class {{{message.methodUpperCase}}}InnerTask extends AsyncTask<{{{message.request.name}}},Integer, {{{message.methodUpperCase}}}InnerTaskResponse> {
+
+        private TaskListener<{{{message.request.name}}},{{{message.response.name}}}> taskListener;
+        private OnLoadingListener serviceWorkingListener;
+
+        public {{{message.methodUpperCase}}}InnerTask(TaskListener<{{{message.request.name}}},{{{message.response.name}}}> taskListener, OnLoadingListener serviceWorkingListener) {
+            this.taskListener = taskListener;
+            this.serviceWorkingListener = serviceWorkingListener;
+        }
+
+        @Override
+        protected {{{message.methodUpperCase}}}InnerTaskResponse doInBackground({{{message.request.name}}}... params) {
+            final {{{message.request.name}}} request = params[0];
+
+            {{{message.methodUpperCase}}}InnerTaskResponse taskResponse = new {{{message.methodUpperCase}}}InnerTaskResponse(request);
+            ResponseInfo responseInfo = new ResponseInfo();
+            taskResponse.setResponseInfo(responseInfo);
+
+            try {
+                final {{{message.response.name}}} response = {{{message.service}}}Logic.getInstance().{{{message.method}}}(request, responseInfo);
+                taskResponse.setResponse(response);
+            } catch (ServiceException e) {
+                e.printStackTrace();
+                taskResponse.setException(e);
+            }
+            return taskResponse;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if (serviceWorkingListener != null) {
+                serviceWorkingListener.onLoadingStarted();
+            }
+        }
+
+        @Override
+        protected void onPostExecute({{{message.methodUpperCase}}}InnerTaskResponse response) {
+            super.onPostExecute(response);
+
+            if (taskListener != null) {
+
+                if (response.getException() != null) {
+                    taskListener.onServiceError(response.getRequest(), response.getException());
+                } else {
+                    taskListener.onServiceResponse(response.getRequest(), response.getResponse(), response.getResponseInfo());
+                }
+            }
+
+            if (serviceWorkingListener != null) {
+                serviceWorkingListener.onLoadingFinished();
+            }
+        }
+    }
+
+}
+
+
