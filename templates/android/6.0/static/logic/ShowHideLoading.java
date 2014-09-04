@@ -11,7 +11,7 @@ import android.view.View;
 public class ShowHideLoading implements OnLoadingListener {
 
     private View loadingView;
-    private boolean invisibleInsteadOfGone = false;
+    private int hideType = View.GONE;
 
     public ShowHideLoading(View loadingView) {
         this.loadingView = loadingView;
@@ -27,15 +27,15 @@ public class ShowHideLoading implements OnLoadingListener {
     @Override
     public void onLoadingFinished() {
         if (loadingView != null) {
-            loadingView.setVisibility(invisibleInsteadOfGone? View.INVISIBLE : View.GONE);
+            loadingView.setVisibility(hideType);
         }
     }
 
-    public boolean isInvisibleInsteadOfGone() {
-        return invisibleInsteadOfGone;
+    public int getHideType() {
+        return hideType;
     }
 
-    public void setInvisibleInsteadOfGone(boolean invisibleInsteadOfGone) {
-        this.invisibleInsteadOfGone = invisibleInsteadOfGone;
+    public void setHideType(int hideType) {
+        this.hideType = hideType;
     }
 }
