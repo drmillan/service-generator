@@ -2,6 +2,7 @@ package {{{packagename}}}.tasks.{{{message.serviceNameLower}}};
 
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Looper;
 
 import {{{staticPackage}}}.utils.ResponseInfo;
 import {{{staticPackage}}}.logic.OnLoadingListener;
@@ -46,6 +47,11 @@ public class {{{message.methodUpperCase}}}Task {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.DONUT) {
             throw new UnsupportedOperationException("This class can only be used on API 4 and newer.");
         }
+
+        if (Thread.currentThread() != Looper.getMainLooper().getThread()) {
+            throw new IllegalStateException("This method should be called from the main Thread");
+        }
+
         innerTask = new {{{message.methodUpperCase}}}InnerTask(taskListener, onLoadingListener);
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
