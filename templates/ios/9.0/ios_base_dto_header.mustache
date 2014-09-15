@@ -1,0 +1,27 @@
+//
+//  Base{{{dto.name}}}.h
+//  {{{projectName}}}
+//  Version: {{{version}}}
+//
+//  Created by Service Generator
+//
+
+#import <Foundation/Foundation.h>
+{{#dto.objectFields}}
+@class {{{iosBaseTypeSingular}}};
+{{/dto.objectFields}}
+{{#dto.objectArrayFields}}
+@class {{{iosBaseTypeSingular}}};
+{{/dto.objectArrayFields}}
+
+
+@interface Base{{{dto.name}}} : NSObject <NSCopying, NSMutableCopying, NSCoding>
+
+
+{{#dto.fields}}
+@property (nonatomic, strong) {{{typeIOS}}} *{{{name}}};	///< {{{comment}}} - Field name on service:{{serviceName}}.
+{{/dto.fields}}
+
+- (BOOL)isEqualToBase{{{dto.name}}}:(Base{{{dto.name}}} *)other;
+
+@end
