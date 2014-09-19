@@ -1,7 +1,4 @@
-package com.fundacionmapfre.fmculturahd.util;
-
-import com.mobivery.utils.DataTransferObjectJSONMarshallingInterface;
-import com.mobivery.utils.UnlimitedDiskCache;
+package {{{staticPackage}}}.utils;
 
 import java.io.File;
 import java.util.Collections;
@@ -9,7 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by ClaudiaLuque on 18/09/14.
+ * Unlimited disk cache that adds an expiration date to the hits and cache size limit
+ *
+ * @author Service Generator
+ *
+ * Generated Class - DO NOT MODIFY
  */
 public class LimitedAgeLimitedDiskCache<T, Q> extends UnlimitedDiskCache<T, Q> {
 
