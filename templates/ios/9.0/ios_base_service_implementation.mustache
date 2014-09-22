@@ -83,9 +83,11 @@
 {{#inURLbutNotField}}
 	#ifdef {{.}}
 	url = [url stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}",@"{{.}}"] withString:{{.}}];
+	#else
+	url=[url stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}",@"{{.}}"] withString:[[NSUserDefaults standardUserDefaults] objectForKey:@"{{.}}"]];
 	#endif
 {{/inURLbutNotField}}
-{{#request.fields}}    
+{{#request.fields}}
    	if({{request.javaInstanceName}}.{{name}}==nil){
         url = [url stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}",@"{{name}}"] withString:@""];
 	}
@@ -132,7 +134,7 @@
 	double time = [[NSDate date] timeIntervalSince1970];
     [dict setValue:[NSNumber numberWithDouble:time] forKey:@"requestTime"];
     {{/isWrite}}
-    
+
 		url = [self escapeUrl:url  onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
 		url = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
@@ -143,7 +145,7 @@
     // Multipart
 
 	[request setHTTPMethod:@"POST"];
- 
+
     NSString *boundary = @"---------------------------14737809831466499882746641449";
     NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
     [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
@@ -303,13 +305,13 @@
 	        		[_cache{{methodUpperCase}} setObject:dto forKey:{{request.javaInstanceName}}];
 	        	}
 	            onSuccess(operation.response.statusCode,dto);
-	        }      	  
+	        }
 	  	} else {
 			if (onError) {
 				onError(error);
-			}    	      
-		}    
-		
+			}
+		}
+
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 
 	    {{response.name}} *dto=[self {{method}}DTOFromOperation:operation withError:nil];
@@ -355,4 +357,3 @@
 
 @end
 
- 
