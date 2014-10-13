@@ -78,7 +78,7 @@
 	}
 	BOOL equals = YES;
 {{#dto.fields}}
-    equals = equals && [self.{{{name}}} isEqual: [other {{{name}}}]];
+    equals = equals && (self.{{{name}}} == other.{{{name}}} || [self.{{{name}}} isEqual:other.{{{name}}}]);
 {{/dto.fields}}
 	return equals;
 }
