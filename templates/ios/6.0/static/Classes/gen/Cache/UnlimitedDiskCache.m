@@ -66,7 +66,7 @@
     NSString *directory = [self privateDirectory];
     NSError *error = nil;
     for (NSString *filePath in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:directory error:&error]) {
-        BOOL success = [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@%@", directory, filePath] error:&error];
+        BOOL success = [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", directory, filePath] error:&error];
         if (!success || error) {
             NSLog(@"Cache file deletion failed (removeAll)");
         }
