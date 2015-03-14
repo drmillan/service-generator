@@ -328,25 +328,31 @@
         }
         
     } else {
-        
-        if (self.diskCache{{methodUpperCase}}) {
+
+    	if (!self.diskCache{{methodUpperCase}}) {
+
+			NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+            NSString *cachesPath = [paths  objectAtIndex:0];
+            cachesPath = [cachesPath stringByAppendingPathComponent:@"{{{serviceName}}}/{{methodUpperCase}}"];
+                        
+            self.diskCache{{methodUpperCase}} = [UnlimitedDiskCache cacheWithDirectory:cachesPath];
+    	}
+    	
+        {{response.name}} *cachedResponse = [self.diskCache{{methodUpperCase}} objectForKey:{{request.javaInstanceName}}];
             
-            {{response.name}} *cachedResponse = [self.diskCache{{methodUpperCase}} objectForKey:{{request.javaInstanceName}}];
+		if (cachedResponse && onSuccess) {
+                
+        	cachedResponse = [self preprocessCacheHitForRequest:{{request.javaInstanceName}} withCachedResponse:cachedResponse onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
             
-            if (cachedResponse && onSuccess) {
-                
-                cachedResponse = [self preprocessCacheHitForRequest:{{request.javaInstanceName}} withCachedResponse:cachedResponse onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
-                
-                if (cachedResponse) {
+            if (cachedResponse) {
                     
-                    onSuccess(200, cachedResponse, ServiceGeneratorCacheTypeDisk);
+				onSuccess(200, cachedResponse, ServiceGeneratorCacheTypeDisk);
                     
-                    if (!(cacheOptions & ServiceGeneratorCacheOptionRefresh)) {
-                        return;
-                    }
-                }
+            	if (!(cacheOptions & ServiceGeneratorCacheOptionRefresh)) {
+            		return;
+            	}
             }
-        }
+         }
     }
 
 
@@ -386,16 +392,10 @@
                     
                 } else {
                     
-                    if (!self.diskCache{{methodUpperCase}}) {
+                    if (self.diskCache{{methodUpperCase}}) {
                         
-                        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-                        NSString *cachesPath = [paths  objectAtIndex:0];
-                        cachesPath = [cachesPath stringByAppendingPathComponent:@"{{{serviceName}}}"];
-                        
-                        self.diskCache{{methodUpperCase}} = [UnlimitedDiskCache cacheWithDirectory:cachesPath];
+                        [self.diskCache{{methodUpperCase}} setObject:dto forKey:{{request.javaInstanceName}}];
                     }
-                    
-                    [self.diskCache{{methodUpperCase}} setObject:dto forKey:{{request.javaInstanceName}}];
                 }
 	        	
 	            onSuccess(operation.response.statusCode, dto, ServiceGeneratorCacheTypeNone);
