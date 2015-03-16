@@ -1,0 +1,105 @@
+//
+//  Base{{{className}}}.m
+//  {{{projecyName}}}
+//  Version: {{{version}}}
+//
+//  Created by Service Generator
+//
+
+#import "Base{{{dto.name}}}.h"
+{{#dto.objectFields}}
+#import "{{{iosBaseTypeSingular}}}.h"
+{{/dto.objectFields}}
+
+@implementation Base{{{dto.name}}}
+
+#pragma mark - NSCopying
+// Creates a non-mutable copy of this DTO Object
+-(id)copyWithZone:(NSZone *)zone {
+
+	Base{{{dto.name}}} *copy=[[[self class] alloc] init];
+    if(copy) {
+		{{#dto.fields}}
+		copy.{{{name}}}=[self.{{{name}}} copyWithZone:zone];
+		{{/dto.fields}}
+	}
+	return copy;
+}
+
+#pragma mark - NSMutableCopying
+// Creates a mutable copy of this DTO Object
+-(id)mutableCopyWithZone:(NSZone *)zone {
+
+	Base{{{dto.name}}} *copy=[[[self class] alloc] init];
+	if(copy) {
+		{{#dto.baseFields}}
+		copy.{{{name}}}=self.{{{name}}};
+		{{/dto.baseFields}}
+		{{#dto.baseArrayFields}}
+		copy.{{{name}}}=[self.{{{name}}} mutableCopyWithZone:zone];
+		{{/dto.baseArrayFields}}
+		{{#dto.objectFields}}
+		copy.{{{name}}}=[self.{{{name}}} mutableCopyWithZone:zone];
+		{{/dto.objectFields}}
+		{{#dto.objectArrayFields}}
+		copy.{{{name}}}=[self.{{{name}}} mutableCopyWithZone:zone];
+		{{/dto.objectArrayFields}}
+	}
+	return copy;
+}
+
+#pragma mark - NSCoding
+
+- (id)initWithCoder:(NSCoder *)decoder {
+    self = [super init];
+    if (!self) {
+        return nil;
+    }
+	
+	{{#dto.fields}}
+	self.{{{name}}} = [decoder decodeObjectForKey:@"{{{name}}}"];
+	{{/dto.fields}}
+
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)encoder {
+	
+	{{#dto.fields}}
+	[encoder encodeObject:self.{{{name}}} forKey:@"{{{name}}}"];
+	{{/dto.fields}}
+}
+
+#pragma mark - Equality
+
+- (BOOL)isEqualToBase{{{dto.name}}}:(Base{{{dto.name}}} *)other {
+	if (!other) {
+		return NO;
+	}
+	BOOL equals = YES;
+{{#dto.fields}}
+    equals = equals && (self.{{{name}}} == other.{{{name}}} || [self.{{{name}}} isEqual:other.{{{name}}}]);
+{{/dto.fields}}
+	return equals;
+}
+
+- (BOOL)isEqual:(id)anObject {
+	if (self == anObject) {
+		return YES;
+	}
+	if (![anObject isKindOfClass:[Base{{{dto.name}}} class]]) {
+		return NO;
+	}
+	return [self isEqualToBase{{{dto.name}}}:(Base{{{dto.name}}} *)anObject];
+}
+
+- (NSUInteger)hash {
+	NSUInteger theHash = 0;
+{{#dto.fields}}
+    theHash = theHash ^ [self.{{{name}}} hash];
+{{/dto.fields}}
+	return theHash;
+}
+
+@end
+ 

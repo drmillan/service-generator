@@ -1,0 +1,103 @@
+//
+//  {{message.methodUpperCase}}Task.m
+//  {{projectName}}
+//  Version: {{version}}
+//
+//  Created by Service Generator
+//
+
+#import "{{message.methodUpperCase}}Task.h"
+#import "{{projectName}}Helper.h"
+#import "{{message.service}}Logic.h"
+
+@implementation {{message.methodUpperCase}}Task
+
++ (void){{message.method}}TaskForRequest:({{message.request.name}} *)request showLoadingView:(BOOL)showLoadingView completed:(void(^)(NSInteger statusCode, {{message.response.name}} *response))completedBlock error:(void(^)(NSError *error))errorBlock {
+
+	[self {{message.method}}TaskForRequest:request defaultCacheOptions:ServiceGeneratorCacheOptionNoCache showLoadingView:showLoadingView completed:^(NSInteger statusCode, {{message.response.name}} *response, ServiceGeneratorCacheType cacheType) {
+        if (completedBlock) {
+            completedBlock(statusCode, response);
+        }        
+    } error:errorBlock];
+}
+
++ (void){{message.method}}TaskForRequest:({{message.request.name}} *)request completed:(void(^)(NSInteger statusCode,{{message.response.name}} *response))completedBlock error:(void(^)(NSError *error))errorBlock {
+
+	[self {{message.method}}TaskForRequest:request showLoadingView:YES completed:completedBlock error:errorBlock];
+}
+
++ (void){{message.method}}TaskForRequest:({{message.request.name}} *)request defaultCacheOptions:(ServiceGeneratorCacheOption)defaultCacheOptions showLoadingView:(BOOL)showLoadingView completed:(void(^)(NSInteger statusCode, {{message.response.name}} *response, ServiceGeneratorCacheType cacheType))completedBlock error:(void(^)(NSError *error))errorBlock {
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+		
+	UIView *loadingView;
+	if ([[{{projectName}}Helper sharedInstance] respondsToSelector:@selector(loadingViewForTasks)]  && showLoadingView) {
+		loadingView = [[{{projectName}}Helper sharedInstance] loadingViewForTasks];
+	}
+				
+	if (loadingView) {
+		UIWindow* window = [UIApplication sharedApplication].keyWindow;
+		[window addSubview:loadingView];
+	}
+
+	[[{{message.service}}Logic sharedInstance] {{message.method}}:request defaultCacheOptions:defaultCacheOptions onSuccess:^(NSInteger statusCode, {{message.response.name}} *response, ServiceGeneratorCacheType cacheType){
+
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		if (loadingView) {
+			[loadingView removeFromSuperview];
+		}
+		if(completedBlock){
+			completedBlock(statusCode, response, cacheType);
+		}
+
+	} onError:^(NSError *error){
+
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		if (loadingView) {
+			[loadingView removeFromSuperview];
+		}
+		if(errorBlock) {
+			errorBlock(error);
+		}
+	}];
+
+}
+
++ (void){{message.method}}TaskForRequest:({{message.request.name}} *)request cache:(id<Cache>)cache refreshCache:(BOOL)refreshCache showLoadingView:(BOOL)showLoadingView completed:(void(^)(NSInteger statusCode,{{message.response.name}} *response, ServiceGeneratorCacheType cacheType))completedBlock error:(void(^)(NSError *error))errorBlock {
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+		
+	UIView *loadingView;
+	if ([[{{projectName}}Helper sharedInstance] respondsToSelector:@selector(loadingViewForTasks)]  && showLoadingView) {
+		loadingView = [[{{projectName}}Helper sharedInstance] loadingViewForTasks];
+	}
+				
+	if (loadingView) {
+		UIWindow* window = [UIApplication sharedApplication].keyWindow;
+		[window addSubview:loadingView];
+	}
+
+	[[{{message.service}}Logic sharedInstance] {{message.method}}:request cache:cache refreshCache:refreshCache onSuccess:^(NSInteger statusCode, {{message.response.name}} *response, ServiceGeneratorCacheType cacheType){
+
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		if (loadingView) {
+			[loadingView removeFromSuperview];
+		}
+		if(completedBlock){
+			completedBlock(statusCode, response, cacheType);
+		}
+
+	} onError:^(NSError *error){
+
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		if (loadingView) {
+			[loadingView removeFromSuperview];
+		}
+		if(errorBlock) {
+			errorBlock(error);
+		}
+	}];
+
+}
+
+@end

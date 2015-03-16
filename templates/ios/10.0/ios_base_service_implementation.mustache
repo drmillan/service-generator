@@ -1,0 +1,436 @@
+//
+//  {{{serviceName}}}.m
+//  {{{projectName}}}
+//  Version: {{{version}}}
+//
+//  Created by Service Generator
+//
+
+#import "Base{{{serviceName}}}Logic.h"
+
+#import "AFHTTPRequestOperation.h"
+#import "GenDefines.h"
+#import "{{{projectName}}}Helper.h"
+#import "UnlimitedDiskCache.h"
+#import "UnlimitedMemoryCache.h"
+{{#service.hasMultipart}}
+#import "AFHTTPRequestOperationManager.h"
+{{/service.hasMultipart}}
+{{#imports}}
+#import "{{request.name}}.h"
+#import "{{response.name}}.h"
+#import "{{request.daoClassName}}.h"
+#import "{{response.daoClassName}}.h"
+#import "BaseLogic.h"
+{{/imports}}
+
+@interface Base{{serviceName}}Logic ()
+
+{{#service.messages}}
+@property (nonatomic, strong) UnlimitedDiskCache *diskCache{{methodUpperCase}};
+@property (nonatomic, strong) UnlimitedMemoryCache *memoryCache{{methodUpperCase}};
+{{/service.messages}}
+
+@end
+
+
+@implementation Base{{serviceName}}Logic
+
+- (id)init {
+
+    self = [super init];
+
+    if(self) {
+        [self addFilter:[{{projectName}}Helper sharedInstance]];
+    }
+
+    return self;
+}
+
+
+{{#service.messages}}
+
+/**
+* Method {{method}}: {{description}}
+* @param {{request.javaInstanceName}} Service request
+* @returns {{response.name}} Service response
+*/
+- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response))onSuccess onError:(void(^)(NSError *error))onError {
+
+    [self {{method}}:{{request.javaInstanceName}} defaultCacheOptions:ServiceGeneratorCacheOptionNoCache onSuccess:^(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType) {
+        
+        if (onSuccess) {
+            onSuccess(responseCode, response);
+        }
+        
+    } onError:onError];
+}
+
+- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} defaultCacheOptions:(ServiceGeneratorCacheOption)cacheOptions onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType))onSuccess onError:(void(^)(NSError *error))onError {
+
+	id<Cache> cache = nil;
+
+	if (cacheOptions & ServiceGeneratorCacheOptionMemoryOnly) {
+
+		if (!self.memoryCache{{methodUpperCase}}) {
+			self.memoryCache{{methodUpperCase}} = [UnlimitedMemoryCache new];
+		}
+
+		cache = self.memoryCache{{methodUpperCase}};
+	}
+
+	if (!(cacheOptions & ServiceGeneratorCacheOptionNoCache)) {
+
+		if (!self.diskCache{{methodUpperCase}}) {
+
+			NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+            NSString *cachesPath = [paths  objectAtIndex:0];
+            cachesPath = [cachesPath stringByAppendingPathComponent:@"{{{serviceName}}}/{{methodUpperCase}}"];
+                        
+            self.diskCache{{methodUpperCase}} = [UnlimitedDiskCache cacheWithDirectory:cachesPath];
+    	}
+
+    	cache = self.diskCache{{methodUpperCase}};
+	}
+
+	[self {{method}}:{{request.javaInstanceName}} cache:cache refreshCache:cacheOptions & ServiceGeneratorCacheOptionRefresh onSuccess:onSuccess onError:onError];
+}
+
+- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} cache:(id<Cache>)cache refreshCache:(BOOL)refreshCache onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType))onSuccess onError:(void(^)(NSError *error))onError {
+    
+	NSString *url=@"{{{url}}}";
+
+	url = [self preInjectURLParameters:url  withObject:{{request.javaInstanceName}} onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
+
+{{#request.fields}}
+	{{#isGet}}
+		{{#isBaseArray}}
+			NSString *string{{nameUcase}}=@"";
+		    for ({{iosBaseTypeSingular}} *param in {{request.javaInstanceName}}.{{name}}) {
+		        if ([string{{nameUcase}} isEqual:@""]) {
+					{{#isNumber}}
+						string{{nameUcase}} = [NSString stringWithFormat:@"{{serviceName}}=%@", [param stringValue]];
+					{{/isNumber}}
+		            {{#isString}}
+						string{{nameUcase}} = [NSString stringWithFormat:@"{{serviceName}}=%@", param];
+					{{/isString}}
+		        } else {
+					{{#isNumber}}
+						string{{nameUcase}} = [NSString stringWithFormat:@"%@&{{serviceName}}=%@", string{{nameUcase}}, [param stringValue]];
+					{{/isNumber}}
+		            {{#isString}}
+						string{{nameUcase}} = [NSString stringWithFormat:@"%@&{{serviceName}}=%@", string{{nameUcase}}, param];
+					{{/isString}}
+		        }
+		    }
+		{{/isBaseArray}}
+		{{^isBaseArray}}
+			NSString *string{{nameUcase}}=[NSString stringWithFormat:@"%@",{{request.javaInstanceName}}.{{name}}];
+		{{/isBaseArray}}
+	{{/isGet}}
+	{{^isGet}}
+		NSString *string{{nameUcase}}=[NSString stringWithFormat:@"%@",{{request.javaInstanceName}}.{{name}}];
+	{{/isGet}}
+{{/request.fields}}
+
+{{#inURLbutNotField}}
+	#ifdef {{.}}
+		url = [url stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}",@"{{.}}"] withString:{{.}}];
+	#else
+		url = [url stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}",@"{{.}}"] withString:[[NSUserDefaults standardUserDefaults] objectForKey:@"{{.}}"]];
+	#endif
+{{/inURLbutNotField}}
+
+{{#request.fields}}
+   	if({{request.javaInstanceName}}.{{name}}==nil){
+        url = [url stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}",@"{{name}}"] withString:@""];
+	} else {
+
+		if([url rangeOfString:[NSString stringWithFormat:@"${%@}",@"{{name}}"]].location != NSNotFound) {
+
+		    url = [url stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"${%@}",@"{{name}}"] withString:string{{nameUcase}}];
+
+		{{#isGet}}
+		} else {
+			// Form query strings if present (url?name1=value1&name2=value2)
+			NSString *operator;
+			if ([url rangeOfString:@"?"].location != NSNotFound) {
+				operator = @"&";
+			} else {
+				operator = @"?";
+			}
+			{{#isBaseArray}}
+			url = [NSString stringWithFormat:@"%@%@%@", url, operator, string{{nameUcase}}];
+			{{/isBaseArray}}
+			{{^isBaseArray}}
+			url = [NSString stringWithFormat:@"%@%@{{serviceName}}=%@", url, operator, string{{nameUcase}}];
+			{{/isBaseArray}}
+		{{/isGet}}
+		}
+	}
+{{/request.fields}}
+
+	url = [self postInjectURLParameters:url  withObject:{{request.javaInstanceName}} onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
+
+	_ModelGenLog(@"URL: %@", url);
+
+	{{#isWrite}}
+	NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+	// Before fields
+{{#request.fields}}
+    // {{name}} -- {{serviceName}}
+	[dict setValue:[NSString stringWithFormat:@"%@",{{request.javaInstanceName}}.{{name}}] forKey:@"{{serviceName}}"];
+{{/request.fields}}
+	double time = [[NSDate date] timeIntervalSince1970];
+    [dict setValue:[NSNumber numberWithDouble:time] forKey:@"requestTime"];
+    {{/isWrite}}
+
+	url = [self escapeUrl:url  onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
+	url = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url] cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:60.0];
+
+{{#request.isMultipart}}
+    // Multipart
+
+	[request setHTTPMethod:@"POST"];
+
+    NSString *boundary = @"---------------------------14737809831466499882746641449";
+    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
+    [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
+    NSMutableData *postbody = [NSMutableData data];
+{{#request.fields}}
+    [postbody appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [postbody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"{{serviceName}}\"; filename=\"%@\"\r\n", [string{{nameUcase}} lastPathComponent]] dataUsingEncoding:NSUTF8StringEncoding]];
+    [postbody appendData:[[NSString stringWithFormat:@"Content-Type: application/octet-stream\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+    [postbody appendData:[[NSData alloc] initWithContentsOfFile:string{{nameUcase}}]];
+{{/request.fields}}
+	[postbody appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPBody:postbody];
+
+{{/request.isMultipart}}
+{{^request.isMultipart}}
+
+{{#isPost}}
+	NSMutableArray * content = [NSMutableArray array];
+	for(NSString * key in dict) {
+
+  		[content addObject: [NSString stringWithFormat: @"%@=%@", key, dict[key]]];
+    }
+	NSString * body = [content componentsJoinedByString: @"&"];
+	NSData * bodyData = [body dataUsingEncoding: NSUTF8StringEncoding];
+	[request setHTTPBody:bodyData];
+	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+	[request setHTTPMethod:@"POST"];
+{{/isPost}}
+{{#isPut}}
+	NSMutableArray * content = [NSMutableArray array];
+	for(NSString * key in dict) {
+
+		[content addObject: [NSString stringWithFormat: @"%@=%@", key, dict[key]]];
+    }
+	NSString * body = [content componentsJoinedByString: @"&"];
+	NSData * bodyData = [body dataUsingEncoding: NSUTF8StringEncoding];
+	[request setHTTPBody:bodyData];
+	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+	[request setHTTPMethod:@"PUT"];
+{{/isPut}}
+{{#isDelete}}
+	NSMutableArray * content = [NSMutableArray array];
+	for(NSString * key in dict) {
+
+  		[content addObject: [NSString stringWithFormat: @"%@=%@", key, dict[key]]];
+    }
+	NSString * body = [content componentsJoinedByString: @"&"];
+	NSData * bodyData = [body dataUsingEncoding: NSUTF8StringEncoding];
+	[request setHTTPBody:bodyData];
+	[request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+	[request setHTTPMethod:@"DELETE"];
+{{/isDelete}}
+{{#isPostJSON}}
+
+    NSDictionary *jsonDict=[[{{request.daoClassName}} sharedInstance] writeToDictionary:{{request.javaInstanceName}}];
+
+    NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict
+                                               options:NSJSONWritingPrettyPrinted
+                                                 error:nil];
+
+	_ModelGenLog(@"%@",[[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding]);
+
+	[request setHTTPMethod:@"POST"];
+	[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+	[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+	[request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[requestData length]] forHTTPHeaderField:@"Content-Length"];
+	[request setHTTPBody: requestData];
+
+{{/isPostJSON}}
+{{#isDeleteJSON}}
+
+    NSDictionary *jsonDict=[[{{request.daoClassName}} sharedInstance] writeToDictionary:{{request.javaInstanceName}}];
+
+    NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict
+                                               options:NSJSONWritingPrettyPrinted
+                                                 error:nil];
+
+	_ModelGenLog(@"%@",[[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding]);
+
+	[request setHTTPMethod:@"DELETE"];
+	[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+	[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+	[request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[requestData length]] forHTTPHeaderField:@"Content-Length"];
+	[request setHTTPBody: requestData];
+
+{{/isDeleteJSON}}
+{{#isPutJSON}}
+
+    NSDictionary *jsonDict=[[{{request.daoClassName}} sharedInstance] writeToDictionary:{{request.javaInstanceName}}];
+
+    NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict
+                                               options:NSJSONWritingPrettyPrinted
+                                                 error:nil];
+
+	_ModelGenLog(@"%@",[[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding]);
+
+	[request setHTTPMethod:@"PUT"];
+	[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+	[request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+	[request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[requestData length]] forHTTPHeaderField:@"Content-Length"];
+	[request setHTTPBody: requestData];
+
+{{/isPutJSON}}
+{{#isGet}}
+	NSDictionary *jsonDict=[[{{request.daoClassName}} sharedInstance] writeToDictionary:{{request.javaInstanceName}}];
+	
+	NSData *requestData = [NSJSONSerialization dataWithJSONObject:jsonDict
+                                                   options:NSJSONWritingPrettyPrinted
+                                                     error:nil];
+
+	_ModelGenLog(@"%@",[[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding]);
+
+	[request setHTTPMethod:@"GET"];
+	NSMutableDictionary *allHeaders = [request.allHTTPHeaderFields mutableCopy];
+	NSString *jsonData = [NSString stringWithFormat:@"%@", [[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding]];
+	[allHeaders setObject:jsonData forKey:@"data"];
+	request.allHTTPHeaderFields=allHeaders;
+{{/isGet}}
+{{/request.isMultipart}}
+
+    request = [self manageRequest:request onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
+
+    if (cache) {
+
+    	{{response.name}} *cachedResponse = [cache objectForKey:{{request.javaInstanceName}}];
+
+    	if (cachedResponse) {
+    		
+    		onSuccess(200, cachedResponse, ServiceGeneratorCacheTypeUnknown);
+
+    		if (!refreshCache) {
+    			return;
+    		}
+    	}
+    	
+    }
+
+	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+
+	if ([operation respondsToSelector:@selector(setSecurityPolicy:)]) {
+
+		AFSecurityPolicy *securityPolicy = [[AFSecurityPolicy alloc] init];
+		securityPolicy.allowInvalidCertificates = YES;
+		securityPolicy = [self preprocessSecurityPolicy:securityPolicy  onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
+		operation.securityPolicy = securityPolicy;
+	}
+
+  	[self processOperation:operation];
+  	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+
+		NSError *error;
+		{{response.name}} *dto=[self {{method}}DTOFromOperation:operation withError:&error];
+
+    	if (!error) {
+
+    		if (cache) {
+            	[cache setObject:dto forKey:{{request.javaInstanceName}}];
+			}
+
+	        if (onSuccess) {	        	
+	            onSuccess(operation.response.statusCode, dto, ServiceGeneratorCacheTypeNone);
+	        }
+
+	  	} else {
+
+			if (onError) {
+				onError(error);
+			}
+		}
+
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+
+	    {{response.name}} *dto=[self {{method}}DTOFromOperation:operation withError:nil];
+
+		if (dto) {
+
+	        if (onSuccess) {
+	            onSuccess(operation.response.statusCode, dto, ServiceGeneratorCacheTypeNone);
+	        }
+
+		} else if (onError) {
+			onError(error);
+		}
+	}];
+
+	[operation start];
+}
+
+- ({{response.name}} *){{method}}DTOFromOperation:(AFHTTPRequestOperation *)operation withError:(NSError **)error {
+
+	NSData *data = operation.responseData;
+
+	NSString *stringData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    stringData =[self preprocessResponse:stringData  onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
+		
+	// Create empty json object if server returned empty string		
+	if(!stringData){
+		stringData=@"{}";
+	}
+
+	data = [stringData dataUsingEncoding:NSUTF8StringEncoding];
+
+	NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:error];
+
+	json=[self preprocessResponseAsDictionary:json  onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
+
+    {{response.name}} *dto=nil;
+
+    if(json) {
+
+    	_ModelGenLog(@"JSON: %@", json);
+        dto = [[{{response.daoClassName}} sharedInstance] readFromDictionary:json];
+    }
+
+    return dto;
+}
+
+- (void)cleanDefault{{methodUpperCase}}Cache {
+	
+	if (self.memoryCache{{methodUpperCase}}) {
+    	[self.memoryCache{{methodUpperCase}} removeAllObjects];
+    }
+
+    if (!self.diskCache{{methodUpperCase}}) {
+
+		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        NSString *cachesPath = [paths  objectAtIndex:0];
+        cachesPath = [cachesPath stringByAppendingPathComponent:@"{{{serviceName}}}/{{methodUpperCase}}"];
+                        
+        self.diskCache{{methodUpperCase}} = [UnlimitedDiskCache cacheWithDirectory:cachesPath];
+    }
+    	
+    [self.diskCache{{methodUpperCase}} removeAllObjects];
+}
+
+{{/service.messages}}
+
+@end
+

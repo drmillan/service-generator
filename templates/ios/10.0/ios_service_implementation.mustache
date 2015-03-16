@@ -1,0 +1,34 @@
+//
+//  Base{{{serviceName}}}.m
+//  {{{projectName}}}
+//  Version: {{{version}}}
+//
+//  Created by Service Generator
+//
+
+#import "{{{serviceName}}}Logic.h"
+
+#import "GenDefines.h"
+#import "Base{{{serviceName}}}Logic.h"
+{{#imports}}
+#import "{{request.name}}.h"
+#import "{{response.name}}.h"
+{{/imports}}
+
+
+@implementation {{{serviceName}}}Logic
+
+
+// Get the shared instance and create it if necessary.
++ ({{{serviceName}}}Logic *)sharedInstance {
+    
+    static dispatch_once_t onceQueue;
+    static {{{serviceName}}}Logic *instance = nil;
+    
+    dispatch_once(&onceQueue, ^{ instance = [[self alloc] init]; });
+    return instance;
+}
+
+@end
+
+ 
