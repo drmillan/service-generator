@@ -18,4 +18,7 @@
 
 + (void) {{message.method}}TaskForRequest:({{message.request.name}} *)request showLoadingView:(BOOL)showLoadingView completed:(void(^)(NSInteger statusCode,{{message.response.name}} *response))completedBlock error:(void(^)(NSError *error))errorBlock;
 
++ (void) {{message.method}}TaskForRequest:({{message.request.name}} *)request cacheOptions:(ServiceGeneratorCacheOption)cacheOptions showLoadingView:(BOOL)showLoadingView completed:(void(^)(NSInteger statusCode,{{message.response.name}} *response, ServiceGeneratorCacheType cacheType))completedBlock error:(void(^)(NSError *error))errorBlock;
+
+
 @end

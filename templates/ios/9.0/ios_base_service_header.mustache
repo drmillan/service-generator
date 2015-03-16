@@ -32,6 +32,21 @@
  #define AFNETWORKING_ALLOW_INVALID_SSL_CERTIFICATES 1
 #endif
 
+typedef NS_OPTIONS(NSUInteger, ServiceGeneratorCacheOption) {
+    
+    ServiceGeneratorCacheOptionNoCache = 1 << 0,	/* Ignore cache */
+    ServiceGeneratorCacheOptionMemoryOnly = 1 << 1,	/* Disable on-disk cache */
+    ServiceGeneratorCacheOptionRefresh = 1 << 2		/* If cached, the success block is called with the cached response and with the final response again. */
+};
+
+typedef NS_ENUM(NSInteger, ServiceGeneratorCacheType) {
+    
+    ServiceGeneratorCacheTypeNone,		/* The response were not cached. */
+    ServiceGeneratorCacheTypeDisk,		/* The response were cached on disk. */
+    ServiceGeneratorCacheTypeMemory,	/* The response were cached on memory */
+    ServiceGeneratorCacheTypeUnknown	/* The response were cached on an uknown cache system */
+};
+
 @interface Base{{{serviceName}}}Logic : BaseLogic
 
 {{#service.messages}}
@@ -45,10 +60,11 @@
 * @param {{request.javaInstanceName}} Service request
 * @returns {{response.type}} Service response
 */
-- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} onSuccess:(void(^)(NSInteger responseCode,{{response.name}} *response))onSucces onError:(void(^)(NSError *error))onError;
--({{response.name}} *) {{method}}DTOFromOperation:(AFHTTPRequestOperation *)operation withError:(NSError **)error;
+- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} onSuccess:(void(^)(NSInteger responseCode,{{response.name}} *response))onSucces onError:(void(^)(NSError *error))onError __deprecated_msg("Method deprecated. Use `{{method}}:cacheOptions:onSuccess:onError`");
 
+- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} cacheOptions:(ServiceGeneratorCacheOption)cacheOptions onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType))onSucces onError:(void(^)(NSError *error))onError;
 
+- ({{response.name}} *){{method}}DTOFromOperation:(AFHTTPRequestOperation *)operation withError:(NSError **)error;
 
 {{/service.messages}}
 @end

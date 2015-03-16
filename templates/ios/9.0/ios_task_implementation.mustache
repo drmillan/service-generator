@@ -12,7 +12,21 @@
 
 @implementation {{message.methodUpperCase}}Task
 
-+ (void) {{message.method}}TaskForRequest:({{message.request.name}} *)request showLoadingView:(BOOL)showLoadingView completed:(void(^)(NSInteger statusCode,{{message.response.name}} *response))completedBlock error:(void(^)(NSError *error))errorBlock {
++ (void){{message.method}}TaskForRequest:({{message.request.name}} *)request showLoadingView:(BOOL)showLoadingView completed:(void(^)(NSInteger statusCode, {{message.response.name}} *response))completedBlock error:(void(^)(NSError *error))errorBlock {
+
+	[self {{message.method}}TaskForRequest:request cacheOptions:ServiceGeneratorCacheOptionNoCache showLoadingView:showLoadingView completed:^(NSInteger statusCode, {{message.response.name}} *response, ServiceGeneratorCacheType cacheType) {
+        if (completedBlock) {
+            completedBlock(statusCode, response);
+        }        
+    } error:errorBlock];
+}
+
++ (void){{message.method}}TaskForRequest:({{message.request.name}} *)request completed:(void(^)(NSInteger statusCode,{{message.response.name}} *response))completedBlock error:(void(^)(NSError *error))errorBlock {
+
+	[self {{message.method}}TaskForRequest:request showLoadingView:YES completed:completedBlock error:errorBlock];
+}
+
++ (void){{message.method}}TaskForRequest:({{message.request.name}} *)request cacheOptions:(ServiceGeneratorCacheOption)cacheOptions showLoadingView:(BOOL)showLoadingView completed:(void(^)(NSInteger statusCode, {{message.response.name}} *response, ServiceGeneratorCacheType cacheType))completedBlock error:(void(^)(NSError *error))errorBlock {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 		
@@ -26,15 +40,14 @@
 		[window addSubview:loadingView];
 	}
 
-
-	[[{{message.service}}Logic sharedInstance] {{message.method}}:request onSuccess:^(NSInteger statusCode,{{message.response.name}} *response){
+	[[{{message.service}}Logic sharedInstance] {{message.method}}:request cacheOptions:cacheOptions onSuccess:^(NSInteger statusCode, {{message.response.name}} *response, ServiceGeneratorCacheType cacheType){
 
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 		if (loadingView) {
 			[loadingView removeFromSuperview];
 		}
 		if(completedBlock){
-			completedBlock(statusCode,response);
+			completedBlock(statusCode, response, cacheType);
 		}
 
 	} onError:^(NSError *error){
@@ -48,11 +61,6 @@
 		}
 	}];
 
-}
-
-+ (void) {{message.method}}TaskForRequest:({{message.request.name}} *)request completed:(void(^)(NSInteger statusCode,{{message.response.name}} *response))completedBlock error:(void(^)(NSError *error))errorBlock {
-
-	[self {{message.method}}TaskForRequest:request showLoadingView:YES completed:completedBlock error:errorBlock];
 }
 
 @end
