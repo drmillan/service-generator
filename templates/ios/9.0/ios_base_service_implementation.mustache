@@ -455,6 +455,24 @@
     return dto;
 }
 
+- (void)clean{{methodUpperCase}}cache {
+	
+	if (self.memoryCache{{methodUpperCase}}) {
+    	[self.memoryCache{{methodUpperCase}} removeAllObjects];
+    }
+
+    if (!self.diskCache{{methodUpperCase}}) {
+
+		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        NSString *cachesPath = [paths  objectAtIndex:0];
+        cachesPath = [cachesPath stringByAppendingPathComponent:@"{{{serviceName}}}/{{methodUpperCase}}"];
+                        
+        self.diskCache{{methodUpperCase}} = [UnlimitedDiskCache cacheWithDirectory:cachesPath];
+    }
+    	
+    [self.diskCache{{methodUpperCase}} removeAllObjects];
+}
+
 {{/service.messages}}
 
 @end

@@ -66,5 +66,7 @@ typedef NS_ENUM(NSInteger, ServiceGeneratorCacheType) {
 
 - ({{response.name}} *){{method}}DTOFromOperation:(AFHTTPRequestOperation *)operation withError:(NSError **)error;
 
+- (void)clean{{methodUpperCase}}cache;
+
 {{/service.messages}}
 @end
