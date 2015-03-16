@@ -50,10 +50,6 @@ typedef NS_ENUM(NSInteger, ServiceGeneratorCacheType) {
 @interface Base{{{serviceName}}}Logic : BaseLogic
 
 {{#service.messages}}
-@property (nonatomic, strong) id<Cache> cache{{methodUpperCase}};
-{{/service.messages}}
-
-{{#service.messages}}
 
 /**
 * Method {{method}}: {{description}}
@@ -62,11 +58,13 @@ typedef NS_ENUM(NSInteger, ServiceGeneratorCacheType) {
 */
 - (void){{method}}:({{request.name}} *){{request.javaInstanceName}} onSuccess:(void(^)(NSInteger responseCode,{{response.name}} *response))onSucces onError:(void(^)(NSError *error))onError __deprecated_msg("Method deprecated. Use `{{method}}:cacheOptions:onSuccess:onError`");
 
-- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} cacheOptions:(ServiceGeneratorCacheOption)cacheOptions onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType))onSucces onError:(void(^)(NSError *error))onError;
+- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} defaultCacheOptions:(ServiceGeneratorCacheOption)cacheOptions onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType))onSucces onError:(void(^)(NSError *error))onError;
+
+- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} cache:(id<Cache>)cache refreshCache:(BOOL)refreshCache onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType))onSucces onError:(void(^)(NSError *error))onError;
 
 - ({{response.name}} *){{method}}DTOFromOperation:(AFHTTPRequestOperation *)operation withError:(NSError **)error;
 
-- (void)clean{{methodUpperCase}}cache;
+- (void)cleanDefault{{methodUpperCase}}Cache;
 
 {{/service.messages}}
 @end

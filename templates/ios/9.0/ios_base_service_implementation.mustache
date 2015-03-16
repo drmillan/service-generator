@@ -57,7 +57,7 @@
 */
 - (void){{method}}:({{request.name}} *){{request.javaInstanceName}} onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response))onSuccess onError:(void(^)(NSError *error))onError {
 
-    [self {{method}}:{{request.javaInstanceName}} cacheOptions:ServiceGeneratorCacheOptionNoCache onSuccess:^(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType) {
+    [self {{method}}:{{request.javaInstanceName}} defaultCacheOptions:ServiceGeneratorCacheOptionNoCache onSuccess:^(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType) {
         
         if (onSuccess) {
             onSuccess(responseCode, response);
@@ -66,7 +66,37 @@
     } onError:onError];
 }
 
-- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} cacheOptions:(ServiceGeneratorCacheOption)cacheOptions onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType))onSuccess onError:(void(^)(NSError *error))onError {
+- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} defaultCacheOptions:(ServiceGeneratorCacheOption)cacheOptions onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType))onSuccess onError:(void(^)(NSError *error))onError {
+
+	id<Cache> cache = nil;
+
+	if (cacheOptions & ServiceGeneratorCacheOptionMemoryOnly) {
+
+		if (!self.memoryCache{{methodUpperCase}}) {
+			self.memoryCache{{methodUpperCase}} = [UnlimitedMemoryCache new];
+		}
+
+		cache = self.memoryCache{{methodUpperCase}};
+	}
+
+	if (!(cacheOptions & ServiceGeneratorCacheOptionNoCache)) {
+
+		if (!self.diskCache{{methodUpperCase}}) {
+
+			NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+            NSString *cachesPath = [paths  objectAtIndex:0];
+            cachesPath = [cachesPath stringByAppendingPathComponent:@"{{{serviceName}}}/{{methodUpperCase}}"];
+                        
+            self.diskCache{{methodUpperCase}} = [UnlimitedDiskCache cacheWithDirectory:cachesPath];
+    	}
+
+    	cache = self.diskCache{{methodUpperCase}};
+	}
+
+	[self {{method}}:{{request.javaInstanceName}} cache:cache refreshCache:cacheOptions & ServiceGeneratorCacheOptionRefresh onSuccess:onSuccess onError:onError];
+}
+
+- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} cache:(id<Cache>)cache refreshCache:(BOOL)refreshCache onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType))onSuccess onError:(void(^)(NSError *error))onError {
     
 	NSString *url=@"{{{url}}}";
 
@@ -287,74 +317,20 @@
 
     request = [self manageRequest:request onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
 
-	if (cacheOptions & ServiceGeneratorCacheOptionNoCache) {
-        
-        if (_cache{{methodUpperCase}}) {
-            
-            {{response.name}} *cachedResponse = [_cache{{methodUpperCase}} objectForKey:{{request.javaInstanceName}}];
-            if (cachedResponse && onSuccess) {
-                cachedResponse = [self preprocessCacheHitForRequest:{{request.javaInstanceName}} withCachedResponse:cachedResponse onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
+    if (cache) {
 
-                if (cachedResponse) {
-                    
-                    onSuccess(200, cachedResponse, ServiceGeneratorCacheTypeUnknown);
-                    
-                    if (!(cacheOptions & ServiceGeneratorCacheOptionRefresh)) {
-                        return;
-                    }
-                }
-            }
-        }
-        
-	} else if (cacheOptions & ServiceGeneratorCacheOptionMemoryOnly) {
-        
-        if (self.memoryCache{{methodUpperCase}}) {
-            
-            {{response.name}} *cachedResponse = [self.memoryCache{{methodUpperCase}} objectForKey:{{request.javaInstanceName}}];
-            
-            if (cachedResponse && onSuccess) {
-                
-                cachedResponse = [self preprocessCacheHitForRequest:{{request.javaInstanceName}} withCachedResponse:cachedResponse onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
-                
-                if (cachedResponse) {
-                    
-                    onSuccess(200, cachedResponse, ServiceGeneratorCacheTypeMemory);
-                    
-                    if (!(cacheOptions & ServiceGeneratorCacheOptionRefresh)) {
-                        return;
-                    }
-                }
-            }
-        }
-        
-    } else {
+    	{{response.name}} *cachedResponse = [cache objectForKey:{{request.javaInstanceName}}];
 
-    	if (!self.diskCache{{methodUpperCase}}) {
+    	if (cachedResponse) {
+    		
+    		onSuccess(200, cachedResponse, ServiceGeneratorCacheTypeUnknown);
 
-			NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-            NSString *cachesPath = [paths  objectAtIndex:0];
-            cachesPath = [cachesPath stringByAppendingPathComponent:@"{{{serviceName}}}/{{methodUpperCase}}"];
-                        
-            self.diskCache{{methodUpperCase}} = [UnlimitedDiskCache cacheWithDirectory:cachesPath];
+    		if (!refreshCache) {
+    			return;
+    		}
     	}
     	
-        {{response.name}} *cachedResponse = [self.diskCache{{methodUpperCase}} objectForKey:{{request.javaInstanceName}}];
-            
-		if (cachedResponse && onSuccess) {
-                
-        	cachedResponse = [self preprocessCacheHitForRequest:{{request.javaInstanceName}} withCachedResponse:cachedResponse onService:@"{{{serviceName}}}" onMethod:@"{{{method}}}"];
-            
-            if (cachedResponse) {
-                    
-				onSuccess(200, cachedResponse, ServiceGeneratorCacheTypeDisk);
-                    
-            	if (!(cacheOptions & ServiceGeneratorCacheOptionRefresh)) {
-            		return;
-            	}
-            }
-         }
     }
-
 
 	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 
@@ -374,30 +350,11 @@
 
     	if (!error) {
 
-	        if (onSuccess) {
+    		if (cache) {
+            	[cache setObject:dto forKey:{{request.javaInstanceName}}];
+			}
 
-	        	if (cacheOptions & ServiceGeneratorCacheOptionNoCache) {
-                    
-                    if (_cache{{methodUpperCase}}) {
-                        [_cache{{methodUpperCase}} setObject:dto forKey:{{request.javaInstanceName}}];
-                    }
-                    
-                } else if (cacheOptions & ServiceGeneratorCacheOptionMemoryOnly) {
-                    
-                    if (!self.memoryCache{{methodUpperCase}}) {
-                        self.memoryCache{{methodUpperCase}} = [UnlimitedMemoryCache new];
-                    }
-                    
-                    [self.memoryCache{{methodUpperCase}} setObject:dto forKey:{{request.javaInstanceName}}];
-                    
-                } else {
-                    
-                    if (self.diskCache{{methodUpperCase}}) {
-                        
-                        [self.diskCache{{methodUpperCase}} setObject:dto forKey:{{request.javaInstanceName}}];
-                    }
-                }
-	        	
+	        if (onSuccess) {	        	
 	            onSuccess(operation.response.statusCode, dto, ServiceGeneratorCacheTypeNone);
 	        }
 
@@ -455,7 +412,7 @@
     return dto;
 }
 
-- (void)clean{{methodUpperCase}}cache {
+- (void)cleanDefault{{methodUpperCase}}Cache {
 	
 	if (self.memoryCache{{methodUpperCase}}) {
     	[self.memoryCache{{methodUpperCase}} removeAllObjects];
