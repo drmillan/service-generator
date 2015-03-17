@@ -44,6 +44,16 @@
 * @returns {{response.name}} Service response
 */
 - (void){{method}}:({{request.name}} *){{request.javaInstanceName}} onSuccess:(void(^)(NSInteger responseCode,{{response.name}} *response))onSuccess onError:(void(^)(NSError *error))onError {
+ 	[self {{method}}:{{request.javaInstanceName}} onSuccess:onSuccess onProgress:nil onError:onError];
+
+}
+
+/**
+* Method {{method}}: {{description}}
+* @param {{request.javaInstanceName}} Service request
+* @returns {{response.name}} Service response
+*/
+- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} onSuccess:(void(^)(NSInteger responseCode,{{response.name}} *response))onSuccess onProgress:(void(^) (NSUInteger __unused bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite)) onProgress onError:(void(^)(NSError *error))onError {
 
 	NSString *url=@"{{{url}}}";
 
@@ -294,6 +304,9 @@
 		operation.securityPolicy = securityPolicy;
 	}
   	[self processOperation:operation];
+  	if (onProgress) {
+  		[operation setUploadProgressBlock: onProgress];
+  	}
   	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
 
 		NSError *error;

@@ -48,6 +48,13 @@
 - (void){{method}}:({{request.name}} *){{request.javaInstanceName}} onSuccess:(void(^)(NSInteger responseCode,{{response.name}} *response))onSucces onError:(void(^)(NSError *error))onError;
 -({{response.name}} *) {{method}}DTOFromOperation:(AFHTTPRequestOperation *)operation withError:(NSError **)error;
 
+/**
+* Method {{method}}: {{description}}
+* @param {{request.javaInstanceName}} Service request
+* @returns {{response.type}} Service response
+*/
+- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} onSuccess:(void(^)(NSInteger responseCode,{{response.name}} *response))onSucces onProgress:(void(^) (NSUInteger __unused bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite)) onProgress onError:(void(^)(NSError *error))onError;
+-({{response.name}} *) {{method}}DTOFromOperation:(AFHTTPRequestOperation *)operation withError:(NSError **)error;
 
 
 {{/service.messages}}
