@@ -55,7 +55,7 @@
 * @param {{request.javaInstanceName}} Service request
 * @returns {{response.name}} Service response
 */
-- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response))onSuccess onError:(void(^)(NSError *error))onError {
+- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response))onSuccess onProgress:(void(^) (NSUInteger __unused bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite)) onProgress onError:(void(^)(NSError *error))onError {
 
     [self {{method}}:{{request.javaInstanceName}} defaultCacheOptions:ServiceGeneratorCacheOptionNoCache onSuccess:^(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType) {
         
@@ -63,10 +63,27 @@
             onSuccess(responseCode, response);
         }
         
-    } onError:onError];
+    } onProgress: onProgress
+    onError:onError];
+}
+
+- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response))onSuccess onError:(void(^)(NSError *error))onError {
+
+	[self {{method}}:{{request.javaInstanceName}} defaultCacheOptions:ServiceGeneratorCacheOptionNoCache onSuccess:^(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType) {
+
+		if (onSuccess) {
+			onSuccess(responseCode, response);
+		}
+
+	} onProgress: nil
+	onError:onError];
 }
 
 - (void){{method}}:({{request.name}} *){{request.javaInstanceName}} defaultCacheOptions:(ServiceGeneratorCacheOption)cacheOptions onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType))onSuccess onError:(void(^)(NSError *error))onError {
+	[self {{method}}:{{request.javaInstanceName}} defaultCacheOptions:cacheOptions onSuccess:onSuccess onProgress:nil onError:onError];
+}
+
+- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} defaultCacheOptions:(ServiceGeneratorCacheOption)cacheOptions onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType))onSuccess onProgress:(void(^) (NSUInteger __unused bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite)) onProgress onError:(void(^)(NSError *error))onError {
 
 	id<Cache> cache = nil;
 
@@ -93,10 +110,10 @@
     	cache = self.diskCache{{methodUpperCase}};
 	}
 
-	[self {{method}}:{{request.javaInstanceName}} cache:cache refreshCache:cacheOptions & ServiceGeneratorCacheOptionRefresh onSuccess:onSuccess onError:onError];
+	[self {{method}}:{{request.javaInstanceName}} cache:cache refreshCache:cacheOptions & ServiceGeneratorCacheOptionRefresh onSuccess:onSuccess onProgress:onProgress onError:onError];
 }
 
-- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} cache:(id<Cache>)cache refreshCache:(BOOL)refreshCache onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType))onSuccess onError:(void(^)(NSError *error))onError {
+- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} cache:(id<Cache>)cache refreshCache:(BOOL)refreshCache onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType))onSuccess onProgress:(void(^) (NSUInteger __unused bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite)) onProgress onError:(void(^)(NSError *error))onError {
     
 	NSString *url=@"{{{url}}}";
 
@@ -343,6 +360,9 @@
 	}
 
   	[self processOperation:operation];
+    if (onProgress) {
+    	[operation setUploadProgressBlock: onProgress];
+    }
   	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
 
 		NSError *error;

@@ -18,15 +18,31 @@
         if (completedBlock) {
             completedBlock(statusCode, response);
         }        
-    } error:errorBlock];
+    } progress:nil
+    error:errorBlock];
+}
+
++ (void){{message.method}}TaskForRequest:({{message.request.name}} *)request showLoadingView:(BOOL)showLoadingView completed:(void(^)(NSInteger statusCode, {{message.response.name}} *response))completedBlock progress:(void(^) (NSUInteger __unused bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite)) progressBlock error:(void(^)(NSError *error))errorBlock {
+
+	[self {{message.method}}TaskForRequest:request defaultCacheOptions:ServiceGeneratorCacheOptionNoCache showLoadingView:showLoadingView completed:^(NSInteger statusCode, {{message.response.name}} *response, ServiceGeneratorCacheType cacheType) {
+		if (completedBlock) {
+			completedBlock(statusCode, response);
+		}
+	} progress: progressBlock
+	error:errorBlock];
 }
 
 + (void){{message.method}}TaskForRequest:({{message.request.name}} *)request completed:(void(^)(NSInteger statusCode,{{message.response.name}} *response))completedBlock error:(void(^)(NSError *error))errorBlock {
 
-	[self {{message.method}}TaskForRequest:request showLoadingView:YES completed:completedBlock error:errorBlock];
+	[self {{message.method}}TaskForRequest:request showLoadingView:YES completed:completedBlock progress:nil error:errorBlock];
 }
 
 + (void){{message.method}}TaskForRequest:({{message.request.name}} *)request defaultCacheOptions:(ServiceGeneratorCacheOption)defaultCacheOptions showLoadingView:(BOOL)showLoadingView completed:(void(^)(NSInteger statusCode, {{message.response.name}} *response, ServiceGeneratorCacheType cacheType))completedBlock error:(void(^)(NSError *error))errorBlock {
+
+	[self {{message.method}}TaskForRequest:request defaultCacheOptions:defaultCacheOptions showLoadingView:showLoadingView completed:completedBlock progress:nil error:errorBlock];
+}
+
++ (void){{message.method}}TaskForRequest:({{message.request.name}} *)request defaultCacheOptions:(ServiceGeneratorCacheOption)defaultCacheOptions showLoadingView:(BOOL)showLoadingView completed:(void(^)(NSInteger statusCode, {{message.response.name}} *response, ServiceGeneratorCacheType cacheType))completedBlock progress:(void(^) (NSUInteger __unused bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite)) progressBlock error:(void(^)(NSError *error))errorBlock {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 		
@@ -50,7 +66,8 @@
 			completedBlock(statusCode, response, cacheType);
 		}
 
-	} onError:^(NSError *error){
+	} onProgress: progressBlock
+	onError:^(NSError *error){
 
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 		if (loadingView) {
@@ -64,6 +81,11 @@
 }
 
 + (void){{message.method}}TaskForRequest:({{message.request.name}} *)request cache:(id<Cache>)cache refreshCache:(BOOL)refreshCache showLoadingView:(BOOL)showLoadingView completed:(void(^)(NSInteger statusCode,{{message.response.name}} *response, ServiceGeneratorCacheType cacheType))completedBlock error:(void(^)(NSError *error))errorBlock {
+
+	[self {{message.method}}TaskForRequest:request cache:cache refreshCache:refreshCache showLoadingView:showLoadingView completed:completedBlock progress:nil error:errorBlock];
+}
+
++ (void){{message.method}}TaskForRequest:({{message.request.name}} *)request cache:(id<Cache>)cache refreshCache:(BOOL)refreshCache showLoadingView:(BOOL)showLoadingView completed:(void(^)(NSInteger statusCode,{{message.response.name}} *response, ServiceGeneratorCacheType cacheType))completedBlock progress:(void(^) (NSUInteger __unused bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite)) progressBlock error:(void(^)(NSError *error))errorBlock {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 		
@@ -87,7 +109,8 @@
 			completedBlock(statusCode, response, cacheType);
 		}
 
-	} onError:^(NSError *error){
+	} onProgress: progressBlock
+	onError:^(NSError *error){
 
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 		if (loadingView) {
