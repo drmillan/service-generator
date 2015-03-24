@@ -16,6 +16,10 @@
 
 + (void) {{message.method}}TaskForRequest:({{message.request.name}} *)request completed:(void(^)(NSInteger statusCode,{{message.response.name}} *response))completedBlock error:(void(^)(NSError *error))errorBlock;
 
++ (void) {{message.method}}TaskForRequest:({{message.request.name}} *)request completed:(void(^)(NSInteger statusCode,{{message.response.name}} *response))completedBlock progress:(void(^) (NSUInteger __unused bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite)) progressBlock error:(void(^)(NSError *error))errorBlock;
+
 + (void) {{message.method}}TaskForRequest:({{message.request.name}} *)request showLoadingView:(BOOL)showLoadingView completed:(void(^)(NSInteger statusCode,{{message.response.name}} *response))completedBlock error:(void(^)(NSError *error))errorBlock;
+
++ (void) {{message.method}}TaskForRequest:({{message.request.name}} *)request showLoadingView:(BOOL)showLoadingView completed:(void(^)(NSInteger statusCode,{{message.response.name}} *response))completedBlock progress:(void(^) (NSUInteger __unused bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite)) progressBlock error:(void(^)(NSError *error))errorBlock;
 
 @end
