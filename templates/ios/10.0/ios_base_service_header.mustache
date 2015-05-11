@@ -45,17 +45,15 @@
 
 - (void){{method}}:({{request.name}} *){{request.javaInstanceName}} defaultCacheOptions:(ServiceGeneratorCacheOption)cacheOptions onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType))onSucces onError:(void(^)(NSError *error))onError;
 
-- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} cache:(id<Cache>)cache refreshCache:(BOOL)refreshCache onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType))onSucces onError:(void(^)(NSError *error))onError;
-
 - ({{response.name}} *){{method}}DTOFromOperation:(AFHTTPRequestOperation *)operation withError:(NSError **)error;
 
 - (void)cleanDefault{{methodUpperCase}}Cache;
 
-    - (void){{method}}:({{request.name}} *){{request.javaInstanceName}} onSuccess:(void(^)(NSInteger responseCode,{{response.name}} *response))onSucces onProgress:(void(^) (NSUInteger __unused bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite)) onProgress onError:(void(^)(NSError *error))onError __deprecated_msg("Method deprecated. Use `{{method}}:cacheOptions:onSuccess:onError`");
+- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} onSuccess:(void(^)(NSInteger responseCode,{{response.name}} *response))onSucces onProgress:(void(^) (NSUInteger __unused bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite)) onProgress onError:(void(^)(NSError *error))onError __deprecated_msg("Method deprecated. Use `{{method}}:cacheOptions:onSuccess:onError`");
 
-    - (void){{method}}:({{request.name}} *){{request.javaInstanceName}} defaultCacheOptions:(ServiceGeneratorCacheOption)cacheOptions onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType))onSucces onProgress:(void(^) (NSUInteger __unused bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite)) onProgress onError:(void(^)(NSError *error))onError;
+- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} defaultCacheOptions:(ServiceGeneratorCacheOption)cacheOptions onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType))onSucces onProgress:(void(^) (NSUInteger __unused bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite)) onProgress onError:(void(^)(NSError *error))onError;
 
-    - (void){{method}}:({{request.name}} *){{request.javaInstanceName}} cache:(id<Cache>)cache refreshCache:(BOOL)refreshCache onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType))onSucces onProgress:(void(^) (NSUInteger __unused bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite)) onProgress onError:(void(^)(NSError *error))onError;
+- (void){{method}}:({{request.name}} *){{request.javaInstanceName}} cache:(id<Cache>)cache refreshCache:(BOOL)refreshCache onSuccess:(void(^)(NSInteger responseCode, {{response.name}} *response, ServiceGeneratorCacheType cacheType))onSucces onProgress:(void(^) (NSUInteger __unused bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite)) onProgress onError:(void(^)(NSError *error))onError;
 
 
 {{/service.messages}}
