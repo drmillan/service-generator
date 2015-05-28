@@ -452,5 +452,13 @@
 
 {{/service.messages}}
 
+- (void)sayonaraCache {
+	
+{{#service.messages}}
+	[self cleanDefault{{methodUpperCase}}Cache];
+{{/service.messages}}
+
+}
+
 @end
 
