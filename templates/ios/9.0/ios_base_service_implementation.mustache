@@ -272,7 +272,7 @@
 
     	[request setHTTPMethod:@"GET"];
     	NSMutableDictionary *allHeaders = [request.allHTTPHeaderFields mutableCopy];
-        NSString *jsonData = [NSString stringWithFormat:@"%@", [[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding]];
+        NSString *jsonData = [[NSString alloc] initWithData:requestData encoding:NSUTF8StringEncoding];
         [allHeaders setObject:jsonData forKey:@"data"];
         request.allHTTPHeaderFields=allHeaders;
 {{/isGet}}
