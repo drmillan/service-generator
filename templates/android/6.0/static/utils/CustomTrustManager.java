@@ -12,6 +12,13 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+/**
+ * The trust manager for X509 certificates to be used to perform authentication for secure sockets.
+ * This class also allows you to trust certificates from additional KeyStores in addition to
+ * the default KeyStore.
+ *
+ * @author Service Generator
+ */
 public class CustomTrustManager implements X509TrustManager {
 
     protected ArrayList<X509TrustManager> x509TrustManagers = new ArrayList<X509TrustManager>();
