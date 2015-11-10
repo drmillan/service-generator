@@ -19,7 +19,12 @@
 
 
 {{#dto.fields}}
+	{{#isObjectArray}}
+@property (nonatomic, strong) {{{typeIOS}}}<{{{iosBaseTypeSingular}}} *> *{{{name}}};	///< {{{comment}}} - Field name on service:{{serviceName}}.
+	{{/isObjectArray}}
+	{{^isObjectArray}}
 @property (nonatomic, strong) {{{typeIOS}}} *{{{name}}};	///< {{{comment}}} - Field name on service:{{serviceName}}.
+	{{/isObjectArray}}
 {{/dto.fields}}
 
 - (BOOL)isEqualToBase{{{dto.name}}}:(Base{{{dto.name}}} *)other;
