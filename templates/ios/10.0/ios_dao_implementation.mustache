@@ -127,7 +127,7 @@
     {{/dto.baseArrayFields}}
   
     {{#dto.objectFields}}
-	if (dict[@"{{{serviceName}}}"]) {
+	  if (dict[@"{{{serviceName}}}"] && ![dict[@"{{{serviceName}}}"] isKindOfClass:[NSNull class]]) {
         instance.{{{name}}}=[[{{{typeJavaDAO}}} sharedInstance] readFromDictionary:dict[@"{{{serviceName}}}"]];
     }
     {{/dto.objectFields}}
