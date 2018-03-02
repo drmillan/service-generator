@@ -21,6 +21,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport
+  activesupport (4.1.11)
   mustache (~> 0.99.4)
   rake
