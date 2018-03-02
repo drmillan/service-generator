@@ -15,7 +15,7 @@ end
 desc 'Initialize and download dependencies'
 task :setup do
   puts 'This will download all the dependencies. It might also ask your admin password.'.cyan
-  `sudo gem install mustache active_support`
+  `sudo gem install mustache activesupport`
   puts 'Done!'.green
 end
 
