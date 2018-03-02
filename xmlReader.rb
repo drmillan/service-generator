@@ -5,7 +5,7 @@ require_relative 'model/service.rb'
 require_relative 'model/message.rb'
 require 'rexml/document'
 require 'mustache'
-require 'active_support/inflector'
+#require 'activesupport-inflector'
 
 ##################################
 # XML Definition File Reader
@@ -31,7 +31,7 @@ class XmlReader
     # Read Types
     protocol.types=XmlReader.read_types(contents.root)
 
-    # Read Messages    
+    # Read Messages
     XmlReader.read_messages(contents.root,protocol)
 
     puts 'Finished loading xml definition'
