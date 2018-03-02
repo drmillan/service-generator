@@ -32,11 +32,11 @@ class Field
     return name.upcase
   end
   def javaName
-    return name.camelize()[0..1].downcase<<name.camelize()[2..-1]
+    return (name.split('_').collect(&:capitalize.join)[0..1].downcase)<<(name.split('_').collect(&:capitalize.join)[2..-1])
 
   end
   def nameUcase
-    return name.camelize()
+    return camelize(name)
   end
   
   def isString
@@ -241,5 +241,9 @@ class Field
     end
     return type
   end
+
+def camelize(str)
+  str.split('_').map {|w| w.capitalize}.join
+end
 
 end
